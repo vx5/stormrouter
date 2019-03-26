@@ -1,54 +1,28 @@
-package edu.brown.cs.jcrowle5.stormrouter;
+package edu.brown.cs.stormrouter.main;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Map;
 
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+
+import freemarker.template.Configuration;
 import spark.ExceptionHandler;
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
+import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 
-import freemarker.template.Configuration;
 
-/**
- * The Main class of our project. This is where execution begins.
- */
-public final class Main {
+final class GUI {
+  private static final Gson GSON = new Gson();
 
-  private static final int DEFAULT_PORT = 4567;
-
-  /**
-   * The initial method called when execution begins.
-   * @param args An array of command line arguments
-   */
-  public static void main(String[] args) {
-    new Main(args).run();
-  }
-
-  private String[] args;
-
-  private Main(String[] args) {
-    this.args = args;
-  }
-
-  private void run() {
-    // Parse command line arguments
-    OptionParser parser = new OptionParser();
-    parser.accepts("gui");
-    parser.accepts("port").withRequiredArg().ofType(Integer.class)
-        .defaultsTo(DEFAULT_PORT);
-    OptionSet options = parser.parse(args);
-
-    if (options.has("gui")) {
-      runSparkServer((int) options.valueOf("port"));
-    }
-
-    // TODO: Process commands in a REPL
+  private GUI() {
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -64,14 +38,30 @@ public final class Main {
     return new FreeMarkerEngine(config);
   }
 
-  private void runSparkServer(int port) {
+  static void runSparkServer(int port) {
     Spark.port(port);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
 
     FreeMarkerEngine freeMarker = createEngine();
 
-    // Setup Spark Routes
+    Spark.get("/", new FrontHandler(), freeMarker);
+  }
+
+  static void stopSparkServer() {
+    Spark.stop();
+  }
+
+  /**
+   * Handles requests to the front page of our StormRouter website.
+   */
+  private static class FrontHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request request, Response response) {
+      Map<String, Object> variables =
+          ImmutableMap.of("title", "StormRouter");
+      return new ModelAndView(variables, "front-page.ftl");
+    }
   }
 
   /**
@@ -90,5 +80,4 @@ public final class Main {
       res.body(stacktrace.toString());
     }
   }
-
 }

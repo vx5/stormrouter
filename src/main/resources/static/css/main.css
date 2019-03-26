@@ -1,3 +1,77 @@
 input[type="number"] {
   width: 3em;
 }
+
+body {
+  background-color: #cccccc;
+  color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #ffff00;
+}
+
+.section-header {
+  margin: 0;
+  padding: 2px 10px;
+}
+
+.title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #220068;
+  border-bottom-right-radius: 10px;
+}
+
+.page {
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  background-color: #220068;
+  width: 900px;
+  height: 560px;
+  margin: 5px auto;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.left {
+  flex: 2.5;
+}
+
+.right {
+  flex: 1;
+}
+
+.map {
+  flex: 3;
+
+  border: 1px solid #000;
+  background-color: #b3d4fc;
+}
+
+.itinerary {
+  flex: 1;
+
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+
+  border: 1px solid #ffff00;
+  border-right: none;
+}
+
+.directions {
+  flex: 1;
+
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+
+  border: 1px solid #ffff00;
+}
