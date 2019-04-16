@@ -16,6 +16,7 @@ h1, h2, h3, h4, h5, h6 {
   font-style: italic;
   text-shadow: 0 0 10px #FFFF00;
   position: absolute;
+  z-index: 1;
   top: 0;
   left: 0;
   background-color: #220068;
@@ -46,7 +47,7 @@ h1, h2, h3, h4, h5, h6 {
   flex: 1;
 }
 
-.map {
+#map {
   flex: 2;
 
   border: 3px inset #ddd;

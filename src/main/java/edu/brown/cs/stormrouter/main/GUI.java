@@ -45,7 +45,7 @@ final class GUI {
 
     FreeMarkerEngine freeMarker = createEngine();
 
-    Spark.get("/", new FrontHandler(), freeMarker);
+    Spark.get("/stormrouter", new FrontHandler(), freeMarker);
   }
 
   static void stopSparkServer() {

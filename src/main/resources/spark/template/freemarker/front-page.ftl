@@ -3,7 +3,7 @@
     <h2 class="section-header title">StormRouter</h2>
 
     <div class="left column">
-      <div class="map"></div>
+      <div id="map"></div>
 
       <div class="itinerary">
         <h4 class="section-header">Itinerary</h4>
