@@ -21,16 +21,16 @@ public class Path implements Comparable<Path> {
   }
 
   public void addWaypoint(Waypoint x) {
-    // TODO:
     pathPoints.add(x);
-    // 1. Add parameter including way information
-    // 2. Processes information into WayPoint
-    // 3. Add Waypoint to pathPoints List
   }
 
+  // MIGHT be unnecessary
   public void fillDurations() {
     // TODO:
     // 1. Iterate through all pathPoints
+    for (int i = 0; i < pathPoints.size(); i++) {
+
+    }
     // 2. For each pathPoint, set its distance according to the last Waypoint's
     // distance, and add the distance to the edge
   }

@@ -25,21 +25,24 @@ public class PathRanker {
 
   // Returns best path
   public Path bestPath(Path centerPath) {
-    // TODO
     // 0. Assign path as default
     defaultPath = centerPath;
+    paths.add(defaultPath);
     // 1. Check for all desired time offsets, adds those copy paths to Queue
+    genNewPaths();
     // 2. Check for appropriate IDs of waypoints to check weather for
+    fillIds();
     // 3. Use weatherIds list and weather pulls to score all paths
+    scorePaths();
     // 4. Return best path
-    return null;
+    return paths.poll();
   }
 
   // 1. Helper method
-  private void genNewPaths(Path given) {
+  private void genNewPaths() {
     // Sets the start, end time of the path that is desired
-    long unixStart = given.getStartTime();
-    List<Waypoint> pathPoints = given.getWaypoints();
+    long unixStart = defaultPath.getStartTime();
+    List<Waypoint> pathPoints = defaultPath.getWaypoints();
     // Here, the time in seconds is obtained, then transformed to hours
     long unixEnd = unixStart + hrToMs(
         pathPoints.get(pathPoints.size() - 1).getTime() / (float) (60 * 60));
@@ -58,7 +61,8 @@ public class PathRanker {
         // Instantiates new path to be generated, using new start time
         Path newPath = new Path(hrToMs(unixStart + unixOffset));
         // Iterates through all Waypoints in given path, to be replicated
-        Iterator<Waypoint> oldPathPoints = given.getWaypoints().iterator();
+        Iterator<Waypoint> oldPathPoints = defaultPath.getWaypoints()
+            .iterator();
         while (oldPathPoints.hasNext()) {
           // Generate relevant copy of corresponding path point
           Waypoint newWaypoint = oldPathPoints.next().copy();
@@ -71,7 +75,7 @@ public class PathRanker {
     }
   }
 
-  // Helper for 1
+  // Side helper for 1
   private long hrToMs(float hr) {
     // Converts hours to milliseconds, using 60
     // for minutes, 60 for seconds, 1000 for milliseconds
@@ -79,7 +83,7 @@ public class PathRanker {
   }
 
   // 2. Helper method
-  private void fillIds(Path basis) {
+  private void fillIds() {
     // Make use of NUM_POINTS
 
     // Iterate through center path
