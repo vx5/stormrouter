@@ -36,36 +36,30 @@ public final class PolylineDecoder {
       do {
         currentByte = encoded.charAt(currentStringIndex++) - 63;
         currentResult |= (currentByte & 0x01f) << shiftAmount;
-      } while (currentByte >= 0x20) {
-        // Tmpe
-      }
 
-      int temporaryLat = ((currentResult & 1) != 0 ? ~(currentResult >> 1)
-          : (currentResult >> 1));
+        int temporaryLat = ((currentResult & 1) != 0 ? ~(currentResult >> 1)
+            : (currentResult >> 1));
 
 
-      do {
-        currentByte = encoded.charAt(currentStringIndex++) - 63;
-        currentResult |= (currentByte & 0x01f) << shiftAmount;
-      } while (currentByte >= 0x20) {
-        // Type
-      }
+        do {
+          currentByte = encoded.charAt(currentStringIndex++) - 63;
+          currentResult |= (currentByte & 0x01f) << shiftAmount;
+        } while (currentByte >= 0x20);
 
-      int temporaryLon = ((currentResult & 1) != 0 ? ~(currentResult >> 1)
-          : (currentResult >> 1));
+        int temporaryLon = ((currentResult & 1) != 0 ? ~(currentResult >> 1)
+            : (currentResult >> 1));
 
-      do {
-        currentByte = encoded.charAt(currentStringIndex++) - 63;
-        currentResult |= (currentByte & 0x01f) << shiftAmount;
-      } while (currentByte >= 0x20) {
-        // Type
-      }
+        do {
+          currentByte = encoded.charAt(currentStringIndex++) - 63;
+          currentResult |= (currentByte & 0x01f) << shiftAmount;
+        } while (currentByte >= 0x20);
 
-      lat += temporaryLat;
-      lon += temporaryLon;
+        lat += temporaryLat;
+        lon += temporaryLon;
 
-      LatLon coords = new LatLon((lat / 1E5), (lon / 1E5));
-      currentList.add(coords);
+        LatLon coords = new LatLon((lat / 1E5), (lon / 1E5));
+        currentList.add(coords);
+      } while (currentByte >= 0x20);
     }
 
     return currentList;
