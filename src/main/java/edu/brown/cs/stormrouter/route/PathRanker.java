@@ -84,12 +84,43 @@ public class PathRanker {
 
   // 2. Helper method
   private void fillIds() {
-    // Make use of NUM_POINTS
-
-    // Iterate through center path
-
-    // Use Haversine distance between points
-
+    // META: Calculate standard breakdown of paths
+    // Clears existing Ids, sets up with start
+    ArrayList<Integer> allWeatherIds = new ArrayList<Integer>();
+    allWeatherIds.add(0);
+    // Check for time since last point, haversine
+    int numWeatherPoints = 0;
+    List<Waypoint> pathPoints = defaultPath.getWaypoints();
+    // Stores information associate with last path id chosen
+    float[] startCoords = pathPoints.get(0).getCoords();
+    float lastLat = startCoords[0];
+    float lastLong = startCoords[1];
+    int lastUnixTime = pathPoints.get(0).getTime();
+    // Iterates through pathPoints to check for default paths
+    for (int i = 1; i < pathPoints.size(); i++) {
+      // Obtain the relevant pathPoint
+      Waypoint iterPoint = pathPoints.get(i);
+      // Calculates unix time of this point being reached
+      int iterUnixTime = iterPoint.getTime();
+      // Checks if criteria for new point or met, if so, adds
+      if (iterUnixTime - lastUnixTime > hrToMs((float) 0.5)) {
+        // Adds to the index list
+        allWeatherIds.add(i);
+        // Resets information for this path id
+        lastUnixTime = iterUnixTime;
+        float[] iterCoords = iterPoint.getCoords();
+        lastLat = iterCoords[0];
+        lastLong = iterCoords[1];
+      }
+    }
+    // META: Use NUM_Points to reduce number of points
+    int skipNum = (int) Math.ceil(weatherIds.size() / (double) NUM_POINTS);
+    // Iterates through all points to add to the weatherIds
+    // Iterates using skip number
+    for (int i = 0; i < pathPoints.size(); i += skipNum) {
+      // Adds requisite number to weatherIds
+      weatherIds.add(i);
+    }
   }
 
   // 3. Helper method
