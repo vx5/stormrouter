@@ -1,0 +1,32 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+html, body, #map {
+    height: 100%;
+    width: 100%;
+}
+
+#sidebar{
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	display: flex;
+	background-color: gray;
+	z-index: 1000;
+}
+
+#bottombar{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: gray;
+	z-index: 1001;
+}
+
+#collapse{
+	flex: 0.25;
+}

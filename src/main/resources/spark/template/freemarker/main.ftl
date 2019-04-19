@@ -9,10 +9,13 @@
          avoid minification for clarity. -->
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/html5bp.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/main.css"> 
 
     <#-- Leaflet + OpenStreetMap -->
     <link rel="stylesheet" href="/css/leaflet.css">
+    
+    <link rel="stylesheet" href="/css/demo.css">
+    
     <script src="/js/leaflet.js"></script>
 
     <#-- Mapbox GL JS -->

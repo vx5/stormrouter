@@ -47,12 +47,12 @@ h1, h2, h3, h4, h5, h6 {
   flex: 1;
 }
 
-#map {
+/*#map {
   flex: 2;
 
   border: 3px inset #ddd;
   background-color: #B3D4FC;
-}
+}*/
 
 .itinerary {
   flex: 1;

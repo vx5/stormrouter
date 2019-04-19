@@ -46,6 +46,8 @@ final class GUI {
     FreeMarkerEngine freeMarker = createEngine();
 
     Spark.get("/stormrouter", new FrontHandler(), freeMarker);
+    Spark.get("/stormrouter/demo", new DemoHandler(), freeMarker);
+    
   }
 
   static void stopSparkServer() {
@@ -64,6 +66,18 @@ final class GUI {
     }
   }
 
+  /**
+   * Handles requests to the front page of our StormRouter website.
+   */
+  private static class DemoHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request request, Response response) {
+      Map<String, Object> variables =
+          ImmutableMap.of("title", "StormRouter");
+      return new ModelAndView(variables, "demo.ftl");
+    }
+  }
+  
   /**
    * Display an error page when an exception occurs in the server.
    */
