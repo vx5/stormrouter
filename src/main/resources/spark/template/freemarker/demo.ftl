@@ -1,8 +1,9 @@
 <#assign content>
-    <div id="map"></div>
-    <div id="sidebar">
+  <div id="map"></div>
+  <div id="container">
+    <div id="sidebar" class="column">
+      <div id="container">
         <div class="left column">
-          
           <div class="directions">
             <h4 class="section-header">Directions</h4>
             <ol class="directions-list">
@@ -21,8 +22,9 @@
         <div class="right column" id="collapse">
           <
         </div>
+      </div>
     </div>
-    <div id="bottombar">
+    <div id="bottombar" class="column">
       <div class="itinerary">
         <h4 class="section-header">Itinerary</h4>
         <form action="" method="get" class="itinerary-form">
@@ -100,5 +102,6 @@
         </form>
       </div>
     </div>
+  </div>
 </#assign>
 <#include "main.ftl">

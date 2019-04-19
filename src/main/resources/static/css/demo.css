@@ -1,32 +1,43 @@
 body {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 html, body, #map {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
 }
 
-#sidebar{
-	position: absolute;
-	left: 0;
-	top: 0;
-	height: 100%;
-	display: flex;
-	background-color: gray;
-	z-index: 1000;
+#map {
+  position: absolute;
 }
 
-#bottombar{
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	background-color: gray;
-	z-index: 1001;
+#sidebar {
+  position: relative;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  background-color: gray;
+  z-index: 1000;
 }
 
-#collapse{
-	flex: 0.25;
+#bottombar {
+  position: relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  align-self: flex-end;
+  background-color: gray;
+  z-index: 1001;
+}
+
+#collapse {
+  flex: 0.25;
+}
+
+#container {
+  display: flex;
+  height: 100%;
 }
