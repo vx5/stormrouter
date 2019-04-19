@@ -27,6 +27,12 @@ class Waypoint {
     wayLong = newLong;
   }
 
+  Waypoint copy() {
+    Waypoint newPoint = new Waypoint(new Float(wayLat), new Float(wayLong));
+    newPoint.setTime(getTime());
+    return newPoint;
+  }
+
   float[] getCoords() {
     // Returns float array containing coordinates
     return new float[] {

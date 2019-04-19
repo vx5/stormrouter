@@ -9,27 +9,28 @@ public class Path implements Comparable<Path> {
   // Stores current score of this path
   private int score = 0;
   // Stores offset, in UNIX time, of this path from the original time
-  private long offset;
+  private long startTime;
 
   // Constructor only considers offset
-  public Path(long pathOffset) {
-    offset = pathOffset;
+  public Path(long startTime) {
+    this.startTime = startTime;
   }
 
-  public long getOffset() {
-    return new Long(offset);
+  public long getStartTime() {
+    return new Long(startTime);
   }
 
-  public void addWayPoint() {
-    // TODO:
-    // 1. Add parameter including way information
-    // 2. Processes information into WayPoint
-    // 3. Add Waypoint to pathPoints List
+  public void addWaypoint(Waypoint x) {
+    pathPoints.add(x);
   }
 
+  // MIGHT be unnecessary
   public void fillDurations() {
     // TODO:
     // 1. Iterate through all pathPoints
+    for (int i = 0; i < pathPoints.size(); i++) {
+
+    }
     // 2. For each pathPoint, set its distance according to the last Waypoint's
     // distance, and add the distance to the edge
   }
