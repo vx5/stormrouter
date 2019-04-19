@@ -35,8 +35,8 @@ public class Path implements Comparable<Path> {
     // distance, and add the distance to the edge
   }
 
-  public void setScore(int newScore) {
-    score = newScore;
+  public void incrScore(int newScore) {
+    score += newScore;
   }
 
   public int getScore() {
@@ -49,9 +49,9 @@ public class Path implements Comparable<Path> {
 
   @Override
   public int compareTo(Path o) {
-    if (score < o.getScore()) {
+    if (startTime < o.getStartTime()) {
       return -1;
-    } else if (score == o.getScore()) {
+    } else if (startTime == o.getStartTime()) {
       return 0;
     } else {
       return 1;

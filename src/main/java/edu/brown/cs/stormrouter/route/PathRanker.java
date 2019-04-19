@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import edu.brown.cs.stormrouter.weather.TimePoint;
+import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
+
 public class PathRanker {
   // Stores default path
   private Path defaultPath;
@@ -24,7 +27,7 @@ public class PathRanker {
   }
 
   // Returns best path
-  public Path bestPath(Path centerPath) {
+  public PriorityQueue<Path> bestPath(Path centerPath) throws Exception {
     // 0. Assign path as default
     defaultPath = centerPath;
     paths.add(defaultPath);
@@ -35,7 +38,7 @@ public class PathRanker {
     // 3. Use weatherIds list and weather pulls to score all paths
     scorePaths();
     // 4. Return best path
-    return paths.poll();
+    return new PriorityQueue<Path>(paths);
   }
 
   // 1. Helper method
@@ -82,6 +85,11 @@ public class PathRanker {
     return (long) hr * 60 * 60 * 1000;
   }
 
+  private int UnixToHrsFromNow(long unix) {
+    long msFromNow = unix - System.currentTimeMillis();
+    return (int) (msFromNow / 1000) / (60 * 60);
+  }
+
   // 2. Helper method
   private void fillIds() {
     // META: Calculate standard breakdown of paths
@@ -123,16 +131,94 @@ public class PathRanker {
     }
   }
 
+  private int score(Waypoint consider, TimePoint weather) {
+    // Initializes variable to count score
+    int pointScore = 0;
+    // Initializes variable to keep track of most significant type of weather
+    // 0 represents no significant weather
+    int weatherType = 0;
+    // Checks for case of precipitation
+    double precipIntensity = weather.getPrecipIntensity();
+    if (precipIntensity > 0.01) {
+      // Checks for case of rain
+      if (weather.getPrecipType().equals("rain")) {
+        // Checks for different amounts of precipitation, awards points
+        // accordingly
+        if (precipIntensity < 0.1) {
+          pointScore += 5;
+        } else if (precipIntensity < 0.3) {
+          pointScore += 15;
+          weatherType = 1;
+        } else {
+          pointScore += 40;
+          weatherType = 1;
+        }
+        // Checks for case of sleet or snow
+      } else {
+        // Checks for different amounts of precipitation, awards points
+        // accordingly
+        if (precipIntensity < 0.05) {
+          pointScore += 5;
+        } else if (precipIntensity < 0.15) {
+          pointScore += 25;
+          weatherType = 2;
+        } else {
+          pointScore += 60;
+          weatherType = 2;
+        }
+      }
+    }
+    // Checks for case of very high temperature
+    if (weather.getTemperature() > 105) {
+      pointScore += 30;
+      weatherType = 3;
+    }
+    // Checks for case of low visibility
+    double visibility = weather.getVisibility();
+    if (visibility < 0.25) {
+      weatherType = 4;
+      pointScore += 30;
+    } else if (visibility < 0.62) {
+      pointScore += 15;
+    }
+    // Checks for case of high wind speed / wind gust
+    double windSpeed = weather.getWindSpeed();
+    double windGust = weather.getWindGust();
+    if (windGust > 65) {
+      pointScore += 100;
+      weatherType = 5;
+    } else if (windGust > 58 || windSpeed > 40) {
+      pointScore += 40;
+    } else if (windGust > 45 || windSpeed > 30) {
+      pointScore += 15;
+    }
+    // Now, performs end tasks to:
+    // a) Give appropriate weather type
+    // b) Increment path score appropriately
+    consider.giveWeather(0);
+    return pointScore;
+  }
+
   // 3. Helper method
-  private void scorePaths() {
-    // Needs to store weather data
-
-    // Needs to score each path according to weather at given points (uses
-    // second helper method?)
-
-    // At each waypoint being scored, be sure to modify waypoint if necessary...
-    // Also check timing to see if it's even valid for checking scores
-
-    // Be sure to update path score at end
+  private void scorePaths() throws Exception {
+    // Stores array of all paths
+    Path[] localPaths = (Path[]) paths.toArray();
+    // Iterates through all weather indices
+    for (int i = 0; i < weatherIds.size(); i++) {
+      // Gets index, relevant coordinates, and relevant hourly weather
+      int currId = weatherIds.get(i);
+      float[] currCoords = defaultPath.getWaypoints().get(i).getCoords();
+      TimePoint[] hrWeathers = WeatherAPIHandler
+          .getWeather(currCoords[0], currCoords[1]).getHourly().getData();
+      // Iterates through all paths, and scores the appropriate points
+      for (int j = 0; j < localPaths.length; j++) {
+        // Obtains specific point to be scored
+        Path toEdit = localPaths[i];
+        Waypoint consider = toEdit.getWaypoints().get(j);
+        // Scores point given conditions at time it will be reached
+        int hrsFromNow = UnixToHrsFromNow(consider.getTime());
+        toEdit.incrScore(score(consider, hrWeathers[hrsFromNow]));
+      }
+    }
   }
 }
