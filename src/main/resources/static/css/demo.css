@@ -3,41 +3,59 @@ body {
   margin: 0;
 }
 
-html, body, #map {
-  height: 100%;
+html,
+body,
+#map {
   width: 100%;
-  background-color: transparent;
+  height: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.panel {
+  background-color: gray;
+  z-index: 1000;
 }
 
 #map {
   position: absolute;
 }
 
-#sidebar {
-  position: relative;
-  left: 0;
-  top: 0;
+#side-bar {
   height: 100%;
-  display: flex;
-  background-color: gray;
-  z-index: 1000;
 }
 
-#bottombar {
-  position: relative;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  align-self: flex-end;
-  background-color: gray;
-  z-index: 1001;
+#side-bar-content {
+  width: 200px;
 }
 
 #collapse {
-  flex: 0.25;
+  width: 25px;
 }
 
-#container {
-  display: flex;
-  height: 100%;
+#bottom-bar {
+  align-self: flex-end;
+  width: 100%;
+}
+
+#bottom-header {
+  height: 25px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fas {
+  font-size: 30px;
+  margin: 3px 5px;
+  color: #FFFF00;
 }

@@ -1,9 +1,9 @@
 <#assign content>
   <div id="map"></div>
-  <div id="container">
-    <div id="sidebar" class="column">
-      <div id="container">
-        <div class="left column">
+  <div class="full-height flex-container">
+    <div id="side-bar" class="column panel">
+      <div class="full-height flex-container">
+        <div id="side-bar-content" class="left column">
           <div class="directions">
             <h4 class="section-header">Directions</h4>
             <ol class="directions-list">
@@ -19,14 +19,17 @@
             <button>Get Suggested Times</button>
           </div>
         </div>
-        <div class="right column" id="collapse">
-          <
+        <div class="column" id="collapse">
+          <i class="fas fa-angle-left"></i>
         </div>
       </div>
     </div>
-    <div id="bottombar" class="column">
-      <div class="itinerary">
+    <div id="bottom-bar" class="column panel">
+      <div id="bottom-header" class="flex-container">
         <h4 class="section-header">Itinerary</h4>
+        <i class="fas fa-angle-down"></i>
+      </div>
+      <div class="itinerary">
         <form action="" method="get" class="itinerary-form">
           <!-- row with start location and date -->
           <div class="form-row">
