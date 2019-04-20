@@ -1,7 +1,9 @@
 package edu.brown.cs.stormrouter.directions;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import edu.brown.cs.stormrouter.route.LatLon;
 
@@ -45,6 +47,42 @@ public final class DirectionsAPIHandler {
     JsonElement root = parser.parse(
         new InputStreamReader(request.getInputStream()));
 
-    return new ArrayList<Segment>();
+    List<Segment> segments = new ArrayList<>();
+
+    if (root != null && root.getAsJsonObject().get("features") != null) {
+      JsonArray features = root.getAsJsonObject().getAsJsonArray("features");
+      JsonObject properties = features.get(0).getAsJsonObject()
+          .getAsJsonObject("properties");
+      JsonObject segmentsObject = properties.getAsJsonArray("segments")
+          .get(0).getAsJsonObject();
+      JsonArray steps = segmentsObject.getAsJsonArray("steps");
+
+      JsonArray coordinates = features.get(0).getAsJsonObject()
+          .getAsJsonObject("geometry").getAsJsonArray("coordinates");
+
+      for (int i = 0; i < steps.size(); i++) {
+        JsonObject step = steps.get(i).getAsJsonObject();
+
+        double distance = step.get("distance").getAsDouble();
+        double duration = step.get("duration").getAsDouble();
+        String name = step.get("name").getAsString();
+        String instructions = step.get("instruction").getAsString();
+        JsonArray waypoints = step.getAsJsonArray("way_points");
+        JsonArray coord1 = coordinates.get(waypoints.get(0).getAsInt())
+            .getAsJsonArray();
+        JsonArray coord2 = coordinates.get(waypoints.get(1).getAsInt())
+            .getAsJsonArray();
+        LatLon startLatLon = new LatLon(coord1.get(1).getAsDouble(),
+            coord1.get(0).getAsDouble());
+        LatLon endLatLon = new LatLon(coord2.get(1).getAsDouble(),
+            coord2.get(0).getAsDouble());
+
+        Segment segment = new Segment(startLatLon, endLatLon, distance,
+            duration, name, instructions);
+        segments.add(segment);
+      }
+    }
+
+    return segments;
   }
 }
