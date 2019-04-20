@@ -39,8 +39,8 @@ body,
   width: 200px;
 }
 
-#collapse {
-  width: 25px;
+#side{
+	width: 25px;
 }
 
 #bottom-bar {
@@ -58,4 +58,13 @@ body,
   font-size: 30px;
   margin: 3px 5px;
   color: #FFFF00;
+}
+
+.collapse{
+	border: 1px solid yellow;
+}
+
+div.collapse:hover{
+	background-color: darkgreen;
+	cursor: pointer;
 }

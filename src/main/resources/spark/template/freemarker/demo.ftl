@@ -3,7 +3,7 @@
   <div class="full-height flex-container">
     <div id="side-bar" class="column panel">
       <div class="full-height flex-container">
-        <div id="side-bar-content" class="left column">
+        <div id="side-bar-content" class="left column collapsable">
           <div class="directions">
             <h4 class="section-header">Directions</h4>
             <ol class="directions-list">
@@ -19,17 +19,17 @@
             <button>Get Suggested Times</button>
           </div>
         </div>
-        <div class="column" id="collapse">
+        <div class="column collapse" id="side">
           <i class="fas fa-angle-left"></i>
         </div>
       </div>
     </div>
     <div id="bottom-bar" class="column panel">
-      <div id="bottom-header" class="flex-container">
+      <div id="bottom-header" class="flex-container collapse">
         <h4 class="section-header">Itinerary</h4>
         <i class="fas fa-angle-down"></i>
       </div>
-      <div class="itinerary">
+      <div class="itinerary collapsable">
         <form action="" method="get" class="itinerary-form">
           <!-- row with start location and date -->
           <div class="form-row">
