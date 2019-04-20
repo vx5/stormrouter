@@ -11,7 +11,7 @@ import java.util.List;
  * a mapping interface.
  */
 public final class PolylineDecoder {
-  /**
+  /*
    *
    * @param encoded - The encoded polyline text to be read from
    * @return - A list of latitude/longitude coordinates detailing the path

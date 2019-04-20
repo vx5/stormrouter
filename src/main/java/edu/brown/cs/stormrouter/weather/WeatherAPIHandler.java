@@ -28,6 +28,7 @@ public final class WeatherAPIHandler {
     JsonParser parser = new JsonParser();
     JsonElement root = parser.parse(
         new InputStreamReader(request.getInputStream()));
+    
 
     return GSON.fromJson(root, WeatherConditions.class);
   }
