@@ -39,60 +39,26 @@
             </div>
             <div class="date-field">
               <label for="datepicker">Date &amp; Time</label>
-              <input id="datepicker" name="date" type="text">
+              <input id="datepicker" name="date" type="datetime-local">
             </div>
           </div>
 
           <ul class="waypoints">
             <!-- test rows -->
-            <li>
+            <li id="waypoint-header">Waypoints <i class="fas fa-plus" id="add-waypoint"></i></li>
+            <!-- <li>
               <div class="form-row">
                 <div class="location-field">
                   <label for="way-1">Waypoint 1</label>
                   <input id="way-1" name="way-1" type="text">
+                  
                 </div>
                 <div class="duration-field">
                   <label for="duration-1">Duration</label>
                   <input id="duration-1" name="duration-1" type="text">
                 </div>
               </div>
-            </li>
-            <li>
-              <div class="form-row">
-                <div class="location-field">
-                  <label for="way-2">Waypoint 2</label>
-                  <input id="way-2" name="way-2" type="text">
-                </div>
-                <div class="duration-field">
-                  <label for="duration-2">Duration</label>
-                  <input id="duration-2" name="duration-2" type="text">
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="form-row">
-                <div class="location-field">
-                  <label for="way-3">Waypoint 3</label>
-                  <input id="way-3" name="way-3" type="text">
-                </div>
-                <div class="duration-field">
-                  <label for="duration-3">Duration</label>
-                  <input id="duration-3" name="duration-3" type="text">
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="form-row">
-                <div class="location-field">
-                  <label for="way-4">Waypoint 4</label>
-                  <input id="way-4" name="way-4" type="text">
-                </div>
-                <div class="duration-field">
-                  <label for="duration-4">Duration</label>
-                  <input id="duration-4" name="duration-4" type="text">
-                </div>
-              </div>
-            </li>
+            </li> -->
           </ul>
 
           <div class="form-row">

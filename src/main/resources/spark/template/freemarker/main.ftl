@@ -30,6 +30,8 @@
      <script src="/js/jquery-3.1.1.js"></script>
      <script src="/js/map.js"></script>
      <script src="/js/collapse.js"></script>
+     <script src="/js/waypoint.js"></script>
+     
      
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start
