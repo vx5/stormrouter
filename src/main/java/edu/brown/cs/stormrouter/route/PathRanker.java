@@ -96,20 +96,20 @@ public class PathRanker {
     return (int) (msFromNow / 1000) / (60 * 60);
   }
 
-  // 2. Helper method
   private void fillIds() {
-    // META: Calculate standard breakdown of paths
+    // Calculate standard breakdown of paths
     // Clears existing Ids, sets up with start
     ArrayList<Integer> allWeatherIds = new ArrayList<Integer>();
     allWeatherIds.add(0);
-    // Check for time since last point, haversine
+    // Acquires list of Waypoints of the default path
     List<Waypoint> pathPoints = defaultPath.getWaypoints();
     // Stores information associate with first initial chosen id
     Waypoint startPoint = pathPoints.get(0);
-    float[] startCoords = startPoint.getCoords();
     pathPoints.add(startPoint);
     String storeString = "0,0";
     checkedWeather.put(storeString, startPoint.getTime());
+    // Obtains coordinates for use in tile calculation in loop
+    float[] startCoords = startPoint.getCoords();
     // Iterates through pathPoints to check for default paths
     for (int i = 1; i < pathPoints.size(); i++) {
       // Obtain the relevant pathPoint
@@ -133,10 +133,13 @@ public class PathRanker {
         newLoad = true;
       }
       if (newLoad) {
+        // Adds relevant index
         allWeatherIds.add(i);
+        // Adds to the set to represent that weather was checked
+        checkedWeather.put(storeString, iterUnixTime);
       }
     }
-    // META: Use NUM_Points to reduce number of points
+    // Uses NUM_POINTS to reduce number of points
     int skipNum = (int) Math.ceil(allWeatherIds.size() / (double) NUM_POINTS);
     // Iterates through all points to add to the weatherIds
     // Iterates using skip number
@@ -210,11 +213,10 @@ public class PathRanker {
     // Now, performs end tasks to:
     // a) Give appropriate weather type
     // b) Increment path score appropriately
-    consider.giveWeather(0);
+    consider.giveWeather(weatherType);
     return pointScore;
   }
 
-  // 3. Helper method
   private void scorePaths() throws Exception {
     // Stores array of all paths
     Path[] localPaths = (Path[]) paths.toArray();
