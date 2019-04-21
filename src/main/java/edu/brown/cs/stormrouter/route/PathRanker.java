@@ -1,8 +1,10 @@
 package edu.brown.cs.stormrouter.route;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -14,6 +16,11 @@ public class PathRanker {
   private Path defaultPath;
   // Stores all paths to be ranked
   private Queue<Path> paths = new PriorityQueue<Path>();
+  // Stores information about what place-time events have had weather pulled
+  private Map<String, Long> checkedWeather = new HashMap<String, Long>();
+  private final float TILE_SIZE_MILES = 20;
+  private final float MILES_PER_DEGREE = 69;
+  private final float TILE_SIZE_DEGREES = TILE_SIZE_MILES / MILES_PER_DEGREE;
   // Stores list of indices in paths to be used for waypoints
   private List<Integer> weatherIds = new ArrayList<Integer>();
   // Stores number of points that should be checked
@@ -97,35 +104,44 @@ public class PathRanker {
     ArrayList<Integer> allWeatherIds = new ArrayList<Integer>();
     allWeatherIds.add(0);
     // Check for time since last point, haversine
-    int numWeatherPoints = 0;
     List<Waypoint> pathPoints = defaultPath.getWaypoints();
-    // Stores information associate with last path id chosen
-    float[] startCoords = pathPoints.get(0).getCoords();
-    float lastLat = startCoords[0];
-    float lastLong = startCoords[1];
-    int lastUnixTime = pathPoints.get(0).getTime();
+    // Stores information associate with first initial chosen id
+    Waypoint startPoint = pathPoints.get(0);
+    float[] startCoords = startPoint.getCoords();
+    pathPoints.add(startPoint);
+    String storeString = "0,0";
+    checkedWeather.put(storeString, startPoint.getTime());
     // Iterates through pathPoints to check for default paths
     for (int i = 1; i < pathPoints.size(); i++) {
       // Obtain the relevant pathPoint
       Waypoint iterPoint = pathPoints.get(i);
-      // Calculates unix time of this point being reached
-      int iterUnixTime = iterPoint.getTime();
+      // Calculates all storage information for this event
+      // Gets the time block
+      long iterUnixTime = iterPoint.getTime();
+      // Gets the tile coordinates
+      float[] ptCoords = iterPoint.getCoords();
+      int tileX = Math
+          .round((ptCoords[1] - startCoords[1]) / TILE_SIZE_DEGREES);
+      int tileY = Math
+          .round((ptCoords[0] - startCoords[0]) / TILE_SIZE_DEGREES);
+      storeString = tileX + "," + tileY;
       // Checks if criteria for new point or met, if so, adds
-      if (iterUnixTime - lastUnixTime > hrToMs((float) 0.5)) {
-        // Adds to the index list
+      boolean newLoad = false;
+      if (!checkedWeather.containsKey(storeString)) {
+        newLoad = true;
+      } else if (iterUnixTime - checkedWeather.get(storeString) > 30 * 60
+          * 1000) {
+        newLoad = true;
+      }
+      if (newLoad) {
         allWeatherIds.add(i);
-        // Resets information for this path id
-        lastUnixTime = iterUnixTime;
-        float[] iterCoords = iterPoint.getCoords();
-        lastLat = iterCoords[0];
-        lastLong = iterCoords[1];
       }
     }
     // META: Use NUM_Points to reduce number of points
-    int skipNum = (int) Math.ceil(weatherIds.size() / (double) NUM_POINTS);
+    int skipNum = (int) Math.ceil(allWeatherIds.size() / (double) NUM_POINTS);
     // Iterates through all points to add to the weatherIds
     // Iterates using skip number
-    for (int i = 0; i < pathPoints.size(); i += skipNum) {
+    for (int i = 0; i < allWeatherIds.size(); i += skipNum) {
       // Adds requisite number to weatherIds
       weatherIds.add(i);
     }

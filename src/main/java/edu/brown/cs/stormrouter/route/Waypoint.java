@@ -11,7 +11,7 @@ class Waypoint {
   // Instance variable to store key attributes of all waypoints
   private float wayLat;
   private float wayLong;
-  private int timeToReach;
+  private long timeToReach;
   // Instance variables related to weather attributes of waypoint
   private int weatherType = -1;
 
@@ -40,12 +40,12 @@ class Waypoint {
     };
   }
 
-  void setTime(int newTime) {
+  void setTime(long newTime) {
     timeToReach = newTime;
   }
 
-  int getTime() {
-    return new Integer(timeToReach);
+  long getTime() {
+    return new Long(timeToReach);
   }
 
   void giveWeather(int newWeatherType) {
