@@ -33,18 +33,17 @@ public class PathRanker {
   public PathRanker() {
   }
 
-  // Returns best path
   public PriorityQueue<Path> bestPath(Path centerPath) throws Exception {
-    // 0. Assign path as default
+    // Assign the given path as default
     defaultPath = centerPath;
     paths.add(defaultPath);
-    // 1. Check for all desired time offsets, adds those copy paths to Queue
+    // Generates alternate paths at desired time offsets, if they are valid
     genNewPaths();
-    // 2. Check for appropriate IDs of waypoints to check weather for
+    // Determine which points whether should be pulled for
     fillIds();
-    // 3. Use weatherIds list and weather pulls to score all paths
+    // Uses list of points generated above to score paths
     scorePaths();
-    // 4. Return best path
+    // Returns queue of Paths, ordered by start time
     return new PriorityQueue<Path>(paths);
   }
 
