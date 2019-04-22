@@ -9,6 +9,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import edu.brown.cs.stormrouter.route.RouteHandler;
 import freemarker.template.Configuration;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
@@ -47,6 +48,7 @@ final class GUI {
 
     Spark.get("/stormrouter", new FrontHandler(), freeMarker);
     Spark.get("/stormrouter/demo", new DemoHandler(), freeMarker);
+    Spark.post("/stormrouter/route", new RouteHandler());
     
   }
 
