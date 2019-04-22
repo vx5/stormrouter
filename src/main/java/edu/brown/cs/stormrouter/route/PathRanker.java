@@ -2,11 +2,10 @@ package edu.brown.cs.stormrouter.route;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.Set;
 
 import edu.brown.cs.stormrouter.weather.TimePoint;
 import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
@@ -14,8 +13,10 @@ import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 public class PathRanker {
   // Stores default path
   private Path defaultPath;
+  // Stores information of all valid start time indices
+  private Set<PathWeatherInfo> diffTimesWeather = new HashSet<PathWeatherInfo>();
   // Stores all paths to be ranked
-  private Queue<Path> paths = new PriorityQueue<Path>();
+  // private Queue<Path> paths = new PriorityQueue<Path>();
   // Stores information about what place-time events have had weather pulled
   private Map<String, Long> checkedWeather = new HashMap<String, Long>();
   private final float TILE_SIZE_MILES = 20;
@@ -33,10 +34,9 @@ public class PathRanker {
   public PathRanker() {
   }
 
-  public PriorityQueue<Path> bestPath(Path centerPath) throws Exception {
+  public Set<PathWeatherInfo> bestPath(Path centerPath) throws Exception {
     // Assign the given path as default
     defaultPath = centerPath;
-    paths.add(defaultPath);
     // Generates alternate paths at desired time offsets, if they are valid
     genNewPaths();
     // Determine which points whether should be pulled for
@@ -44,7 +44,7 @@ public class PathRanker {
     // Uses list of points generated above to score paths
     scorePaths();
     // Returns queue of Paths, ordered by start time
-    return new PriorityQueue<Path>(paths);
+    return new HashSet<PathWeatherInfo>(diffTimesWeather);
   }
 
   // 1. Helper method
@@ -52,6 +52,8 @@ public class PathRanker {
     // Sets the start, end time of the path that is desired
     long unixStart = defaultPath.getStartTime();
     List<Waypoint> pathPoints = defaultPath.getWaypoints();
+    // Adds initial path
+    diffTimesWeather.add(new PathWeatherInfo(unixStart));
     // Here, the time in seconds is obtained, then transformed to hours
     long unixEnd = unixStart + hrToMs(
         pathPoints.get(pathPoints.size() - 1).getTime() / (float) (60 * 60));
@@ -67,19 +69,7 @@ public class PathRanker {
       if (System.currentTimeMillis() <= unixStart - unixOffset
           && System.currentTimeMillis() + hrToMs((float) 48.05) >= unixEnd
               + unixOffset) {
-        // Instantiates new path to be generated, using new start time
-        Path newPath = new Path(hrToMs(unixStart + unixOffset));
-        // Iterates through all Waypoints in given path, to be replicated
-        Iterator<Waypoint> oldPathPoints = defaultPath.getWaypoints()
-            .iterator();
-        while (oldPathPoints.hasNext()) {
-          // Generate relevant copy of corresponding path point
-          Waypoint newWaypoint = oldPathPoints.next().copy();
-          // Transfers relevant information to newWaypoint
-          newPath.addWaypoint(newWaypoint);
-        }
-        // Adds new path to the Queue
-        paths.add(newPath);
+        diffTimesWeather.add(new PathWeatherInfo(unixStart + unixOffset));
       }
     }
   }
@@ -149,7 +139,8 @@ public class PathRanker {
     }
   }
 
-  private int score(Waypoint consider, TimePoint weather) {
+  private void score(float pointLat, float pointLong, PathWeatherInfo pathInfo,
+      TimePoint weather) {
     // Initializes variable to count score
     int pointScore = 0;
     // Initializes variable to keep track of most significant type of weather
@@ -210,31 +201,32 @@ public class PathRanker {
     } else if (windGust > 45 || windSpeed > 30) {
       pointScore += 15;
     }
-    // Now, performs end tasks to:
-    // a) Give appropriate weather type
-    // b) Increment path score appropriately
-    consider.giveWeather(weatherType);
-    return pointScore;
+    // Now, performs change to
+    pathInfo.addWeatherData(pointLat, pointLong, weatherType, pointScore);
   }
 
   private void scorePaths() throws Exception {
-    // Stores array of all paths
-    Path[] localPaths = (Path[]) paths.toArray();
+    // Stores array over all PathWeatherInfos
+    PathWeatherInfo[] pathsInfo = (PathWeatherInfo[]) diffTimesWeather
+        .toArray();
     // Iterates through all weather indices
     for (int i = 0; i < weatherIds.size(); i++) {
       // Gets index, relevant coordinates, and relevant hourly weather
       int currId = weatherIds.get(i);
-      float[] currCoords = defaultPath.getWaypoints().get(i).getCoords();
+      // Gets relevant point in default path
+      Waypoint currPoint = defaultPath.getWaypoints().get(currId);
+      long durationToReach = currPoint.getTime();
+      float[] currCoords = currPoint.getCoords();
       TimePoint[] hrWeathers = WeatherAPIHandler
           .getWeather(currCoords[0], currCoords[1]).getHourly().getData();
       // Iterates through all paths, and scores the appropriate points
-      for (int j = 0; j < localPaths.length; j++) {
-        // Obtains specific point to be scored
-        Path toEdit = localPaths[i];
-        Waypoint consider = toEdit.getWaypoints().get(j);
-        // Scores point given conditions at time it will be reached
-        int hrsFromNow = UnixToHrsFromNow(consider.getTime());
-        toEdit.incrScore(score(consider, hrWeathers[hrsFromNow]));
+      for (int j = 0; j < pathsInfo.length; j++) {
+        // Obtains specific time to be scored
+        PathWeatherInfo toModify = pathsInfo[i];
+        long toModifyStartTime = toModify.getStartTime();
+        int hrsFromNow = UnixToHrsFromNow(toModifyStartTime + durationToReach);
+        // Scores time index
+        score(currCoords[0], currCoords[1], toModify, hrWeathers[hrsFromNow]);
       }
     }
   }

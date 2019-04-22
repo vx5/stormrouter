@@ -6,8 +6,6 @@ import java.util.List;
 public class Path implements Comparable<Path> {
   // Stores list of all waypoints in this path
   private List<Waypoint> pathPoints = new ArrayList<Waypoint>();
-  // Stores current score of this path
-  private int score = 0;
   // Stores offset, in UNIX time, of this path from the original time
   private long startTime;
 
@@ -33,14 +31,6 @@ public class Path implements Comparable<Path> {
     }
     // 2. For each pathPoint, set its distance according to the last Waypoint's
     // distance, and add the distance to the edge
-  }
-
-  public void incrScore(int newScore) {
-    score += newScore;
-  }
-
-  public int getScore() {
-    return new Integer(score);
   }
 
   public List<Waypoint> getWaypoints() {

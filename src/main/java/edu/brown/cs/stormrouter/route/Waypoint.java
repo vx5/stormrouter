@@ -12,8 +12,6 @@ class Waypoint {
   private float wayLat;
   private float wayLong;
   private long timeToReach;
-  // Instance variables related to weather attributes of waypoint
-  private int weatherType = -1;
 
   /**
    * Basic constructor that only requires, stores Waypoint's location.
@@ -25,12 +23,6 @@ class Waypoint {
     // Stores latitude and longitude
     wayLat = newLat;
     wayLong = newLong;
-  }
-
-  Waypoint copy() {
-    Waypoint newPoint = new Waypoint(new Float(wayLat), new Float(wayLong));
-    newPoint.setTime(getTime());
-    return newPoint;
   }
 
   float[] getCoords() {
@@ -46,14 +38,6 @@ class Waypoint {
 
   long getTime() {
     return new Long(timeToReach);
-  }
-
-  void giveWeather(int newWeatherType) {
-    weatherType = newWeatherType;
-  }
-
-  int getWeather() {
-    return weatherType;
   }
 
 }

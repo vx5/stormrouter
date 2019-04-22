@@ -2,6 +2,7 @@ package edu.brown.cs.stormrouter.route;
 
 import java.util.List;
 
+import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
 
 public final class PathConverter {
