@@ -77,6 +77,10 @@ div.collapse:hover{
 	cursor: pointer;
 }
 
+#delete-waypoint:hover{
+	cursor: pointer;
+}
+
 #waypoint-header{
 	margin-bottom: 10px;
 }
