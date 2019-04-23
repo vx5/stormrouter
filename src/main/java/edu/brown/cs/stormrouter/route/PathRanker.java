@@ -35,6 +35,11 @@ public class PathRanker {
       -2, -1, 1, 2, 5
   };
 
+  // Enum to represent different weather types for assignment in weather data
+  private enum WEATHER_TYPE {
+    PLAIN, RAIN, SNOW, HEAT, FOG, WIND
+  }
+
   /**
    * Empty constructor.
    */
@@ -151,7 +156,7 @@ public class PathRanker {
     int pointScore = 0;
     // Initializes variable to keep track of most significant type of weather
     // 0 represents no significant weather
-    int weatherType = 0;
+    int weatherType = WEATHER_TYPE.PLAIN.ordinal();
     // Checks for case of precipitation
     double precipIntensity = weather.getPrecipIntensity();
     if (precipIntensity > 0.01) {
@@ -163,10 +168,10 @@ public class PathRanker {
           pointScore += 5;
         } else if (precipIntensity < 0.3) {
           pointScore += 15;
-          weatherType = 1;
+          weatherType = WEATHER_TYPE.RAIN.ordinal();
         } else {
           pointScore += 40;
-          weatherType = 1;
+          weatherType = WEATHER_TYPE.RAIN.ordinal();
         }
         // Checks for case of sleet or snow
       } else {
@@ -176,22 +181,22 @@ public class PathRanker {
           pointScore += 5;
         } else if (precipIntensity < 0.15) {
           pointScore += 25;
-          weatherType = 2;
+          weatherType = WEATHER_TYPE.SNOW.ordinal();
         } else {
           pointScore += 60;
-          weatherType = 2;
+          weatherType = WEATHER_TYPE.SNOW.ordinal();
         }
       }
     }
     // Checks for case of very high temperature
     if (weather.getTemperature() > 105) {
       pointScore += 30;
-      weatherType = 3;
+      weatherType = WEATHER_TYPE.HEAT.ordinal();
     }
     // Checks for case of low visibility
     double visibility = weather.getVisibility();
     if (visibility < 0.25) {
-      weatherType = 4;
+      weatherType = WEATHER_TYPE.FOG.ordinal();
       pointScore += 30;
     } else if (visibility < 0.62) {
       pointScore += 15;
@@ -201,13 +206,13 @@ public class PathRanker {
     double windGust = weather.getWindGust();
     if (windGust > 65) {
       pointScore += 100;
-      weatherType = 5;
+      weatherType = WEATHER_TYPE.WIND.ordinal();
     } else if (windGust > 58 || windSpeed > 40) {
       pointScore += 40;
     } else if (windGust > 45 || windSpeed > 30) {
       pointScore += 15;
     }
-    // Now, performs change to
+    // Now, performs change to relevant pathInfo object
     pathInfo.addWeatherData(pointLat, pointLong, weatherType, pointScore);
   }
 
