@@ -18,9 +18,11 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   z-index: 1;
   top: 0;
-  left: 0;
+  right: 0;
   background-color: #220068;
-  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  margin: 0;
+  padding: 5px 10px;
 }
 
 .page {
@@ -185,4 +187,9 @@ input[type="text"] {
   border: 1px solid yellow;
   border-radius: 15px;
   margin: 10px;
+}
+
+.mapboxgl-ctrl-group {
+  position: relative;
+  top: 40px;
 }

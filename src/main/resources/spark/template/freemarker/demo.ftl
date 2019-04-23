@@ -1,5 +1,6 @@
 <#assign content>
   <div id="map"></div>
+  <h2 class="title">Storm Router</h2>
   <div class="full-height flex-container">
     <div id="side-bar" class="column panel">
       <div class="full-height flex-container">
