@@ -3,59 +3,53 @@ package edu.brown.cs.stormrouter.route;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Path implements Comparable<Path> {
+/**
+ * @author vx5
+ *
+ *         Class which represents the path between the desired points using a
+ *         series of point locations.
+ */
+class Path {
   // Stores list of all waypoints in this path
   private List<Waypoint> pathPoints = new ArrayList<Waypoint>();
-  // Stores current score of this path
-  private int score = 0;
   // Stores offset, in UNIX time, of this path from the original time
   private long startTime;
 
-  // Constructor only considers offset
-  public Path(long startTime) {
+  /**
+   * Constructor which only processes the start time in unix terms.
+   * 
+   * @param startTime Long representation of time at which given path starts, in
+   *                  unix terms
+   */
+  Path(long startTime) {
     this.startTime = startTime;
   }
 
-  public long getStartTime() {
+  /**
+   * Returns the unix time at which the path is meant to start.
+   * 
+   * @return Long representation of time at which path starts, in unix terms
+   */
+  long getStartTime() {
     return new Long(startTime);
   }
 
-  public void addWaypoint(Waypoint x) {
-    pathPoints.add(x);
+  /**
+   * Adds a given Waypoint to the Path, at its current end.
+   * 
+   * @param endPoint Waypoint to be added to end of path
+   */
+  void addWaypoint(Waypoint endPoint) {
+    pathPoints.add(endPoint);
   }
 
-  // MIGHT be unnecessary
-  public void fillDurations() {
-    // TODO:
-    // 1. Iterate through all pathPoints
-    for (int i = 0; i < pathPoints.size(); i++) {
-
-    }
-    // 2. For each pathPoint, set its distance according to the last Waypoint's
-    // distance, and add the distance to the edge
-  }
-
-  public void incrScore(int newScore) {
-    score += newScore;
-  }
-
-  public int getScore() {
-    return new Integer(score);
-  }
-
-  public List<Waypoint> getWaypoints() {
-    return pathPoints;
-  }
-
-  @Override
-  public int compareTo(Path o) {
-    if (startTime < o.getStartTime()) {
-      return -1;
-    } else if (startTime == o.getStartTime()) {
-      return 0;
-    } else {
-      return 1;
-    }
+  /**
+   * Returns all Waypoints stored in this path.
+   * 
+   * @return List of all Waypoints stored in the path
+   */
+  List<Waypoint> getWaypoints() {
+    return new ArrayList<Waypoint>(pathPoints);
   }
 
 }
