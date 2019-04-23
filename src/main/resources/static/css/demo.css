@@ -33,6 +33,7 @@ body,
 
 #side-bar {
   height: 100%;
+  border-top-right-radius: 10px;
 }
 
 #side-bar-content {
@@ -41,17 +42,20 @@ body,
 
 #side{
 	width: 25px;
+	border-top-right-radius: 10px;
 }
 
 #bottom-bar {
   align-self: flex-end;
   width: 100%;
+  border-top-right-radius: 10px;
 }
 
 #bottom-header {
   height: 25px;
   justify-content: space-between;
   align-items: center;
+  border-top-right-radius: 10px;
 }
 
 .fas {
