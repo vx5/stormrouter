@@ -34,6 +34,12 @@ public class LatLon {
     return longitude;
   }
 
+  public String[] toStringArray() {
+    return new String[] {
+        Double.toString(latitude), Double.toString(longitude)
+    };
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

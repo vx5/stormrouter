@@ -1,5 +1,6 @@
 package edu.brown.cs.stormrouter.route;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +10,7 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.stormrouter.directions.DirectionsAPIHandler;
 import edu.brown.cs.stormrouter.directions.LatLon;
+import edu.brown.cs.stormrouter.directions.PolylineDecoder;
 import edu.brown.cs.stormrouter.directions.Segment;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -33,6 +35,19 @@ public class RouteHandler implements Route {
       LatLon end = new LatLon(lat2, lon2);
       List<Segment> directions = DirectionsAPIHandler.getDirections(start, end);
 
+      // TODO: Get the polyline
+      String polylineStr = "";
+      // Decodes string
+      List<LatLon> polylinePts = PolylineDecoder.decodePolyline(polylineStr);
+      // Converts list to a String-array
+      String[][] polylinePtArray = new String[polylinePts.size()][2];
+      int popId = 0;
+      Iterator<LatLon> polylineIt = polylinePts.iterator();
+      while (polylineIt.hasNext()) {
+        LatLon thisPt = polylineIt.next();
+        polylinePtArray[popId] = thisPt.toStringArray();
+      }
+
       // TODO: Parse the start time format into UNIX time
       Long startTime = Long.parseLong(qm.value("startTime"));
       Path startPath = PathConverter.convertPath(directions, startTime);
@@ -40,8 +55,16 @@ public class RouteHandler implements Route {
       PathRanker ranker = new PathRanker();
       Set<PathWeatherInfo> bestPaths = ranker.bestPath(startPath);
 
-      Map<String, Object> variables = ImmutableMap.of("message", "", "routes",
-          bestPaths);
+      String[][][] pathWeathers = new String[bestPaths.size()][][];
+      int pathWeatherAssign = 0;
+      Iterator<PathWeatherInfo> bestPathsIt = bestPaths.iterator();
+      while (bestPathsIt.hasNext()) {
+        pathWeathers[pathWeatherAssign] = bestPathsIt.next().toStringArray();
+        pathWeatherAssign++;
+      }
+
+      Map<String, Object> variables = ImmutableMap.of("message", "", "decoded",
+          polylinePtArray, "weather", pathWeathers);
       return GSON.toJson(variables);
     } catch (NumberFormatException nfe) {
       Map<String, Object> variables = ImmutableMap.of("message",
