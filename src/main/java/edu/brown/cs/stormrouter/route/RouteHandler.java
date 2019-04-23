@@ -64,7 +64,7 @@ public class RouteHandler implements Route {
       }
 
       Map<String, Object> variables = ImmutableMap.of("message", "", "decoded",
-          polylinePtArray, "weather", pathWeathers);
+          polylinePtArray, "segments", directions, "weather", pathWeathers);
       return GSON.toJson(variables);
     } catch (NumberFormatException nfe) {
       Map<String, Object> variables = ImmutableMap.of("message",
