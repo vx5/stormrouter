@@ -35,7 +35,7 @@ public class RouteHandler implements Route {
 
       // TODO: Parse the start time format into UNIX time
       Long startTime = Long.parseLong(qm.value("startTime"));
-      Path startPath = PathConverter.inst.convertPath(directions, startTime);
+      Path startPath = PathConverter.convertPath(directions, startTime);
 
       PathRanker ranker = new PathRanker();
       Set<PathWeatherInfo> bestPaths = ranker.bestPath(startPath);

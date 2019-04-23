@@ -10,18 +10,22 @@ import java.util.Set;
 import edu.brown.cs.stormrouter.weather.TimePoint;
 import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
+/**
+ * @author vx5
+ * 
+ *         Class which handles core functionality of deciding what time offset
+ *         yields the most weather-sound path.
+ */
 public class PathRanker {
   // Stores default path
   private Path defaultPath;
   // Stores information of all valid start time indices
   private Set<PathWeatherInfo> diffTimesWeather = new HashSet<PathWeatherInfo>();
-  // Stores all paths to be ranked
-  // private Queue<Path> paths = new PriorityQueue<Path>();
   // Stores information about what place-time events have had weather pulled
   private Map<String, Long> checkedWeather = new HashMap<String, Long>();
   private final float TILE_SIZE_MILES = 20;
-  private final float MILES_PER_DEGREE = 69;
-  private final float TILE_SIZE_DEGREES = TILE_SIZE_MILES / MILES_PER_DEGREE;
+  private final float TILE_SIZE_DEGREES = TILE_SIZE_MILES
+      / Units.MILES_PER_DEGREE;
   // Stores list of indices in paths to be used for waypoints
   private List<Integer> weatherIds = new ArrayList<Integer>();
   // Stores number of points that should be checked
@@ -31,9 +35,21 @@ public class PathRanker {
       -2, -1, 1, 2, 5
   };
 
+  /**
+   * Empty constructor.
+   */
   public PathRanker() {
   }
 
+  /**
+   * Returns set of weather information objects, of type PathWeatherInfo, which
+   * include, for all valid paths (including those at alternate times), the
+   * weather points, and type of weather they represent.
+   * 
+   * @param centerPath Path object to be used as default Path
+   * @return Set of PathWeatherInfo, one for each valid paths
+   * @throws Exception if there is error in API call
+   */
   public Set<PathWeatherInfo> bestPath(Path centerPath) throws Exception {
     // Assign the given path as default
     defaultPath = centerPath;
@@ -47,7 +63,6 @@ public class PathRanker {
     return new HashSet<PathWeatherInfo>(diffTimesWeather);
   }
 
-  // 1. Helper method
   private void genNewPaths() {
     // Sets the start, end time of the path that is desired
     long unixStart = defaultPath.getStartTime();
@@ -55,35 +70,26 @@ public class PathRanker {
     // Adds initial path
     diffTimesWeather.add(new PathWeatherInfo(unixStart));
     // Here, the time in seconds is obtained, then transformed to hours
-    long unixEnd = unixStart + hrToMs(
-        pathPoints.get(pathPoints.size() - 1).getTime() / (float) (60 * 60));
+    long unixEnd = unixStart
+        + Units.hrToMs(pathPoints.get(pathPoints.size() - 1).getTime()
+            / (float) (Units.S_PER_MIN * Units.MIN_PER_HR));
     // Iterates through all desired hour offsets to be checked
     for (int i = 0; i < HR_OFFSETS.length; i++) {
       // Obtains hour offset for path generation, converts to unix offset
       int hrOffset = HR_OFFSETS[i];
-      long unixOffset = hrToMs(hrOffset);
+      long unixOffset = Units.hrToMs(hrOffset);
       // Checks for valid time requirements, which requires that:
       // a) the would-be start time is not before now
       // b) the would-be end time is not past the 48-hour window DarkSky offers
       // weather data for
-      if (System.currentTimeMillis() <= unixStart - unixOffset
-          && System.currentTimeMillis() + hrToMs((float) 48.05) >= unixEnd
-              + unixOffset) {
+      long pathStartTime = unixStart - unixOffset;
+      long pathEndTime = unixStart + unixOffset;
+      if (System.currentTimeMillis() <= pathStartTime
+          && System.currentTimeMillis()
+              + Units.hrToMs((float) 48.05) >= pathEndTime) {
         diffTimesWeather.add(new PathWeatherInfo(unixStart + unixOffset));
       }
     }
-  }
-
-  // Side helper for 1
-  private long hrToMs(float hr) {
-    // Converts hours to milliseconds, using 60
-    // for minutes, 60 for seconds, 1000 for milliseconds
-    return (long) hr * 60 * 60 * 1000;
-  }
-
-  private int UnixToHrsFromNow(long unix) {
-    long msFromNow = unix - System.currentTimeMillis();
-    return (int) (msFromNow / 1000) / (60 * 60);
   }
 
   private void fillIds() {
@@ -224,7 +230,8 @@ public class PathRanker {
         // Obtains specific time to be scored
         PathWeatherInfo toModify = pathsInfo[i];
         long toModifyStartTime = toModify.getStartTime();
-        int hrsFromNow = UnixToHrsFromNow(toModifyStartTime + durationToReach);
+        int hrsFromNow = Units
+            .UnixToHrsFromNow(toModifyStartTime + durationToReach);
         // Scores time index
         score(currCoords[0], currCoords[1], toModify, hrWeathers[hrsFromNow]);
       }
