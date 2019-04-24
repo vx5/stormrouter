@@ -1,5 +1,6 @@
 package edu.brown.cs.stormrouter.route;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,32 +40,22 @@ public class RouteHandler implements Route {
       String polylineStr = "";
       // Decodes string
       List<LatLon> polylinePts = PolylineDecoder.decodePolyline(polylineStr);
-      // Converts list to a String-array
-      String[][] polylinePtArray = new String[polylinePts.size()][2];
-      int popId = 0;
-      Iterator<LatLon> polylineIt = polylinePts.iterator();
-      while (polylineIt.hasNext()) {
-        LatLon thisPt = polylineIt.next();
-        polylinePtArray[popId] = thisPt.toStringArray();
-      }
 
-      // TODO: Parse the start time format into UNIX time
+      // Parse the start time format into UNIX time
       Long startTime = Long.parseLong(qm.value("startTime"));
       Path startPath = PathConverter.convertPath(directions, startTime);
-
+      // Creates ranker, generates alternate paths
       PathRanker ranker = new PathRanker();
       Set<PathWeatherInfo> bestPaths = ranker.bestPath(startPath);
-
-      String[][][] pathWeathers = new String[bestPaths.size()][][];
-      int pathWeatherAssign = 0;
+      // Stores paths in the list
+      List<PathWeatherInfo> pathWeathers = new ArrayList<PathWeatherInfo>();
       Iterator<PathWeatherInfo> bestPathsIt = bestPaths.iterator();
       while (bestPathsIt.hasNext()) {
-        pathWeathers[pathWeatherAssign] = bestPathsIt.next().toStringArray();
-        pathWeatherAssign++;
+        pathWeathers.add(bestPathsIt.next());
       }
-
+      // Stores all relevant variables in map to be parsed through JSON
       Map<String, Object> variables = ImmutableMap.of("message", "", "decoded",
-          polylinePtArray, "segments", directions, "weather", pathWeathers);
+          polylinePts, "segments", directions, "weather", pathWeathers);
       return GSON.toJson(variables);
     } catch (NumberFormatException nfe) {
       Map<String, Object> variables = ImmutableMap.of("message",

@@ -1,7 +1,6 @@
 package edu.brown.cs.stormrouter.route;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -56,39 +55,6 @@ public class PathWeatherInfo {
    */
   public int getScore() {
     return new Integer(pathScore);
-  }
-
-  /**
-   * Converts all information stored in this PathWeatherInfo instance into a
-   * String array.
-   * 
-   * @return a String[][] type. Given that the underlying object has weather
-   *         data for n points, String[0] will contain PathWeatherInfo details,
-   *         with the Unix start time at [0][0] and the score at [0][1].
-   *         String[1] through String[n] will contain information about the
-   *         weather points, such that, for every i between 1 and n, inclusive,
-   *         [i][0] represents the latitude, [i][1] represents the longitude,
-   *         and [i][2] represents the type of weather, mapped from integers
-   *         such that 0 through 5 represent plain weather, rain, snow, heat,
-   *         fog, and wind, respectively
-   */
-  public String[][] toStringArray() {
-    // Creates String array to be returned
-    String[][] strArray = new String[weatherData.size() + 1][3];
-    // Fills the first element with the start time and score
-    strArray[0][0] = Long.toString(pathStartTimeUnix);
-    strArray[0][1] = Integer.toString(pathScore);
-    // Iterates through and populates strArray
-    int strId = 1;
-    Iterator<String[]> weatherIt = weatherData.iterator();
-    while (weatherIt.hasNext()) {
-      // Assigns array to proper place
-      strArray[strId] = weatherIt.next();
-      // Increments assignment index
-      strId++;
-    }
-    // Returns String array
-    return strArray;
   }
 
   /**
