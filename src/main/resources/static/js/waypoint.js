@@ -1,7 +1,5 @@
 let numWays = 0;
 const LIMIT = 4;
-let oldDel = null;
-let delway = $("[id='delete-waypoint']");
 
 function addWaypoint(){
 	if(numWays >= LIMIT) {
@@ -37,18 +35,11 @@ function addWaypoint(){
 "            </li>");
 }
 
-
 function deleteWaypoint(elem){
 	console.log($(elem));
-	// console.log($($(elem)[0].parentNode));
 	$($(elem)[0].parentNode)[0].parentNode.remove();
 	numWays--;
 }
-
-delway.click(() => {
-	console.log("delete");
-});
-
 
 $(document).ready(() => {
 	$("#add-waypoint").click(() => {

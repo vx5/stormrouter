@@ -31,7 +31,7 @@
      <script src="/js/map.js"></script>
      <script src="/js/collapse.js"></script>
      <script src="/js/waypoint.js"></script>
-     
+     <script src="/js/route.js"></script>>
      
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start

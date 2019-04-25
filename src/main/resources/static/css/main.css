@@ -19,7 +19,7 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 1;
   top: 0;
   right: 0;
-  background-color: #220068;
+  background-color: rgba(34,0,104,0.6);
   border-bottom-left-radius: 10px;
   margin: 0;
   padding: 5px 10px;
@@ -88,7 +88,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .waypoints {
   overflow-y: auto;
-  background-color: #2200aa;
+  background-color: rgba(34,0,176,0.6);
   border: 3px inset dodgerblue;
   border-radius: 8px;
   list-style-type: none;
