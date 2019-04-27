@@ -31,12 +31,12 @@
         <i class="fas fa-angle-down"></i>
       </div>
       <div class="itinerary collapsable">
-        <form action="" method="get" class="itinerary-form">
+        <form action="" method="get" class="itinerary-form" autocomplete="off" >
           <!-- row with start location and date -->
           <div class="form-row">
             <div class="location-field">
               <label for="start">Start Location</label>
-              <input id="start" name="start" type="text">
+              <input id="start" name="start" type="text" autocomplete="off">
             </div>
             <div class="date-field">
               <label for="datepicker">Date &amp; Time</label>
@@ -67,7 +67,7 @@
               <label for="destination">Destination</label>
               <input id="destination" name="destination" type="text">
             </div>
-            <button type="submit">Submit</button>
+            <button type="button" id="route">Submit</button>
           </div>
         </form>
       </div>

@@ -15,6 +15,8 @@
 
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/demo.css">
+    <link rel="stylesheet" href="/css/autocomplete.css">
+        
 
     <#-- Leaflet + OpenStreetMap -->
     <#--<link rel="stylesheet" href="/css/leaflet.css">
@@ -23,15 +25,16 @@
     <#-- Mapbox GL JS -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css" rel="stylesheet">
+    <script src='https://api.mapbox.com/mapbox.js/v3.2.0/mapbox.js'></script>    
   </head>
   <body>
      ${content}
-     <!-- Again, we're serving up the unminified source for clarity. -->
      <script src="/js/jquery-3.1.1.js"></script>
      <script src="/js/map.js"></script>
      <script src="/js/collapse.js"></script>
+     <script src="/js/autocomplete.js"></script>
      <script src="/js/waypoint.js"></script>
-     <script src="/js/route.js"></script>>
+     <script src="/js/route.js"></script>
      
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start

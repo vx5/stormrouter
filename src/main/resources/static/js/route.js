@@ -10,7 +10,12 @@ function getFormInputs(){
 	for(let i = 2; i < inputs.length - 1; i+=2){
 		points.push({point: inputs[i].value, duration: inputs[i+1].value});
 	}
-	console.log(points);
 	return {start: start, date: date, destination: destination, points: points};
 }
 
+$(document).ready(() => {
+	$("#route").click(() => {
+		const inputs = getFormInputs();
+		
+	});
+});

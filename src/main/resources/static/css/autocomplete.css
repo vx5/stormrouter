@@ -1,0 +1,11 @@
+ul#autocomplete{
+	position: absolute;
+	background-color: gray;
+	margin: 0;
+	list-style: none;
+}
+
+li#suggests{
+	background-color: gray;
+	
+}

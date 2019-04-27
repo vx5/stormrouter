@@ -2,6 +2,7 @@
 mapboxgl.accessToken =
     "pk.eyJ1IjoiamNyb3dsZTUiLCJhIjoiY2p0dmg5YzJoMXg1YTRlbXVsMWo2YWxtaSJ9.5-JA68Dz-1Vdhpt3cF2hJg";
 
+
 let map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/streets-v11",
@@ -13,6 +14,7 @@ let map = new mapboxgl.Map({
 map.addControl(new mapboxgl.NavigationControl({
   showCompass: false
 }));
+
 
 // Leaflet + OpenStreetMap
 /*let map = L.map('map', {zoomControl: false}).setView([41.8268238, -71.4035084], 16);

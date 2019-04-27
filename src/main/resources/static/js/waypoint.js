@@ -24,7 +24,7 @@ function addWaypoint(){
 "              <div class=\"form-row\">\n" + 
 "                <div class=\"location-field\">\n" + 
 "                  <label for=\"way\">Waypoint </label>\n" + 
-"                  <input id=\"way\" name=\"way\" type=\"text\">\n" + 
+"                  <input id=\"way\" name=\"way\" type=\"text\" onkeyup='autoCompleteLocation(this)' onfocusout='clearSuggests()'>\n" + 
 "					<i class=\"fas fa-minus\" id=\"delete-waypoint\" onclick='deleteWaypoint(this)'></i>"+
 "                </div>\n" + 
 "                <div class=\"duration-field\">\n" + 
@@ -34,6 +34,7 @@ function addWaypoint(){
 "              </div>\n" + 
 "            </li>");
 }
+
 
 function deleteWaypoint(elem){
 	console.log($(elem));
