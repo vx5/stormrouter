@@ -88,6 +88,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .waypoints {
   overflow-y: auto;
+  max-height: 150px;
   background-color: rgba(34,0,176,0.6);
   border: 3px inset dodgerblue;
   border-radius: 8px;
