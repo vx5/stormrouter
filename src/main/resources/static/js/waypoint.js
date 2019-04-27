@@ -41,7 +41,6 @@ function addWaypoint(){
 		mapboxgl: mapboxgl
 	}).onAdd(map));
 	geocoderId++;
-	$(".mapboxgl-ctrl-geocoder").css("z-index",null);
 }
 
 

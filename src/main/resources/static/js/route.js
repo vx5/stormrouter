@@ -1,14 +1,23 @@
+/*
+Parse the input to dict: 
+	start: starting point
+	date: date of starting point
+	destination: destination point
+	points: array of waypoints
+*/
 function getFormInputs(){
+
 	const form = $(".itinerary-form")[0];
 	const inputs = $(form).serializeArray();
-	//assert that length >= 3.
-	console.assert(inputs.length >= 3, {inputs: inputs});
-	const start = inputs[0];
-	const date = inputs[1];
-	const destination = inputs[inputs.length - 1];
+	// console.assert(inputs.length >= 1, {inputs: inputs});
+	// console.log(inputs);
+	const allGeocoderRes = $(".geocoder").find("input");
+	const start = allGeocoderRes[0].value;
+	const date = inputs[0].value;
+	const destination = allGeocoderRes[allGeocoderRes.length - 1].value;
 	let points = [];
-	for(let i = 2; i < inputs.length - 1; i+=2){
-		points.push({point: inputs[i].value, duration: inputs[i+1].value});
+	for(let i = 1; i < inputs.length; i++){
+		points.push({point: allGeocoderRes[i].value, duration: inputs[i].value});
 	}
 	return {start: start, date: date, destination: destination, points: points};
 }
@@ -16,6 +25,6 @@ function getFormInputs(){
 $(document).ready(() => {
 	$("#route").click(() => {
 		const inputs = getFormInputs();
-		
+
 	});
 });
