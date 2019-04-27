@@ -49,19 +49,6 @@
           <ul class="waypoints">
             <!-- test rows -->
             <li id="waypoint-header">Waypoints <i class="fas fa-plus" id="add-waypoint"></i></li>
-            <!-- <li>
-              <div class="form-row">
-                <div class="location-field">
-                  <label for="way-1">Waypoint 1</label>
-                  <input id="way-1" name="way-1" type="text">
-                  
-                </div>
-                <div class="duration-field">
-                  <label for="duration-1">Duration</label>
-                  <input id="duration-1" name="duration-1" type="text">
-                </div>
-              </div>
-            </li> -->
           </ul>
 
           <div class="form-row">

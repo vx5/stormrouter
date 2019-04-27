@@ -25,9 +25,16 @@ let geocoder1 = new MapboxGeocoder({
 	mapboxgl: mapboxgl
 });
 
-document.getElementById('geocoderStart').appendChild(geocoder1.onAdd(map));
-document.getElementById('geocoderEnd').appendChild(geocoder1.onAdd(map));
+document.getElementById('geocoderStart').appendChild(new MapboxGeocoder({
+	accessToken: mapboxgl.accessToken,
+	mapboxgl: mapboxgl
+}).onAdd(map));
+document.getElementById('geocoderEnd').appendChild(new MapboxGeocoder({
+	accessToken: mapboxgl.accessToken,
+	mapboxgl: mapboxgl
+}).onAdd(map));
 
+$(".mapboxgl-ctrl-geocoder").css("z-index",null);
 // Leaflet + OpenStreetMap
 /*let map = L.map('map', {zoomControl: false}).setView([41.8268238, -71.4035084], 16);
 

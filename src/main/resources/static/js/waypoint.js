@@ -24,10 +24,10 @@ function addWaypoint(){
 	$(".waypoints").append("<li>\n" + 
 "              <div class=\"form-row\">\n" + 
 "                <div class=\"location-field\">\n" + 
-"                  <label for=\"way\">Waypoint </label>\n" + 
+"                  <label for=\"way\">Waypoint </label>\n" +
+"					<i class=\"fas fa-minus\" id=\"delete-waypoint\" onclick='deleteWaypoint(this)'></i>"+ 
 // "                  <input id=\"way\" name=\"way\" type=\"text\" onkeyup='autoCompleteLocation(this, event)' onfocusout='clearSuggests()'>\n" + 
 "					<div id='geocoder" + geocoderId + "' class='geocoder'></div>"+
-"					<i class=\"fas fa-minus\" id=\"delete-waypoint\" onclick='deleteWaypoint(this)'></i>"+
 "                </div>\n" + 
 "                <div class=\"duration-field\">\n" + 
 "                  <label for=\"duration\">Duration</label>\n" + 
@@ -36,8 +36,12 @@ function addWaypoint(){
 "              </div>\n" + 
 "            </li>");
 	
-	document.getElementById('geocoder' + geocoderId).appendChild(geocoder1.onAdd(map));
+	document.getElementById('geocoder' + geocoderId).appendChild(new MapboxGeocoder({
+		accessToken: mapboxgl.accessToken,
+		mapboxgl: mapboxgl
+	}).onAdd(map));
 	geocoderId++;
+	$(".mapboxgl-ctrl-geocoder").css("z-index",null);
 }
 
 
