@@ -1,5 +1,6 @@
 <#assign content>
   <div id="map"></div>
+
   <h2 class="title">Storm Router</h2>
   <div class="full-height flex-container">
     <div id="side-bar" class="column panel">
@@ -36,7 +37,8 @@
           <div class="form-row">
             <div class="location-field">
               <label for="start">Start Location</label>
-              <input id="start" name="start" type="text" autocomplete="off">
+              <!-- <input id="start" name="start" type="text" autocomplete="off" onkeyup='autoCompleteLocation(this)' onfocusout="clearSuggests()"> -->
+              <div id='geocoderStart' class='geocoder'></div>
             </div>
             <div class="date-field">
               <label for="datepicker">Date &amp; Time</label>
@@ -65,7 +67,8 @@
           <div class="form-row">
             <div class="location-field">
               <label for="destination">Destination</label>
-              <input id="destination" name="destination" type="text">
+              <!-- <input id="destination" name="destination" type="text" onkeyup='autoCompleteLocation(this)' onfocusout="clearSuggests()"> -->
+              <div id='geocoderEnd' class='geocoder'></div>
             </div>
             <button type="button" id="route">Submit</button>
           </div>

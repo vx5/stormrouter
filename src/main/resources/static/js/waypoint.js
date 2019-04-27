@@ -1,4 +1,5 @@
 let numWays = 0;
+let geocoderId = 0;
 const LIMIT = 4;
 
 function addWaypoint(){
@@ -24,7 +25,8 @@ function addWaypoint(){
 "              <div class=\"form-row\">\n" + 
 "                <div class=\"location-field\">\n" + 
 "                  <label for=\"way\">Waypoint </label>\n" + 
-"                  <input id=\"way\" name=\"way\" type=\"text\" onkeyup='autoCompleteLocation(this)' onfocusout='clearSuggests()'>\n" + 
+// "                  <input id=\"way\" name=\"way\" type=\"text\" onkeyup='autoCompleteLocation(this, event)' onfocusout='clearSuggests()'>\n" + 
+"					<div id='geocoder" + geocoderId + "' class='geocoder'></div>"+
 "					<i class=\"fas fa-minus\" id=\"delete-waypoint\" onclick='deleteWaypoint(this)'></i>"+
 "                </div>\n" + 
 "                <div class=\"duration-field\">\n" + 
@@ -33,6 +35,9 @@ function addWaypoint(){
 "                </div>\n" + 
 "              </div>\n" + 
 "            </li>");
+	
+	document.getElementById('geocoder' + geocoderId).appendChild(geocoder1.onAdd(map));
+	geocoderId++;
 }
 
 

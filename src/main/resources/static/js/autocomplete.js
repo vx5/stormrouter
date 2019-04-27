@@ -3,24 +3,26 @@ L.mapbox.accessToken = "pk.eyJ1IjoiamNyb3dsZTUiLCJhIjoiY2p0dmg5YzJoMXg1YTRlbXVsM
 let geocoder = new L.mapbox.geocoder('mapbox.places');
 // let geocoder = new MapboxGeocoder({ accessToken: mapboxgl.accessToken });
 
-function autoCompleteLocation(elem){
+function autoCompleteLocation(elem, event){
+	console.log(event);
+
 	const cur = $(elem);
 	const input = cur.val();
-	console.log(input);
+	// console.log(input);
 	if(input.length < 2)
 		return;
 	const offset = cur.offset();
 	console.log(offset);
 	// console.log(cur);
 	let par = $(cur[0].parentNode);
-	console.log(par);
+	// console.log(par);
 	if(par[0].lastChild.tagName != 'UL'){
 		par.append("<ul id='autocomplete'></ul>");
 	}
 	par = $(cur[0].parentNode);
 	const suggestList = $(cur[0].parentNode)[0].lastChild;
 	$(suggestList).css({top: offset.top + 20, left: offset.left});
-	console.log(suggestList);
+	// console.log(suggestList);
 	$(suggestList).empty();
 	function addSuggestions(err, responseObj){
 		console.log(responseObj);

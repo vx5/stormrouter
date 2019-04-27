@@ -15,6 +15,18 @@ map.addControl(new mapboxgl.NavigationControl({
   showCompass: false
 }));
 
+// map.addControl(new MapboxGeocoder({
+// 	accessToken: mapboxgl.accessToken,
+// 	mapboxgl: mapboxgl
+// }));
+
+let geocoder1 = new MapboxGeocoder({
+	accessToken: mapboxgl.accessToken,
+	mapboxgl: mapboxgl
+});
+
+document.getElementById('geocoderStart').appendChild(geocoder1.onAdd(map));
+document.getElementById('geocoderEnd').appendChild(geocoder1.onAdd(map));
 
 // Leaflet + OpenStreetMap
 /*let map = L.map('map', {zoomControl: false}).setView([41.8268238, -71.4035084], 16);

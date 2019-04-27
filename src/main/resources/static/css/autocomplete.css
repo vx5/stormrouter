@@ -3,6 +3,7 @@ ul#autocomplete{
 	background-color: gray;
 	margin: 0;
 	list-style: none;
+	padding: 0;
 }
 
 li#suggests{
