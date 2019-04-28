@@ -8,19 +8,6 @@ function addWaypoint() {
     return;
   }
   numWays++;
-// 	$(".waypoints").append("<li>\n" + 
-// "              <div class=\"form-row\">\n" + 
-// "                <div class=\"location-field\">\n" + 
-// "                  <label for=\"way-"+ numWays + "\">Waypoint "+numWays+"</label>\n" + 
-// "                  <input id=\"way-"+numWays+"\" name=\"way-"+numWays+"\" type=\"text\">\n" + 
-// "					<i class=\"fas fa-minus\" id=\"delete-waypoint\"></i>"+
-// "                </div>\n" + 
-// "                <div class=\"duration-field\">\n" + 
-// "                  <label for=\"duration-"+numWays+"\">Duration</label>\n" + 
-// "                  <input id=\"duration-"+numWays+"\" name=\"duration-"+numWays+"\" type=\"time\">\n" + 
-// "                </div>\n" + 
-// "              </div>\n" + 
-// "            </li>");
   $(".waypoints").append(
       '<li>\n' +
       '  <div class="form-row">\n' +
@@ -36,10 +23,8 @@ function addWaypoint() {
       '  </div>\n' +
       '</li>');
 
-  document.getElementById('geocoder' + geocoderId++).appendChild(new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    mapboxgl: mapboxgl
-  }).onAdd(map));
+  addGeocoder('geocoder' + geocoderId, 'waypoint' + geocoderId);
+  geocoderId++;
 }
 
 

@@ -1,8 +1,4 @@
-L.mapbox.accessToken = "pk.eyJ1IjoiamNyb3dsZTUiLCJhIjoiY2p0dmg5YzJoMXg1YTRlbXVsMWo2YWxtaSJ9.5-JA68Dz-1Vdhpt3cF2hJg";
-// let MapboxG.eocoder = require('@mapbox/mapbox-gl-geocoder');
-//let geocoder = new L.mapbox.geocoder('mapbox.places');
-// let geocoder = new MapboxGeocoder({ accessToken: mapboxgl.accessToken });
-
+/*
 function autoCompleteLocation(elem, event) {
   console.log(event);
 
@@ -42,4 +38,4 @@ function clearSuggests() {
   for (let i = 0; i < autocompleteAll.length; i++) {
     $(autocompleteAll[i]).empty();
   }
-}
+}*/

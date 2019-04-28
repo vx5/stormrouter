@@ -1,6 +1,7 @@
 // Mapbox GL JS
 mapboxgl.accessToken =
     "pk.eyJ1IjoiamNyb3dsZTUiLCJhIjoiY2p0dmg5YzJoMXg1YTRlbXVsMWo2YWxtaSJ9.5-JA68Dz-1Vdhpt3cF2hJg";
+L.mapbox.accessToken = mapboxgl.accessToken;
 
 
 let map = new mapboxgl.Map({
@@ -15,26 +16,27 @@ map.addControl(new mapboxgl.NavigationControl({
   showCompass: false
 }));
 
-// map.addControl(new MapboxGeocoder({
-// 	accessToken: mapboxgl.accessToken,
-// 	mapboxgl: mapboxgl
-// }));
+function addGeocoder(id, name) {
+  const $target = $('#' + id);
 
-let geocoder1 = new MapboxGeocoder({
-  accessToken: mapboxgl.accessToken,
-  mapboxgl: mapboxgl
-});
+  $target.append(new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl
+  }).onAdd(map));
 
-document.getElementById('geocoderStart').appendChild(new MapboxGeocoder({
-  accessToken: mapboxgl.accessToken,
-  mapboxgl: mapboxgl
-}).onAdd(map));
-document.getElementById('geocoderEnd').appendChild(new MapboxGeocoder({
-  accessToken: mapboxgl.accessToken,
-  mapboxgl: mapboxgl
-}).onAdd(map));
+  $target.find('input').attr('name', name);
+}
+
+addGeocoder('geocoderStart', 'start');
+addGeocoder('geocoderEnd', 'end');
 
 $(".mapboxgl-ctrl-geocoder").css("z-index", null);
+
+
+
+
+
+
 // Leaflet + OpenStreetMap
 /*let map = L.map('map', {zoomControl: false}).setView([41.8268238, -71.4035084], 16);
 

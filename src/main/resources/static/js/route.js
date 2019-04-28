@@ -2,7 +2,7 @@
 Parse the input to dict: 
 	start: starting point
 	date: date of starting point
-	destination: destination point
+	end: end point
 	points: array of waypoints
 */
 let geocoder = new L.mapbox.geocoder('mapbox.places');
@@ -23,35 +23,41 @@ function forwardGeocode(input) {
 }
 
 async function getFormInputs() {
-  const form = $(".itinerary-form")[0];
+  const form = document.forms['itinerary-form'];
+  const start = form['start'].value;
+  const end = form['end'].value;
+  const date = form['date'].value;
+
+  const waypointPromises = [];
+  const durations = [];
+
   const inputs = $(form).serializeArray();
-  // console.assert(inputs.length >= 1, {inputs: inputs});
-  // console.log(inputs);
-  const $allGeocoderRes = $(".geocoder").find("input");
-  const start = $allGeocoderRes[0].value;
-  let promises = [];
-  promises.push(forwardGeocode(start));
-  const date = inputs[0].value;
-  const destination = $allGeocoderRes[$allGeocoderRes.length - 1].value;
-  promises.push(forwardGeocode(destination));
-  let points = [];
-  for (let i = 1; i < inputs.length; i++) {
-    const locationName = $allGeocoderRes[i].value;
-    promises.push(forwardGeocode(locationName));
-    //points.push({point: $allGeocoderRes[i].value, duration: inputs[i].value});
+  for (let i = 2; i < inputs.length - 1;) { // begin at first waypoint input and end before destination input
+    const waypointName = inputs[i++].value;
+    const duration = inputs[i++].value;
+    waypointPromises.push(forwardGeocode(waypointName));
+    durations.push(duration);
+    //points.push({point: $geocoders[i].value, duration: inputs[i].value});
   }
 
-	const coordinates = await Promise.all(promises).then(values => {
-		console.log(values);
-		return values;
-	});
-	return coordinates;
-	//return {start: start, date: date, destination: destination, points: points};
+  const promises = [];
+  promises.push(forwardGeocode(start));
+  promises.push(forwardGeocode(end));
+  promises.push(Promise.all(waypointPromises));
+
+  return Promise.all(promises).then(values => {
+    [startPoint, endPoint, waypoints] = values;
+    const points = waypoints.map((point, i) => ({lat: point[0], lon: point[1], duration: durations[i]}));
+
+    console.log(values);
+    return {start: startPoint, date: date, destination: endPoint, points: points};
+  });
 }
 
 $(document).ready(() => {
   $("#route").click(() => {
-    const inputs = getFormInputs();
-
+    getFormInputs().then(postParameters => {
+      console.log(postParameters);
+    }).catch(reason => console.log(reason));
   });
 });
