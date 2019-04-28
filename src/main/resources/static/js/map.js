@@ -24,7 +24,7 @@ function addGeocoder(id, name) {
     mapboxgl: mapboxgl
   }).onAdd(map));
 
-  const $input = $target.find('input')
+  const $input = $target.find('input');
 
   $input.attr('name', name);
   $input.prop('required', true);
@@ -34,21 +34,3 @@ addGeocoder('geocoderStart', 'start');
 addGeocoder('geocoderEnd', 'end');
 
 $(".mapboxgl-ctrl-geocoder").css("z-index", null);
-
-
-
-
-
-
-// Leaflet + OpenStreetMap
-/*let map = L.map('map', {zoomControl: false}).setView([41.8268238, -71.4035084], 16);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-new L.Control.Zoom({position: 'topright'}).addTo(map);
-
-L.marker([41.8268238, -71.4035084]).addTo(map)
-    .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-    .openPopup();*/

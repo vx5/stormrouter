@@ -18,7 +18,8 @@ function addWaypoint() {
       '    </div>\n' +
       '    <div class="duration-field">\n' +
       '      <label for="duration">Duration</label>\n' +
-      '      <input class="without" id="duration" name="duration" type="time" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" required>\n' +
+      //'      <input class="without" id="duration" name="duration" type="time" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" required>\n' +
+      '      <input id="duration" name="duration" type="number" required> Minutes\n' +
       '    </div>\n' +
       '  </div>\n' +
       '</li>');
@@ -29,7 +30,6 @@ function addWaypoint() {
 
 
 function deleteWaypoint(elem) {
-  //console.log($(elem));
   $($(elem)[0].parentNode)[0].parentNode.remove();
   numWays--;
 }

@@ -13,8 +13,8 @@ function forwardGeocode(input) {
       query: input,
       limit: 1,
     }, (error, result) => {
-      if (error) {
-        reject(error);
+      if (error || !result.latlng) {
+        reject(`Could not find location for input '${input}'.`);
       } else {
         resolve(result.latlng);
       }
@@ -22,22 +22,7 @@ function forwardGeocode(input) {
   });
 }
 
-/*function validateForm() {
-  const form = document.forms['itinerary-form'];
-  const inputs = $(form).serializeArray();
-
-  for (let i = 0; i < inputs.length; i++) {
-    const input = inputs[i];
-    if (!input.value) {
-      console.log(input);
-      alert(`Input '${input.name}' was empty.`);
-      return false;
-    }
-  }
-  return true;
-}*/
-
-async function getFormInputs() {
+function getFormInputs() {
   const form = document.forms['itinerary-form'];
   const start = form['start'].value;
   const end = form['end'].value;
@@ -51,8 +36,7 @@ async function getFormInputs() {
     const waypointName = inputs[i++].value;
     const duration = inputs[i++].value;
     waypointPromises.push(forwardGeocode(waypointName));
-    durations.push(duration);
-    //points.push({point: $geocoders[i].value, duration: inputs[i].value});
+    durations.push(+duration);
   }
 
   const promises = [];
@@ -61,11 +45,11 @@ async function getFormInputs() {
   promises.push(Promise.all(waypointPromises));
 
   return Promise.all(promises).then(values => {
-    [startPoint, endPoint, waypoints] = values;
-    const points = waypoints.map((point, i) => ({lat: point[0], lon: point[1], duration: durations[i]}));
+    const [startPoint, endPoint, waypoints] = values;
+    const waypointStops = waypoints.map((waypoint, i) => ({waypoint: waypoint, duration: durations[i]}));
+    const unixTime = +new Date(date) / 1000;
 
-    console.log(values);
-    return {start: startPoint, date: date, destination: endPoint, points: points};
+    return {start: startPoint, date: unixTime, destination: endPoint, waypoints: waypointStops};
   });
 }
 
@@ -75,6 +59,9 @@ $(document).ready(() => {
 
     getFormInputs().then(postParameters => {
       console.log(postParameters);
-    }).catch(reason => console.log(reason));
+    }).catch(reason => {
+      console.log(reason);
+      alert('There was an error processing your request.');
+    });
   });
 });

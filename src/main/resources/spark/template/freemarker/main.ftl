@@ -15,12 +15,6 @@
 
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/demo.css">
-    
-        
-
-    <#-- Leaflet + OpenStreetMap -->
-    <#--<link rel="stylesheet" href="/css/leaflet.css">
-    <script src="/js/leaflet.js"></script>-->
 
     <#-- Mapbox GL JS -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
