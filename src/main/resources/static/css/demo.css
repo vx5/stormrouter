@@ -39,6 +39,7 @@ body,
 
 #side-bar-content {
   width: 200px;
+  overflow-y: auto;
 }
 
 #side{

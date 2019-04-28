@@ -5,3 +5,31 @@ ul.suggestions{
 div.mapboxgl-ctrl-geocoder.mapboxgl-ctrl{
 	z-index: unset ;
 }
+
+.geocoder > *{
+	height: 25px;
+}
+
+.geocoder > div.mapboxgl-ctrl-geocoder.mapboxgl-ctrl > input{
+	padding-top: 0;
+    padding-bottom: 0;
+    height: 25px;
+}
+
+svg.geocoder-icon.geocoder-icon-search{
+	top: 2.5px;
+}
+
+svg.geocoder-icon.geocoder-icon-close{
+	margin: 0px;
+}
+
+.mapboxgl-ctrl-geocoder .geocoder-pin-right > *{
+	top: 4.5px;
+}
+
+ul.suggestions > li > a{
+	padding-top: 3px;
+	padding-bottom: 3px;
+
+}

@@ -31,7 +31,7 @@ function addWaypoint(){
 "                </div>\n" + 
 "                <div class=\"duration-field\">\n" + 
 "                  <label for=\"duration\">Duration</label>\n" + 
-"                  <input id=\"duration\" name=\"duration\" type=\"time\">\n" + 
+"                  <input class='without' id=\"duration\" name=\"duration\" type=\"time\" pattern='([1]?[0-9]|2[0-3]):[0-5][0-9]'>\n" + 
 "                </div>\n" + 
 "              </div>\n" + 
 "            </li>");
