@@ -34,7 +34,7 @@ body,
 #side-bar {
   height: 100%;
   border-top-right-radius: 10px;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 #side-bar-content {
@@ -42,16 +42,16 @@ body,
   overflow-y: auto;
 }
 
-#side{
-	width: 25px;
-	border-top-right-radius: 10px;
+#side {
+  width: 25px;
+  border-top-right-radius: 10px;
 }
 
 #bottom-bar {
   align-self: flex-end;
   width: 100%;
   border-top-right-radius: 10px;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
 
 }
 
@@ -68,27 +68,27 @@ body,
   color: #FFFF00;
 }
 
-.fa-plus, .fa-minus{
-	font-size: 15px;
+.fa-plus, .fa-minus {
+  font-size: 15px;
 }
 
-.collapse{
-	border: 1px solid yellow;
+.collapse {
+  border: 1px solid yellow;
 }
 
-div.collapse:hover{
-	background-color: rgba(50,150,50,0.6);
-	cursor: pointer;
+div.collapse:hover {
+  background-color: rgba(50, 150, 50, 0.6);
+  cursor: pointer;
 }
 
-#add-waypoint:hover{
-	cursor: pointer;
+#add-waypoint:hover {
+  cursor: pointer;
 }
 
-#delete-waypoint:hover{
-	cursor: pointer;
+#delete-waypoint:hover {
+  cursor: pointer;
 }
 
-#waypoint-header{
-	margin-bottom: 10px;
+#waypoint-header {
+  margin-bottom: 10px;
 }

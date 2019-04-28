@@ -32,7 +32,7 @@
         <i class="fas fa-angle-down"></i>
       </div>
       <div class="itinerary collapsable">
-        <form action="" method="get" class="itinerary-form" autocomplete="off" >
+        <form action="" method="get" class="itinerary-form" autocomplete="off">
           <!-- row with start location and date -->
           <div class="form-row">
             <div class="location-field">
