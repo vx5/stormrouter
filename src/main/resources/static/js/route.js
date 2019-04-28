@@ -22,6 +22,21 @@ function forwardGeocode(input) {
   });
 }
 
+/*function validateForm() {
+  const form = document.forms['itinerary-form'];
+  const inputs = $(form).serializeArray();
+
+  for (let i = 0; i < inputs.length; i++) {
+    const input = inputs[i];
+    if (!input.value) {
+      console.log(input);
+      alert(`Input '${input.name}' was empty.`);
+      return false;
+    }
+  }
+  return true;
+}*/
+
 async function getFormInputs() {
   const form = document.forms['itinerary-form'];
   const start = form['start'].value;
@@ -55,7 +70,9 @@ async function getFormInputs() {
 }
 
 $(document).ready(() => {
-  $("#route").click(() => {
+  $('#itinerary-form').submit(event => {
+    event.preventDefault();
+
     getFormInputs().then(postParameters => {
       console.log(postParameters);
     }).catch(reason => console.log(reason));

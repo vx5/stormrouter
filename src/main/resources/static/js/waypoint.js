@@ -14,11 +14,11 @@ function addWaypoint() {
       '    <div class="location-field">\n' +
       '      <label for="way">Waypoint </label>\n' +
       '        <i class="fas fa-minus" id="delete-waypoint" onclick="deleteWaypoint(this)"></i>' +
-      '      <div id="geocoder' + geocoderId + '" class="geocoder"></div>' +
+      `      <div id="geocoder${geocoderId}" class="geocoder"></div>` +
       '    </div>\n' +
       '    <div class="duration-field">\n' +
       '      <label for="duration">Duration</label>\n' +
-      '      <input class="without" id="duration" name="duration" type="time" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]">\n' +
+      '      <input class="without" id="duration" name="duration" type="time" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" required>\n' +
       '    </div>\n' +
       '  </div>\n' +
       '</li>');
@@ -29,7 +29,7 @@ function addWaypoint() {
 
 
 function deleteWaypoint(elem) {
-  console.log($(elem));
+  //console.log($(elem));
   $($(elem)[0].parentNode)[0].parentNode.remove();
   numWays--;
 }

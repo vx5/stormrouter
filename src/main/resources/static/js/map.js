@@ -24,7 +24,10 @@ function addGeocoder(id, name) {
     mapboxgl: mapboxgl
   }).onAdd(map));
 
-  $target.find('input').attr('name', name);
+  const $input = $target.find('input')
+
+  $input.attr('name', name);
+  $input.prop('required', true);
 }
 
 addGeocoder('geocoderStart', 'start');
