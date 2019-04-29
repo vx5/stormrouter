@@ -34,3 +34,15 @@ addGeocoder('geocoderStart', 'start');
 addGeocoder('geocoderEnd', 'end');
 
 $(".mapboxgl-ctrl-geocoder").css("z-index", null);
+
+let img = new Image();
+img.src = 'plain.png';
+
+/*
+map.addImage('PLAIN', '/images/plain.svg');
+map.addImage('HEAT', '/images/heat.svg');
+map.addImage('FOG', '/images/fog.svg');
+map.addImage('SNOW', '/images/snow.svg');
+map.addImage('WIND', '/images/wind.svg');
+map.addImage('RAIN', '/images/rain.svg');
+*/
