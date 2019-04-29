@@ -77,11 +77,5 @@
       </div>
     </div>
   </div>
-  <img src='../js/images/plain.png'/>
-  <img src='../js/images/fog.png'/>
-  <img src='../js/images/heat.png'/>
-  <img src='../js/images/rain.png'/>
-  <img src='../js/images/snow.png'/>
-  <img src='../js/images/wind.png'/>
 </#assign>
 <#include "main.ftl">
