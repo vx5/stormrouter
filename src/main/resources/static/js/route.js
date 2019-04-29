@@ -6,9 +6,6 @@ Parse the input to dict:
 	points: array of waypoints
 */
 let geocoder = new L.mapbox.geocoder('mapbox.places');
-const WEATHER_TYPE = [
-    'PLAIN', 'RAIN', 'SNOW', 'HEAT', 'FOG', 'WIND'
-]
 let weatherId = 0; 
 let weatherOnMap = [];
 
@@ -132,7 +129,7 @@ function addWeather(weatherInfo){
 		},
 		"layout": {
 			"icon-image": WEATHER_TYPE[weatherInfo.weather],
-			"icon-size": 0.25
+			"icon-size": 0.1
 		}
 	});
 	weatherOnMap.push("weather" + weatherId);

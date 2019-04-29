@@ -35,14 +35,15 @@ addGeocoder('geocoderEnd', 'end');
 
 $(".mapboxgl-ctrl-geocoder").css("z-index", null);
 
-let img = new Image();
-img.src = 'plain.png';
+const WEATHER_TYPE = [
+    'PLAIN', 'RAIN', 'SNOW', 'HEAT', 'FOG', 'WIND'
+]
+let weatherIcons = [];
 
-/*
-map.addImage('PLAIN', '/images/plain.svg');
-map.addImage('HEAT', '/images/heat.svg');
-map.addImage('FOG', '/images/fog.svg');
-map.addImage('SNOW', '/images/snow.svg');
-map.addImage('WIND', '/images/wind.svg');
-map.addImage('RAIN', '/images/rain.svg');
-*/
+for(let i = 0; i < 6; i++){
+	const name = WEATHER_TYPE[i].toLowerCase();
+	let img = new Image();
+	img.src = '../js/images/' + name + '.png';
+	weatherIcons.push(img);
+	map.addImage(WEATHER_TYPE[i], img);
+}
