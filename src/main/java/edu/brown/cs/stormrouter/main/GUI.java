@@ -4,17 +4,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import edu.brown.cs.stormrouter.route.RouteHandler;
 import freemarker.template.Configuration;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
+import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
+import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
@@ -49,7 +54,7 @@ final class GUI {
     Spark.get("/stormrouter", new FrontHandler(), freeMarker);
     Spark.get("/stormrouter/demo", new DemoHandler(), freeMarker);
     Spark.post("/stormrouter/route", new RouteHandler());
-    
+    Spark.post("/stormrouter/parse", new ParserHandler());
   }
 
   static void stopSparkServer() {
@@ -77,6 +82,45 @@ final class GUI {
       Map<String, Object> variables =
           ImmutableMap.of("title", "StormRouter");
       return new ModelAndView(variables, "demo.ftl");
+    }
+  }
+
+  private class RouteWaypoint {
+    double[] waypoint;
+    int duration;
+
+    @Override
+    public String toString() {
+      return "RouteWaypoint{" +
+          "waypoint=" + Arrays.toString(waypoint) +
+          ", duration=" + duration +
+          '}';
+    }
+  }
+
+  private class RouteRequest {
+    double[] start;
+    long date;
+    double[] destination;
+    RouteWaypoint[] waypoints;
+  }
+
+  /**
+   * Handles requests to '/stormrouter/parse/'.
+   */
+  private static class ParserHandler implements Route {
+    @Override
+    public Object handle(Request request, Response response) {
+      QueryParamsMap qm = request.queryMap();
+      /*JsonParser parser = new JsonParser();
+      JsonElement params = parser.parse(qm.value("params"));*/
+      RouteRequest params =
+          GSON.fromJson(qm.value("params"), RouteRequest.class);
+      System.out.println(Arrays.toString(params.start));
+      System.out.println(params.date);
+      System.out.println(Arrays.toString(params.waypoints));
+      System.out.println(Arrays.toString(params.destination));
+      return "{}";
     }
   }
   
