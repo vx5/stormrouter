@@ -43,7 +43,7 @@ let weatherIcons = [];
 for(let i = 0; i < 6; i++){
 	const name = WEATHER_TYPE[i].toLowerCase();
 	let img = new Image();
-	img.src = '../js/images/' + name + '.png';
+	img.src = '/js/images/' + name + '.png';
 	weatherIcons.push(img);
 	map.addImage(WEATHER_TYPE[i], img);
 }

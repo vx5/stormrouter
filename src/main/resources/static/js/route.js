@@ -6,8 +6,9 @@ Parse the input to dict:
 	points: array of waypoints
 */
 let geocoder = new L.mapbox.geocoder('mapbox.places');
-let weatherId = 0; 
-let weatherOnMap = [];
+//let weatherOnMap = [];
+let markers = [];
+let weatherId = 0;
 
 function forwardGeocode(input) {
   return new Promise((resolve, reject) => {
@@ -84,24 +85,24 @@ function displayPath(polyline) {
   });
 }
 
-function clearPath(){
-	map.removeLayer('route')
-	map.removeSource('route');
+function clearPath() {
+  map.removeLayer('route');
+  map.removeSource('route');
 }
 
 //Clear a layer by ID.
-function clearLayer(id){
-	map.removeLayer(id)
-	map.removeSource(id);
+function clearLayer(id) {
+  map.removeLayer(id);
+  map.removeSource(id);
 }
 
 //Clear weather icons
-function removeWeather(){
-	for(let i =0; i < weatherOnMap.length; i++){
-		clearLayer(weatherOnMap[i]);
-	}
-	weatherOnMap = [];
-}
+/*function removeWeather() {
+  for (let i = 0; i < weatherOnMap.length; i++) {
+    clearLayer(weatherOnMap[i]);
+  }
+  weatherOnMap = [];
+}*/
 
 /*
 weatherInfo = {
@@ -110,30 +111,66 @@ weatherInfo = {
 	enum weather:
 }
 */
-function addWeather(weatherInfo){
-	map.addLayer({
-		"id": "weather" + weatherId,
-		"type": "symbol",
-		"source": {
-			"type": "geojson",
-			"data": {
-				"type": "FeatureCollection",
-				"features": [{
-					"type": "Feature",
-					"geometry": {
-						"type": "Point",
-						"coordinates": [weatherInfo.lon, weatherInfo.lat]
-					}
-				}]
-			}
-		},
-		"layout": {
-			"icon-image": WEATHER_TYPE[weatherInfo.weather],
-			"icon-size": 0.1
-		}
-	});
-	weatherOnMap.push("weather" + weatherId);
-	weatherId++;
+/*function addWeather(weatherInfo) {
+  map.addLayer({
+    "id": "weather" + weatherId,
+    "type": "symbol",
+    "source": {
+      "type": "geojson",
+      "data": {
+        "type": "FeatureCollection",
+        "features": [{
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [weatherInfo.lon, weatherInfo.lat]
+          }
+        }]
+      }
+    },
+    "layout": {
+      "icon-image": WEATHER_TYPE[weatherInfo.weather],
+      "icon-size": 0.1
+    }
+  });
+  weatherOnMap.push("weather" + weatherId);
+  weatherId++;
+}*/
+
+function addWeatherMarker(type, lat, lon) {
+  const id = 'weather' + weatherId++;
+  const img = new Image();
+  img.id = id;
+  img.src = '/js/images/' + type + '.svg';
+  img.width = 30;
+
+  const marker = new mapboxgl.Marker(img)
+      .setLngLat([lon, lat])
+      .addTo(map);
+  markers.push(marker);
+
+  const popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false
+  }).setHTML('<h1>Popup!</h1>');
+
+  marker.setPopup(popup);
+
+  const $img = $('#' + id);
+
+  $img.mouseover(() => {
+    marker.togglePopup();
+  });
+
+  $img.mouseleave(() => {
+    marker.togglePopup();
+  });
+}
+
+function removeWeatherMarkers() {
+  markers.forEach(marker => marker.remove());
+  markers = [];
+  weatherId = 0;
 }
 
 $(document).ready(() => {
