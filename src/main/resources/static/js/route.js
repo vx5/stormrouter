@@ -6,6 +6,11 @@ Parse the input to dict:
 	points: array of waypoints
 */
 let geocoder = new L.mapbox.geocoder('mapbox.places');
+const WEATHER_TYPE = [
+    'PLAIN', 'RAIN', 'SNOW', 'HEAT', 'FOG', 'WIND'
+]
+let weatherId = 0; 
+let weatherOnMap = [];
 
 function forwardGeocode(input) {
   return new Promise((resolve, reject) => {
@@ -57,7 +62,6 @@ function getFormInputs() {
 Polyline is an array of arrays of length 2.
  */
 function displayPath(polyline) {
-  map.removeSource('route');
   map.addLayer({
     "id": "route",
     "type": "line",
@@ -81,6 +85,58 @@ function displayPath(polyline) {
       "line-width": 8
     }
   });
+}
+
+function clearPath(){
+	map.removeLayer('route')
+	map.removeSource('route');
+}
+
+//Clear a layer by ID.
+function clearLayer(id){
+	map.removeLayer(id)
+	map.removeSource(id);
+}
+
+//Clear weather icons
+function removeWeather(){
+	for(let i =0; i < weatherOnMap.length; i++){
+		clearLayer(weatherOnMap[i]);
+	}
+	weatherOnMap = [];
+}
+
+/*
+weatherInfo = {
+	lat:
+	lon:
+	enum weather:
+}
+*/
+function addWeather(weatherInfo){
+	map.addLayer({
+		"id": "weather" + weatherId,
+		"type": "symbol",
+		"source": {
+			"type": "geojson",
+			"data": {
+				"type": "FeatureCollection",
+				"features": [{
+					"type": "Feature",
+					"geometry": {
+						"type": "Point",
+						"coordinates": [weatherInfo.lon, weatherInfo.lat]
+					}
+				}]
+			}
+		},
+		"layout": {
+			"icon-image": WEATHER_TYPE[weatherInfo.weather],
+			"icon-size": 0.25
+		}
+	});
+	weatherOnMap.push("weather" + weatherId);
+	weatherId++;
 }
 
 $(document).ready(() => {
