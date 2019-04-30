@@ -71,7 +71,7 @@ public class RouteHandler implements Route {
       // TODO: Get the polyline
       String polylineStr = "";
       // Decodes string
-      List<LatLon> polylinePts = PolylineDecoder.decodePolyline(polylineStr);
+      /*List<LatLon> polylinePts = PolylineDecoder.decodePolyline(polylineStr);*/
 
       // Parse the start time format into UNIX time
       Path startPath = PathConverter.convertPath(directions, date);
@@ -86,10 +86,12 @@ public class RouteHandler implements Route {
     } catch (NumberFormatException nfe) {
       Map<String, Object> variables = ImmutableMap.of("message",
           "There was an error processing.", "routes", new String[0]);
+      nfe.printStackTrace();
       return GSON.toJson(variables);
     } catch (Exception e) {
       Map<String, Object> variables = ImmutableMap.of("message",
           "There was an error processing.", "routes", new String[0]);
+      e.printStackTrace();
       return GSON.toJson(variables);
     }
   }
