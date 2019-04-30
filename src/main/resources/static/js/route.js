@@ -25,6 +25,7 @@ function forwardGeocode(input) {
   });
 }
 
+
 function getFormInputs() {
   const form = document.forms['itinerary-form'];
   const start = form['start'].value;
@@ -57,22 +58,15 @@ function getFormInputs() {
 }
 
 /*
-Polyline is an array of arrays of length 2.
+Path is geoJson.
  */
-function displayPath(polyline) {
+function displayPath(path) {
   map.addLayer({
     "id": "route",
     "type": "line",
     "source": {
       "type": "geojson",
-      "data": {
-        "type": "Feature",
-        "properties": {},
-        "geometry": {
-          "type": "LineString",
-          "coordinates": polyline
-        }
-      }
+      "data": path
     },
     "layout": {
       "line-join": "round",
@@ -85,6 +79,7 @@ function displayPath(polyline) {
   });
 }
 
+//Clear the current path.
 function clearPath() {
   map.removeLayer('route');
   map.removeSource('route');
@@ -137,6 +132,8 @@ weatherInfo = {
   weatherId++;
 }*/
 
+
+//Add weather markers.
 function addWeatherMarker(type, lat, lon) {
   const id = 'weather' + weatherId++;
   const img = new Image();
@@ -167,6 +164,7 @@ function addWeatherMarker(type, lat, lon) {
   });
 }
 
+//Remove all weather markers.
 function removeWeatherMarkers() {
   markers.forEach(marker => marker.remove());
   markers = [];
@@ -182,7 +180,17 @@ function parsePolyline(polyline){
 	return res; 
 }
 
-
+// Display directions
+function displayDirections(directions){
+	const $directs = $("ol.directions-list");
+	$directs.empty();
+	for(let i = 0; i < directions.length; i++){
+		const duration = directions[i].duration;
+		const instruction = directions[i].instructions;
+		$directs.append(
+			'<li><div class="instructions">For ' + duration + ', ' + instruction + '</div></li>'); 
+	}
+}
 
 $(document).ready(() => {
   $('#itinerary-form').submit(event => {

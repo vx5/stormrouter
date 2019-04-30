@@ -14,7 +14,7 @@
             <h4 class="section-header">Directions</h4>
             <ol class="directions-list">
               <!-- Test rows -->
-              <li>
+              <!-- <li>
                 <div class="img"></div>
                 <div class="instructions">Left</div>
               </li>
@@ -22,7 +22,7 @@
                 <div class="img"></div>
                 <div class="instructions">Right</div>
               </li>
-            </ol>
+            </ol> -->
             <button>Get Suggested Times</button>
           </div>
 
