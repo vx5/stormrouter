@@ -20,7 +20,7 @@ final class Units {
    * @param hr input number of hours
    * @return number of milliseconds
    */
-  static long hrToMs(float hr) {
+  static long hrToMs(double hr) {
     // Converts hours to milliseconds, using 60
     // for minutes, 60 for seconds, 1000 for milliseconds
     return (long) hr * MIN_PER_HR * S_PER_MIN * MS_PER_S;

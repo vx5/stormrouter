@@ -192,6 +192,18 @@ function displayPath(path) {
   });
 }
 
+function displayWeather(weather) {
+  if (!weather) {
+    console.log('no weather found');
+    return;
+  }
+
+  const bestWeather = weather[weather.best];
+
+  removeWeatherMarkers();
+  //weather.forEach(weatherInfo => );
+}
+
 $(document).ready(() => {
   $('#itinerary-form').submit(event => {
     event.preventDefault();
@@ -214,7 +226,7 @@ $(document).ready(() => {
         const weather = response.weather;
 
         displayPath(map);
-
+        displayDirections(segments);
       });
     }).catch(reason => {
       console.log(reason);
