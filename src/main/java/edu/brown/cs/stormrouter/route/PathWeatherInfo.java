@@ -14,7 +14,7 @@ public class PathWeatherInfo {
   // Stores the offset
   private long pathStartTimeUnix;
   // Stores all weather information associated with this path
-  private List<String[]> weatherData = new ArrayList<String[]>();
+  private List<PathWeatherPoint> weatherData = new ArrayList<PathWeatherPoint>();
   // Stores score associated with this path, initialized at 0
   private int pathScore = 0;
 
@@ -38,13 +38,9 @@ public class PathWeatherInfo {
    */
   public void addWeatherData(float pointLat, float pointLong, int weatherType,
       String weatherSum, int scoreIncr) {
-    // Constructs array with details
-    String[] newDataPoint = new String[] {
-        Float.toString(pointLat), Float.toString(pointLong),
-        Integer.toString(weatherType), weatherSum
-    };
     // Adds details to set
-    weatherData.add(newDataPoint);
+    weatherData.add(
+        new PathWeatherPoint(pointLat, pointLong, weatherType, weatherSum));
     // Increments score
     pathScore += scoreIncr;
   }
