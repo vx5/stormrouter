@@ -2,6 +2,7 @@ package edu.brown.cs.stormrouter.directions;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,54 +36,87 @@ public final class DirectionsAPIHandler {
    */
   public static List<Segment> getDirections(LatLon start, List<LatLon> waypoints,
                                             LatLon end) {
-    String urlString = String.format(
-        "%s?api_key=%s&start=%.4f,%.4f" + "&end=%.4f,%.4f", BASE_URL, API_KEY,
-        start.getLongitude(), start.getLatitude(), end.getLongitude(),
-        end.getLatitude());
-
     List<Segment> segments = new ArrayList<>();
 
+    // Build out the main JSON request body
+    JsonObject body = new JsonObject();
+    JsonArray coordinatesArray = new JsonArray();
+
+    JsonArray startArray = new JsonArray();
+    startArray.add(start.getLongitude());
+    startArray.add(start.getLatitude());
+    coordinatesArray.add(startArray);
+    for (LatLon waypoint : waypoints){
+      JsonArray waypointArray = new JsonArray();
+      waypointArray.add(waypoint.getLongitude());
+      waypointArray.add(waypoint.getLatitude());
+      coordinatesArray.add(waypointArray);
+    }
+    JsonArray endArray = new JsonArray();
+    endArray.add(end.getLongitude());
+    endArray.add(end.getLatitude());
+    coordinatesArray.add(endArray);
+
+    body.add("coordinates", coordinatesArray);
+    String bodyString = GSON.toJson(body);
+
     try {
-      URL url = new URL(urlString);
+      // Build the POST request
+      URL url = new URL(BASE_URL);
       HttpURLConnection request = (HttpURLConnection) url.openConnection();
+      request.setRequestMethod("POST");
+      request.setRequestProperty("Authorization", API_KEY);
+      request.setRequestProperty("Accept", "application/json, application/geo"
+          + "+json, application/gpx+xml, img/png; charset=utf-8");
+      request.setDoOutput(true);
       request.connect();
 
-      JsonParser parser = new JsonParser();
-      JsonElement root = parser
-          .parse(new InputStreamReader(request.getInputStream()));
+      OutputStreamWriter out
+          = new OutputStreamWriter(request.getOutputStream());
+      out.write(bodyString);
+      out.close();
 
-      if (root != null && root.getAsJsonObject().get("features") != null) {
-        JsonArray features = root.getAsJsonObject().getAsJsonArray("features");
-        JsonObject properties = features.get(0).getAsJsonObject()
-            .getAsJsonObject("properties");
-        JsonObject segmentsObject = properties.getAsJsonArray("segments").get(0)
-            .getAsJsonObject();
-        JsonArray steps = segmentsObject.getAsJsonArray("steps");
+      int responseCode = request.getResponseCode();
+      if (responseCode == HttpURLConnection.HTTP_OK) {
+        JsonParser parser = new JsonParser();
+        JsonElement root = parser
+            .parse(new InputStreamReader(request.getInputStream()));
 
-        JsonArray coordinates = features.get(0).getAsJsonObject()
-            .getAsJsonObject("geometry").getAsJsonArray("coordinates");
+        if (root != null && root.getAsJsonObject().get("features") != null) {
+          JsonArray features = root.getAsJsonObject().getAsJsonArray("features");
+          JsonObject properties = features.get(0).getAsJsonObject()
+              .getAsJsonObject("properties");
+          JsonObject segmentsObject = properties.getAsJsonArray("segments").get(0)
+              .getAsJsonObject();
+          JsonArray steps = segmentsObject.getAsJsonArray("steps");
 
-        for (int i = 0; i < steps.size(); i++) {
-          JsonObject step = steps.get(i).getAsJsonObject();
+          JsonArray coordinates = features.get(0).getAsJsonObject()
+              .getAsJsonObject("geometry").getAsJsonArray("coordinates");
 
-          double distance = step.get("distance").getAsDouble();
-          double duration = step.get("duration").getAsDouble();
-          String name = step.get("name").getAsString();
-          String instructions = step.get("instruction").getAsString();
-          JsonArray routeWaypoints = step.getAsJsonArray("way_points");
-          JsonArray coord1 = coordinates.get(routeWaypoints.get(0).getAsInt())
-              .getAsJsonArray();
-          JsonArray coord2 = coordinates.get(routeWaypoints.get(1).getAsInt())
-              .getAsJsonArray();
-          LatLon startLatLon = new LatLon(coord1.get(1).getAsDouble(),
-              coord1.get(0).getAsDouble());
-          LatLon endLatLon = new LatLon(coord2.get(1).getAsDouble(),
-              coord2.get(0).getAsDouble());
+          for (int i = 0; i < steps.size(); i++) {
+            JsonObject step = steps.get(i).getAsJsonObject();
 
-          Segment segment = new Segment(startLatLon, endLatLon, distance,
-              duration, name, instructions);
-          segments.add(segment);
+            double distance = step.get("distance").getAsDouble();
+            double duration = step.get("duration").getAsDouble();
+            String name = step.get("name").getAsString();
+            String instructions = step.get("instruction").getAsString();
+            JsonArray routeWaypoints = step.getAsJsonArray("way_points");
+            JsonArray coord1 = coordinates.get(routeWaypoints.get(0).getAsInt())
+                .getAsJsonArray();
+            JsonArray coord2 = coordinates.get(routeWaypoints.get(1).getAsInt())
+                .getAsJsonArray();
+            LatLon startLatLon = new LatLon(coord1.get(1).getAsDouble(),
+                coord1.get(0).getAsDouble());
+            LatLon endLatLon = new LatLon(coord2.get(1).getAsDouble(),
+                coord2.get(0).getAsDouble());
+
+            Segment segment = new Segment(startLatLon, endLatLon, distance,
+                duration, name, instructions);
+            segments.add(segment);
+          }
         }
+      } else {
+        // TODO: More custom exception handling
       }
     } catch (IOException ioe) {
       // TODO: Add custom exception handling
