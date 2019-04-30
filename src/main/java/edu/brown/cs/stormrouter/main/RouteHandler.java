@@ -68,11 +68,6 @@ public class RouteHandler implements Route {
           = DirectionsAPIHandler.getDirections(start, waypointsList, end);
       List<Segment> directions = directionsData.getSegments();
 
-      // TODO: Get the polyline
-      String polylineStr = "";
-      // Decodes string
-      /*List<LatLon> polylinePts = PolylineDecoder.decodePolyline(polylineStr);*/
-
       // Parse the start time format into UNIX time
       Path startPath = PathConverter.convertPath(directions, date);
       // Creates ranker, generates alternate paths

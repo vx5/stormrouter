@@ -69,9 +69,11 @@ public final class DirectionsAPIHandler {
       HttpURLConnection request = (HttpURLConnection) url.openConnection();
       request.setRequestMethod("POST");
       request.setRequestProperty("Authorization", API_KEY);
-      request.setRequestProperty("Accept", "application/json, application/geo"
-          + "+json, application/gpx+xml, img/png; charset=utf-8");
+      request.setRequestProperty("Content-Type", "application/json");
+      request.setRequestProperty("Content-Length", "" + bodyString.getBytes().length);
+      request.setRequestProperty("Content-Language", "en-US");
       request.setDoOutput(true);
+      request.setDoInput(true);
       request.connect();
 
       OutputStreamWriter out
@@ -82,19 +84,18 @@ public final class DirectionsAPIHandler {
       int responseCode = request.getResponseCode();
       if (responseCode == HttpURLConnection.HTTP_OK) {
         JsonParser parser = new JsonParser();
-        JsonElement root = parser
-            .parse(new InputStreamReader(request.getInputStream()));
+        JsonObject root = parser
+            .parse(new InputStreamReader(request.getInputStream())).getAsJsonObject();
 
-        if (root != null && root.getAsJsonObject().get("features") != null) {
-          JsonArray features = root.getAsJsonObject().getAsJsonArray("features");
-          JsonObject properties = features.get(0).getAsJsonObject()
-              .getAsJsonObject("properties");
-          JsonObject segmentsObject = properties.getAsJsonArray("segments").get(0)
+        if (root != null && root.getAsJsonObject().get("routes") != null) {
+          JsonObject routes = root.getAsJsonArray("routes").get(0).getAsJsonObject();
+          JsonObject segmentsObject = routes.getAsJsonArray("segments").get(0)
               .getAsJsonObject();
           JsonArray steps = segmentsObject.getAsJsonArray("steps");
 
-          JsonArray coordinates = features.get(0).getAsJsonObject()
-              .getAsJsonObject("geometry").getAsJsonArray("coordinates");
+          // Retrieve and decode the polyline string
+          String polyline = routes.get("geometry").getAsString();
+          List<LatLon> polylinePts = PolylineDecoder.decodePolyline(polyline);
 
           for (int i = 0; i < steps.size(); i++) {
             JsonObject step = steps.get(i).getAsJsonObject();
@@ -104,26 +105,24 @@ public final class DirectionsAPIHandler {
             String name = step.get("name").getAsString();
             String instructions = step.get("instruction").getAsString();
             JsonArray routeWaypoints = step.getAsJsonArray("way_points");
-            JsonArray coord1 = coordinates.get(routeWaypoints.get(0).getAsInt())
-                .getAsJsonArray();
-            JsonArray coord2 = coordinates.get(routeWaypoints.get(1).getAsInt())
-                .getAsJsonArray();
-            LatLon startLatLon = new LatLon(coord1.get(1).getAsDouble(),
-                coord1.get(0).getAsDouble());
-            LatLon endLatLon = new LatLon(coord2.get(1).getAsDouble(),
-                coord2.get(0).getAsDouble());
+            LatLon startLatLon = polylinePts.get(routeWaypoints.get(0).getAsInt());
+            LatLon endLatLon = polylinePts.get(routeWaypoints.get(1).getAsInt());
 
             Segment segment = new Segment(startLatLon, endLatLon, distance,
                 duration, name, instructions);
             segments.add(segment);
             geoJSON = root;
           }
+        } else {
+          System.out.println("Error building response object");
         }
       } else {
         // TODO: More custom exception handling
+        System.out.println("Error making request");
       }
     } catch (IOException ioe) {
       // TODO: Add custom exception handling
+      System.out.println("Error reading response");
     }
 
     return new DirectionsWrapper(segments, geoJSON);
