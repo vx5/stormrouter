@@ -213,7 +213,8 @@ public class PathRanker {
       pointScore += 15;
     }
     // Now, performs change to relevant pathInfo object
-    pathInfo.addWeatherData(pointLat, pointLong, weatherType, pointScore);
+    pathInfo.addWeatherData(pointLat, pointLong, weatherType,
+        weather.getSummary(), pointScore);
   }
 
   private void scorePaths() throws Exception {
