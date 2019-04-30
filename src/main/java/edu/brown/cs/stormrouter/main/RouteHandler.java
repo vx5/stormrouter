@@ -15,7 +15,6 @@ import edu.brown.cs.stormrouter.directions.Segment;
 import edu.brown.cs.stormrouter.route.Path;
 import edu.brown.cs.stormrouter.route.PathConverter;
 import edu.brown.cs.stormrouter.route.PathRanker;
-import edu.brown.cs.stormrouter.route.PathWeatherInfo;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
