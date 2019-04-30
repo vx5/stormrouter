@@ -9,7 +9,7 @@ import java.util.List;
  *         Class which represents the path between the desired points using a
  *         series of point locations.
  */
-class Path {
+public class Path {
   // Stores list of all waypoints in this path
   private List<Waypoint> pathPoints = new ArrayList<Waypoint>();
   // Stores offset, in UNIX time, of this path from the original time
