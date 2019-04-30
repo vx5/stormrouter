@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import edu.brown.cs.stormrouter.weather.TimePoint;
 import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
@@ -63,13 +64,13 @@ public class PathRanker {
     // Uses list of points generated above to score paths
     scorePaths();
     // Iterates through paths, checks for best score
-    String[] chosenHrOffsets = (String[]) diffTimesWeather.keySet().toArray();
+    Set<String> chosenHrOffsets = diffTimesWeather.keySet();
     String bestPathKey = "";
     int bestPathScore = Integer.MAX_VALUE;
-    for (int i = 0; i < chosenHrOffsets.length; i++) {
-      PathWeatherInfo timePath = diffTimesWeather.get(chosenHrOffsets[i]);
+    for (String offset : chosenHrOffsets) {
+      PathWeatherInfo timePath = diffTimesWeather.get(offset);
       if (timePath.getScore() < bestPathScore) {
-        bestPathKey = chosenHrOffsets[i];
+        bestPathKey = offset;
       }
     }
     // Sets best
@@ -77,7 +78,7 @@ public class PathRanker {
         diffTimesWeather);
     finalMap.put("best", bestPathKey);
     // Returns queue of Paths, ordered by start time
-    return new HashMap<String, Object>(diffTimesWeather);
+    return finalMap;
   }
 
   private void genNewPaths() {
@@ -87,23 +88,22 @@ public class PathRanker {
     // Adds initial path to map
     diffTimesWeather.put("0", new PathWeatherInfo(unixStart));
     // Here, the time in seconds is obtained, then transformed to hours
+    // TODO: Make sure pathPoints.size() > 0
     long unixEnd = unixStart
         + Units.hrToMs(pathPoints.get(pathPoints.size() - 1).getTime()
             / (float) (Units.S_PER_MIN * Units.MIN_PER_HR));
     // Iterates through all desired hour offsets to be checked
-    for (int i = 0; i < HR_OFFSETS.length; i++) {
-      // Obtains hour offset for path generation, converts to unix offset
-      int hrOffset = HR_OFFSETS[i];
+    for (Integer hrOffset : HR_OFFSETS) {
       long unixOffset = Units.hrToMs(hrOffset);
       // Checks for valid time requirements, which requires that:
       // a) the would-be start time is not before now
       // b) the would-be end time is not past the 48-hour window DarkSky offers
       // weather data for
       long pathStartTime = unixStart - unixOffset;
-      long pathEndTime = unixStart + unixOffset;
+      long pathEndTime = unixEnd + unixOffset;
       if (System.currentTimeMillis() <= pathStartTime
           && System.currentTimeMillis()
-              + Units.hrToMs((float) 48.05) >= pathEndTime) {
+              + Units.hrToMs(48.05) >= pathEndTime) {
         diffTimesWeather.put(Integer.toString(hrOffset),
             new PathWeatherInfo(unixStart + unixOffset));
       }
@@ -119,7 +119,7 @@ public class PathRanker {
     List<Waypoint> pathPoints = defaultPath.getWaypoints();
     // Stores information associate with first initial chosen id
     Waypoint startPoint = pathPoints.get(0);
-    pathPoints.add(startPoint);
+    // TODO: Figure out if this is needed: pathPoints.add(startPoint);
     String storeString = "0,0";
     checkedWeather.put(storeString, startPoint.getTime());
     // Obtains coordinates for use in tile calculation in loop
@@ -234,9 +234,7 @@ public class PathRanker {
     // Stores array over all PathWeatherInfos
     String[] chosenHrOffsets = (String[]) diffTimesWeather.keySet().toArray();
     // Iterates through all weather indices
-    for (int i = 0; i < weatherIds.size(); i++) {
-      // Gets index, relevant coordinates, and relevant hourly weather
-      int currId = weatherIds.get(i);
+    for (int currId : weatherIds) {
       // Gets relevant point in default path
       Waypoint currPoint = defaultPath.getWaypoints().get(currId);
       long durationToReach = currPoint.getTime();
@@ -244,9 +242,9 @@ public class PathRanker {
       TimePoint[] hrWeathers = WeatherAPIHandler
           .getWeather(currCoords[0], currCoords[1]).getHourly().getData();
       // Iterates through all paths, and scores the appropriate points
-      for (int j = 0; j < chosenHrOffsets.length; j++) {
+      for (String chosenHrOffset : chosenHrOffsets) {
         // Obtains specific time to be scored
-        PathWeatherInfo toModify = diffTimesWeather.get(chosenHrOffsets[j]);
+        PathWeatherInfo toModify = diffTimesWeather.get(chosenHrOffset);
         long toModifyStartTime = toModify.getStartTime();
         int hrsFromNow = Units
             .UnixToHrsFromNow(toModifyStartTime + durationToReach);
