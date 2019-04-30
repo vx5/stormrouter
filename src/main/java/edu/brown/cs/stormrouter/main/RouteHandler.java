@@ -12,6 +12,7 @@ import edu.brown.cs.stormrouter.directions.DirectionsAPIHandler;
 import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.PolylineDecoder;
 import edu.brown.cs.stormrouter.directions.Segment;
+import edu.brown.cs.stormrouter.route.DirectionsWrapper;
 import edu.brown.cs.stormrouter.route.Path;
 import edu.brown.cs.stormrouter.route.PathConverter;
 import edu.brown.cs.stormrouter.route.PathRanker;
@@ -63,8 +64,9 @@ public class RouteHandler implements Route {
         waypointsList.add(new LatLon(coords[0], coords[1]));
       }
 
-      List<Segment> directions = DirectionsAPIHandler.getDirections(start,
-          waypointsList, end);
+      DirectionsWrapper directionsData
+          = DirectionsAPIHandler.getDirections(start, waypointsList, end);
+      List<Segment> directions = directionsData.getSegments();
 
       // TODO: Get the polyline
       String polylineStr = "";
@@ -77,8 +79,9 @@ public class RouteHandler implements Route {
       PathRanker ranker = new PathRanker();
       Map<String, Object> pathWeathers = ranker.bestPath(startPath);
       // Stores all relevant variables in map to be parsed through JSON
-      Map<String, Object> variables = ImmutableMap.of("message", "", "decoded",
-          polylinePts, "segments", directions, "weather", pathWeathers);
+      Map<String, Object> variables = ImmutableMap.of("message", "",
+          "map", directionsData.getGeoJSON(), "segments", directions,
+          "weather", pathWeathers);
       return GSON.toJson(variables);
     } catch (NumberFormatException nfe) {
       Map<String, Object> variables = ImmutableMap.of("message",

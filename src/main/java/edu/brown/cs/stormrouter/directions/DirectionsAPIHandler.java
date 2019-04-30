@@ -13,6 +13,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import edu.brown.cs.stormrouter.route.DirectionsWrapper;
 
 /**
  * A helper class for handling requests to the directions API.
@@ -29,14 +30,16 @@ public final class DirectionsAPIHandler {
    * @param waypoints - An array of any waypoints that will be traversed on the
    *                  route
    * @param end   - The latitude and longitude of the ending point
-   * @return - Returns a Route object containing all of the data for each
-   *         segment and the processed polyline.
+   * @return - Returns a DirectionsWrapper object containing all of the data
+   * for each segment, and the full GeoJSON reference for rendering in the GUI
    * @throws Exception - Throws an exception if there is an error retrieving or
-   *                   parsing the data.
+   * parsing the data.
    */
-  public static List<Segment> getDirections(LatLon start, List<LatLon> waypoints,
-                                            LatLon end) {
+  public static DirectionsWrapper getDirections(LatLon start,
+                                                List<LatLon> waypoints,
+                                                LatLon end) {
     List<Segment> segments = new ArrayList<>();
+    JsonElement geoJSON = null;
 
     // Build out the main JSON request body
     JsonObject body = new JsonObject();
@@ -113,6 +116,7 @@ public final class DirectionsAPIHandler {
             Segment segment = new Segment(startLatLon, endLatLon, distance,
                 duration, name, instructions);
             segments.add(segment);
+            geoJSON = root;
           }
         }
       } else {
@@ -122,6 +126,6 @@ public final class DirectionsAPIHandler {
       // TODO: Add custom exception handling
     }
 
-    return segments;
+    return new DirectionsWrapper(segments, geoJSON);
   }
 }
