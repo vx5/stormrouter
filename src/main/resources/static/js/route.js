@@ -173,6 +173,17 @@ function removeWeatherMarkers() {
   weatherId = 0;
 }
 
+// Parse from [{lat: , lon: },...] to [[lon,lat],...]
+function parsePolyline(polyline){
+	let res = [];
+	for(let i = 0; i < polyline.length; i++){
+		res.push([polyline[i].longitude, polyline[i].latitude]);
+	}
+	return res; 
+}
+
+
+
 $(document).ready(() => {
   $('#itinerary-form').submit(event => {
     event.preventDefault();
