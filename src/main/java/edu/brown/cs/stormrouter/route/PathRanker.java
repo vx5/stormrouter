@@ -77,7 +77,7 @@ public class PathRanker {
         diffTimesWeather);
     finalMap.put("best", bestPathKey);
     // Returns queue of Paths, ordered by start time
-    return new HashMap<String, Object>(diffTimesWeather);
+    return new HashMap<String, Object>(finalMap);
   }
 
   private void genNewPaths() {
