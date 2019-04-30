@@ -57,28 +57,6 @@ function getFormInputs() {
   });
 }
 
-/*
-Path is geoJson.
- */
-function displayPath(path) {
-  map.addLayer({
-    "id": "route",
-    "type": "line",
-    "source": {
-      "type": "geojson",
-      "data": path
-    },
-    "layout": {
-      "line-join": "round",
-      "line-cap": "round"
-    },
-    "paint": {
-      "line-color": "#888",
-      "line-width": 8
-    }
-  });
-}
-
 //Clear the current path.
 function clearPath() {
   map.removeLayer('route');
@@ -192,15 +170,51 @@ function displayDirections(directions){
 	}
 }
 
+/*
+Path is geoJson.
+ */
+function displayPath(path) {
+  map.addLayer({
+    "id": "route",
+    "type": "line",
+    "source": {
+      "type": "geojson",
+      "data": path
+    },
+    "layout": {
+      "line-join": "round",
+      "line-cap": "round"
+    },
+    "paint": {
+      "line-color": "#888",
+      "line-width": 8
+    }
+  });
+}
+
 $(document).ready(() => {
   $('#itinerary-form').submit(event => {
     event.preventDefault();
 
     getFormInputs().then(postParameters => {
       console.log(postParameters);
-      $.post('/stormrouter/parse', {params: JSON.stringify(postParameters)}, responseJSON => {
+      $.post('/stormrouter/route', {params: JSON.stringify(postParameters)}, responseJSON => {
         const response = JSON.parse(responseJSON);
         console.log(response);
+
+        const message = response.message;
+
+        if (message) {
+          console.log(message);
+          return;
+        }
+
+        const map = response.map;
+        const segments = response.segments;
+        const weather = response.weather;
+
+        displayPath(map);
+
       });
     }).catch(reason => {
       console.log(reason);
