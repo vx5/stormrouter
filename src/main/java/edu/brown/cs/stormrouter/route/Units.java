@@ -37,7 +37,7 @@ final class Units {
     // Calculates number of milliseconds from now
     long msFromNow = unix - System.currentTimeMillis();
     // Performs dimensional analysis conversions, truncation
-    return (int) (msFromNow / MS_PER_S) / (S_PER_MIN * MIN_PER_HR);
+    return (int) msFromNow / (MS_PER_S * S_PER_MIN * MIN_PER_HR);
   }
 
 }

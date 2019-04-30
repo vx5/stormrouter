@@ -102,8 +102,7 @@ public class PathRanker {
       long pathStartTime = unixStart - unixOffset;
       long pathEndTime = unixEnd + unixOffset;
       if (System.currentTimeMillis() <= pathStartTime
-          && System.currentTimeMillis()
-              + Units.hrToMs(48.05) >= pathEndTime) {
+          && System.currentTimeMillis() + Units.hrToMs(48.05) >= pathEndTime) {
         diffTimesWeather.put(Integer.toString(hrOffset),
             new PathWeatherInfo(unixStart + unixOffset));
       }
