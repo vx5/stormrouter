@@ -47,11 +47,6 @@ public final class PolylineDecoder {
         int temporaryLon = ((currentResult & 1) != 0 ? ~(currentResult >> 1)
             : (currentResult >> 1));
 
-        do {
-          currentByte = encoded.charAt(currentStringIndex++) - 63;
-          currentResult |= (currentByte & 0x01f) << shiftAmount;
-        } while (currentByte >= 0x20);
-
         lat += temporaryLat;
         lon += temporaryLon;
 
