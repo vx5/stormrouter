@@ -25,13 +25,16 @@ public final class DirectionsAPIHandler {
    * Attempts to retrieve directions between the two specified points.
    *
    * @param start - The latitude and longitude of the starting point
+   * @param waypoints - An array of any waypoints that will be traversed on the
+   *                  route
    * @param end   - The latitude and longitude of the ending point
    * @return - Returns a Route object containing all of the data for each
    *         segment and the processed polyline.
    * @throws Exception - Throws an exception if there is an error retrieving or
    *                   parsing the data.
    */
-  public static List<Segment> getDirections(LatLon start, LatLon end) {
+  public static List<Segment> getDirections(LatLon start, List<LatLon> waypoints,
+                                            LatLon end) {
     String urlString = String.format(
         "%s?api_key=%s&start=%.4f,%.4f" + "&end=%.4f,%.4f", BASE_URL, API_KEY,
         start.getLongitude(), start.getLatitude(), end.getLongitude(),
@@ -66,10 +69,10 @@ public final class DirectionsAPIHandler {
           double duration = step.get("duration").getAsDouble();
           String name = step.get("name").getAsString();
           String instructions = step.get("instruction").getAsString();
-          JsonArray waypoints = step.getAsJsonArray("way_points");
-          JsonArray coord1 = coordinates.get(waypoints.get(0).getAsInt())
+          JsonArray routeWaypoints = step.getAsJsonArray("way_points");
+          JsonArray coord1 = coordinates.get(routeWaypoints.get(0).getAsInt())
               .getAsJsonArray();
-          JsonArray coord2 = coordinates.get(waypoints.get(1).getAsInt())
+          JsonArray coord2 = coordinates.get(routeWaypoints.get(1).getAsInt())
               .getAsJsonArray();
           LatLon startLatLon = new LatLon(coord1.get(1).getAsDouble(),
               coord1.get(0).getAsDouble());

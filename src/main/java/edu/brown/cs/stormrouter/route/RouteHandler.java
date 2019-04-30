@@ -1,6 +1,7 @@
 package edu.brown.cs.stormrouter.route;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,20 +22,50 @@ import spark.Route;
 public class RouteHandler implements Route {
   private static final Gson GSON = new Gson();
 
+  private class RouteWaypoint {
+    double[] waypoint;
+    int duration;
+
+    @Override
+    public String toString() {
+      return "RouteWaypoint{" +
+          "waypoint=" + Arrays.toString(waypoint) +
+          ", duration=" + duration +
+          '}';
+    }
+  }
+
+  private class RouteRequest {
+    double[] start;
+    long date;
+    double[] destination;
+    RouteWaypoint[] waypoints;
+  }
+
   @Override
   public Object handle(Request request, Response response) {
     QueryParamsMap qm = request.queryMap();
 
     try {
-      // TODO: Handle converting the locations to lat/lon values
-      Double lat1 = Double.parseDouble(qm.value("lat1"));
-      Double lon1 = Double.parseDouble(qm.value("lon1"));
-      Double lat2 = Double.parseDouble(qm.value("lat2"));
-      Double lon2 = Double.parseDouble(qm.value("lon2"));
+      RouteRequest params =
+          GSON.fromJson(qm.value("params"), RouteRequest.class);
+      double[] startArray = params.start;
+      RouteWaypoint[] waypoints = params.waypoints;
+      double[] endArray = params.destination;
+      long date = params.date;
 
-      LatLon start = new LatLon(lat1, lon1);
-      LatLon end = new LatLon(lat2, lon2);
-      List<Segment> directions = DirectionsAPIHandler.getDirections(start, end);
+      // Convert the data returned from the front end into LatLon data that
+      // can be used in the front end
+      LatLon start = new LatLon(startArray[0], startArray[1]);
+      LatLon end = new LatLon(endArray[0], endArray[1]);
+      List<LatLon> waypointsList = new ArrayList<>();
+      for (int i = 0; i < waypoints.length; i++) {
+        double[] coords = waypoints[i].waypoint;
+        waypointsList.add(new LatLon(coords[0], coords[1]));
+      }
+
+      List<Segment> directions = DirectionsAPIHandler.getDirections(start,
+          waypointsList, end);
 
       // TODO: Get the polyline
       String polylineStr = "";
@@ -42,8 +73,7 @@ public class RouteHandler implements Route {
       List<LatLon> polylinePts = PolylineDecoder.decodePolyline(polylineStr);
 
       // Parse the start time format into UNIX time
-      Long startTime = Long.parseLong(qm.value("startTime"));
-      Path startPath = PathConverter.convertPath(directions, startTime);
+      Path startPath = PathConverter.convertPath(directions, date);
       // Creates ranker, generates alternate paths
       PathRanker ranker = new PathRanker();
       Set<PathWeatherInfo> bestPaths = ranker.bestPath(startPath);
