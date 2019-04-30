@@ -232,7 +232,7 @@ public class PathRanker {
 
   private void scorePaths() throws Exception {
     // Stores array over all PathWeatherInfos
-    String[] chosenHrOffsets = (String[]) diffTimesWeather.keySet().toArray();
+    Set<String> chosenHrOffsets = diffTimesWeather.keySet();
     // Iterates through all weather indices
     for (int currId : weatherIds) {
       // Gets relevant point in default path
