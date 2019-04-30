@@ -12,6 +12,7 @@ final class Units {
   static final int S_PER_MIN = 60;
   static final int MIN_PER_HR = 60;
   static final float MILES_PER_DEGREE = 69;
+  static final float DEGREES_PER_MILE = 1 / MILES_PER_DEGREE;
 
   /**
    * Convert hours to milliseconds.

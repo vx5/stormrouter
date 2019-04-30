@@ -2,10 +2,8 @@ package edu.brown.cs.stormrouter.route;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
@@ -28,10 +26,8 @@ public class RouteHandler implements Route {
 
     @Override
     public String toString() {
-      return "RouteWaypoint{" +
-          "waypoint=" + Arrays.toString(waypoint) +
-          ", duration=" + duration +
-          '}';
+      return "RouteWaypoint{" + "waypoint=" + Arrays.toString(waypoint)
+          + ", duration=" + duration + '}';
     }
   }
 
@@ -47,8 +43,8 @@ public class RouteHandler implements Route {
     QueryParamsMap qm = request.queryMap();
 
     try {
-      RouteRequest params =
-          GSON.fromJson(qm.value("params"), RouteRequest.class);
+      RouteRequest params = GSON.fromJson(qm.value("params"),
+          RouteRequest.class);
       double[] startArray = params.start;
       RouteWaypoint[] waypoints = params.waypoints;
       double[] endArray = params.destination;
@@ -76,13 +72,7 @@ public class RouteHandler implements Route {
       Path startPath = PathConverter.convertPath(directions, date);
       // Creates ranker, generates alternate paths
       PathRanker ranker = new PathRanker();
-      Set<PathWeatherInfo> bestPaths = ranker.bestPath(startPath);
-      // Stores paths in the list
-      List<PathWeatherInfo> pathWeathers = new ArrayList<PathWeatherInfo>();
-      Iterator<PathWeatherInfo> bestPathsIt = bestPaths.iterator();
-      while (bestPathsIt.hasNext()) {
-        pathWeathers.add(bestPathsIt.next());
-      }
+      Map<String, Object> pathWeathers = ranker.bestPath(startPath);
       // Stores all relevant variables in map to be parsed through JSON
       Map<String, Object> variables = ImmutableMap.of("message", "", "decoded",
           polylinePts, "segments", directions, "weather", pathWeathers);
