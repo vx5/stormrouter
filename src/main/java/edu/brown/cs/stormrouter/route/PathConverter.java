@@ -48,21 +48,17 @@ public final class PathConverter {
       // Selects end point
       LatLon endCoord = seg.getEnd();
       // Checks for intermediary waypoint (will check in order)
-      if (waypoints.length > 0) {
+      if (seg.isTerminal() && waypoints.length > 0) {
+        // Obtains first intermediary waypoint
         RouteWaypoint inter = waypoints[0];
-        // Generates LatLon object for comparison testing
-        LatLon interLoc = new LatLon(inter.waypoint[0], inter.waypoint[1]);
-        // Checks for coordinate match
-        if (endCoord.equals(interLoc)) {
-          // Updates minute delay
-          minDelay = inter.duration;
-          // Removes first element from array
-          if (waypoints.length > 1) {
-            waypoints = Arrays.copyOfRange(waypoints, 1, waypoints.length);
-          } else {
-            // In case of only element in array, set to empty array
-            waypoints = new RouteWaypoint[0];
-          }
+        // Updates minute delay
+        minDelay = inter.duration;
+        // Removes first element from array
+        if (waypoints.length > 1) {
+          waypoints = Arrays.copyOfRange(waypoints, 1, waypoints.length);
+        } else {
+          // In case of only element in array, set to empty array
+          waypoints = new RouteWaypoint[0];
         }
       }
       // Constructs Waypoint
@@ -72,7 +68,8 @@ public final class PathConverter {
       timeIndex += seg.getDuration();
       // If applicable, iterates time index based on delay
       if (minDelay != 0) {
-        // timeIndex += minDelay * Units.S_PER_MIN;
+        timeIndex += minDelay * Units.S_PER_MIN;
+        // Resets delay variable
         minDelay = 0;
       }
       // Sets time index
