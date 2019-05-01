@@ -46,7 +46,7 @@ public final class PathConverter {
       newPoint = new Waypoint((float) endCoord.getLatitude(),
           (float) endCoord.getLongitude());
       // Iterates, sets time index
-      timeIndex += seg.getDuration() * Units.MS_PER_S;
+      timeIndex += seg.getDuration();
       newPoint.setTime(timeIndex);
       // Adds point
       centerPath.addWaypoint(newPoint);

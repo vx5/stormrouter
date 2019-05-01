@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.brown.cs.stormrouter.weather.TimePoint;
+import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
 /**
  * @author vx5
@@ -27,7 +28,7 @@ public class PathRanker {
   // Stores list of indices in paths to be used for waypoints
   private List<Integer> weatherIds = new ArrayList<Integer>();
   // Stores number of points that should be checked
-  private final int NUM_POINTS = 20;
+  private final int NUM_POINTS = 1;
   // Stores desired hour offsets to be checked, if possible
   private final int[] HR_OFFSETS = new int[] {
       -2, -1, 1, 2, 5
@@ -88,20 +89,19 @@ public class PathRanker {
     diffTimesWeather.put("0", new PathWeatherInfo(unixStart));
     // Here, the time in seconds is obtained, then transformed to hours
     // TODO: Make sure pathPoints.size() > 0
-    long unixEnd = unixStart
-        + Units.hrToMs(pathPoints.get(pathPoints.size() - 1).getTime()
-            / (float) (Units.S_PER_MIN * Units.MIN_PER_HR));
+    long unixEnd = pathPoints.get(pathPoints.size() - 1).getTime();
     // Iterates through all desired hour offsets to be checked
     for (Integer hrOffset : HR_OFFSETS) {
-      long unixOffset = Units.hrToMs(hrOffset);
+      long unixOffset = Units.hrToS(hrOffset);
       // Checks for valid time requirements, which requires that:
       // a) the would-be start time is not before now
       // b) the would-be end time is not past the 48-hour window DarkSky offers
       // weather data for
       long pathStartTime = unixStart - unixOffset;
       long pathEndTime = unixEnd + unixOffset;
-      if (System.currentTimeMillis() <= pathStartTime
-          && System.currentTimeMillis() + Units.hrToMs(48.05) >= pathEndTime) {
+      if (System.currentTimeMillis() * Units.S_PER_MS <= pathStartTime
+          && System.currentTimeMillis() * Units.S_PER_MS
+              + Units.hrToS(48.05) >= pathEndTime) {
         diffTimesWeather.put(Integer.toString(hrOffset),
             new PathWeatherInfo(unixStart + unixOffset));
       }
@@ -140,8 +140,7 @@ public class PathRanker {
       boolean newLoad = false;
       if (!checkedWeather.containsKey(storeString)) {
         newLoad = true;
-      } else if (iterUnixTime - checkedWeather.get(storeString) > 30 * 60
-          * 1000) {
+      } else if (iterUnixTime - checkedWeather.get(storeString) > 30 * 60) {
         newLoad = true;
       }
       if (newLoad) {
@@ -235,20 +234,15 @@ public class PathRanker {
     for (int currId : weatherIds) {
       // Gets relevant point in default path
       Waypoint currPoint = defaultPath.getWaypoints().get(currId);
-      long durationToReach = currPoint.getTime();
-      // TEST
-      System.out.println("duration: " + durationToReach);
+      long timeReached = currPoint.getTime();
       float[] currCoords = currPoint.getCoords();
-      TimePoint[] hrWeathers = new TimePoint[49];
-      // WeatherAPIHandler.getWeather(currCoords[0],
-      // currCoords[1]).getHourly().getData();
+      TimePoint[] hrWeathers = WeatherAPIHandler
+          .getWeather(currCoords[0], currCoords[1]).getHourly().getData();
       // Iterates through all paths, and scores the appropriate points
       for (String chosenHrOffset : chosenHrOffsets) {
         // Obtains specific time to be scored
         PathWeatherInfo toModify = diffTimesWeather.get(chosenHrOffset);
-        long toModifyStartTime = toModify.getStartTime();
-        int hrsFromNow = Units
-            .UnixToHrsFromNow(toModifyStartTime + durationToReach);
+        int hrsFromNow = Units.UnixToHrsFromNow(timeReached);
         // Scores time index
         score(currCoords[0], currCoords[1], toModify, hrWeathers[hrsFromNow]);
       }
