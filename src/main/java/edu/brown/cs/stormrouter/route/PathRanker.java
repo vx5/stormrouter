@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableMap;
-
 import edu.brown.cs.stormrouter.weather.TimePoint;
 import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
@@ -35,11 +33,6 @@ public class PathRanker {
   private final int[] HR_OFFSETS = new int[] {
       -2, -1, 1, 2, 5
   };
-  // Stores Map of icon names to integers
-  private final Map<String, Integer> iconIndices = new ImmutableMap.Builder<String, Integer>()
-      .put("clear-day", 0).put("clear-night", 1).put("rain", 2).put("snow", 3)
-      .put("sleet", 4).put("wind", 5).put("fog", 6).put("cloudy", 7)
-      .put("partly-cloudy-day", 8).put("partly-cloudy-night", 9).build();
 
   /**
    * Empty constructor.
@@ -188,8 +181,6 @@ public class PathRanker {
       TimePoint weather) {
     // Initializes variable to count score
     int pointScore = 0;
-    // Initializes variable to keep track of most significant type of weather
-    int iconType = iconIndices.get(weather.getIcon());
     // Checks for case of precipitation
     double precipIntensity = weather.getPrecipIntensity();
     if (precipIntensity > 0.01) {
@@ -239,8 +230,8 @@ public class PathRanker {
       pointScore += 15;
     }
     // Now, performs change to relevant pathInfo object
-    pathInfo.addWeatherData(pointLat, pointLong, iconType, weather.getSummary(),
-        pointScore);
+    pathInfo.addWeatherData(pointLat, pointLong, weather.getIcon(),
+        weather.getSummary(), pointScore);
   }
 
   private void scorePaths() throws Exception {

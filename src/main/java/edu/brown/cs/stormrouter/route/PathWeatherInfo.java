@@ -32,12 +32,12 @@ public class PathWeatherInfo {
    * 
    * @param pointLat    latitude of given point
    * @param pointLong   longitude of given point
-   * @param weatherType integer representing type of weather to be displayed
+   * @param weatherType Stringr representing type of weather to be displayed
    * @param weatherSum  String summary of weather occurring at this point
    * @param scoreIncr   integer representing score of the given weather point
    */
-  public void addWeatherData(float pointLat, float pointLong, int weatherType,
-      String weatherSum, int scoreIncr) {
+  public void addWeatherData(float pointLat, float pointLong,
+      String weatherType, String weatherSum, int scoreIncr) {
     // Adds details to set
     weatherData.add(
         new PathWeatherPoint(pointLat, pointLong, weatherType, weatherSum));
