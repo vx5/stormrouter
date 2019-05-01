@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableMap;
+
 import edu.brown.cs.stormrouter.weather.TimePoint;
 import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
@@ -33,11 +35,11 @@ public class PathRanker {
   private final int[] HR_OFFSETS = new int[] {
       -2, -1, 1, 2, 5
   };
-
-  // Enum to represent different weather types for assignment in weather data
-  private enum WEATHER_TYPE {
-    PLAIN, RAIN, SNOW, HEAT, FOG, WIND
-  }
+  // Stores Map of icon names to integers
+  private final Map<String, Integer> iconIndices = new ImmutableMap.Builder<String, Integer>()
+      .put("clear-day", 0).put("clear-night", 1).put("rain", 2).put("snow", 3)
+      .put("sleet", 4).put("wind", 5).put("fog", 6).put("cloudy", 7)
+      .put("partly-cloudy-day", 8).put("partly-cloudy-night", 9).build();
 
   /**
    * Empty constructor.
@@ -187,8 +189,7 @@ public class PathRanker {
     // Initializes variable to count score
     int pointScore = 0;
     // Initializes variable to keep track of most significant type of weather
-    // 0 represents no significant weather
-    int weatherType = WEATHER_TYPE.PLAIN.ordinal();
+    int iconType = iconIndices.get(weather.getIcon());
     // Checks for case of precipitation
     double precipIntensity = weather.getPrecipIntensity();
     if (precipIntensity > 0.01) {
@@ -200,10 +201,8 @@ public class PathRanker {
           pointScore += 5;
         } else if (precipIntensity < 0.3) {
           pointScore += 15;
-          weatherType = WEATHER_TYPE.RAIN.ordinal();
         } else {
           pointScore += 40;
-          weatherType = WEATHER_TYPE.RAIN.ordinal();
         }
         // Checks for case of sleet or snow
       } else {
@@ -213,22 +212,18 @@ public class PathRanker {
           pointScore += 5;
         } else if (precipIntensity < 0.15) {
           pointScore += 25;
-          weatherType = WEATHER_TYPE.SNOW.ordinal();
         } else {
           pointScore += 60;
-          weatherType = WEATHER_TYPE.SNOW.ordinal();
         }
       }
     }
     // Checks for case of very high temperature
     if (weather.getTemperature() > 105) {
       pointScore += 30;
-      weatherType = WEATHER_TYPE.HEAT.ordinal();
     }
     // Checks for case of low visibility
     double visibility = weather.getVisibility();
     if (visibility < 0.25) {
-      weatherType = WEATHER_TYPE.FOG.ordinal();
       pointScore += 30;
     } else if (visibility < 0.62) {
       pointScore += 15;
@@ -238,15 +233,14 @@ public class PathRanker {
     double windGust = weather.getWindGust();
     if (windGust > 65) {
       pointScore += 100;
-      weatherType = WEATHER_TYPE.WIND.ordinal();
     } else if (windGust > 58 || windSpeed > 40) {
       pointScore += 40;
     } else if (windGust > 45 || windSpeed > 30) {
       pointScore += 15;
     }
     // Now, performs change to relevant pathInfo object
-    pathInfo.addWeatherData(pointLat, pointLong, weatherType,
-        weather.getSummary(), pointScore);
+    pathInfo.addWeatherData(pointLat, pointLong, iconType, weather.getSummary(),
+        pointScore);
   }
 
   private void scorePaths() throws Exception {
