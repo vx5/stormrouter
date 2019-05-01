@@ -89,29 +89,38 @@ public final class DirectionsAPIHandler {
 
         if (root != null && root.getAsJsonObject().get("routes") != null) {
           JsonObject routes = root.getAsJsonArray("routes").get(0).getAsJsonObject();
-          JsonObject segmentsObject = routes.getAsJsonArray("segments").get(0)
-              .getAsJsonObject();
-          JsonArray steps = segmentsObject.getAsJsonArray("steps");
+          JsonArray paths = routes.getAsJsonArray("segments");
 
-          // Retrieve and decode the polyline string
-          String polyline = routes.get("geometry").getAsString();
-          List<LatLon> polylinePts = PolylineDecoder.decodePolyline(polyline);
+          for (int i = 0; i < paths.size(); i++) {
+            JsonObject segmentsObject = paths.get(i).getAsJsonObject();
+            JsonArray steps = segmentsObject.getAsJsonArray("steps");
 
-          for (int i = 0; i < steps.size(); i++) {
-            JsonObject step = steps.get(i).getAsJsonObject();
+            // Retrieve and decode the polyline string
+            String polyline = routes.get("geometry").getAsString();
+            List<LatLon> polylinePts = PolylineDecoder.decodePolyline(polyline);
 
-            double distance = step.get("distance").getAsDouble();
-            double duration = step.get("duration").getAsDouble();
-            String name = step.get("name").getAsString();
-            String instructions = step.get("instruction").getAsString();
-            JsonArray routeWaypoints = step.getAsJsonArray("way_points");
-            LatLon startLatLon = polylinePts.get(routeWaypoints.get(0).getAsInt());
-            LatLon endLatLon = polylinePts.get(routeWaypoints.get(1).getAsInt());
+            for (int j = 0; j < steps.size(); j++) {
+              JsonObject step = steps.get(j).getAsJsonObject();
 
-            Segment segment = new Segment(startLatLon, endLatLon, distance,
-                duration, name, instructions);
-            segments.add(segment);
-            geoJSON = root;
+              double distance = step.get("distance").getAsDouble();
+              double duration = step.get("duration").getAsDouble();
+              String name = step.get("name").getAsString();
+              String instructions = step.get("instruction").getAsString();
+              JsonArray routeWaypoints = step.getAsJsonArray("way_points");
+              LatLon startLatLon = polylinePts.get(routeWaypoints.get(0).getAsInt());
+              LatLon endLatLon = polylinePts.get(routeWaypoints.get(1).getAsInt());
+
+              //  Add a flag for the final step in a path
+              boolean finalStep = false;
+              if (j == steps.size() - 1) {
+                finalStep = true;
+              }
+
+              Segment segment = new Segment(startLatLon, endLatLon, distance,
+                  duration, name, instructions, finalStep);
+              segments.add(segment);
+              geoJSON = root;
+            }
           }
         } else {
           System.out.println("Error building response object");
