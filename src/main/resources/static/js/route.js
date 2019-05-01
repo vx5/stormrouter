@@ -11,7 +11,7 @@ let markers = [];
 let weatherId = 0;
 let pathExists = false;
 
-function forwardGeocode(input) {
+/*function forwardGeocode(input) {
   return new Promise((resolve, reject) => {
     geocoder.query({
       query: input,
@@ -24,38 +24,34 @@ function forwardGeocode(input) {
       }
     });
   });
-}
+}*/
 
 
 function getFormInputs() {
   const form = document.forms['itinerary-form'];
-  const start = form['start'].value;
-  const end = form['end'].value;
+  /*const start = form['start'].value;
+  const end = form['end'].value;*/
+  const startPoint = coordinates['start'];
+  const endPoint = coordinates['end'];
   const date = form['date'].value;
+  const unixTime = +new Date(date) / 1000;
 
-  const waypointPromises = [];
-  const durations = [];
+  //const waypointPromises = [];
+  const waypointStops = [];
 
   const inputs = $(form).serializeArray();
   for (let i = 2; i < inputs.length - 1;) { // begin at first waypoint input and end before destination input
-    const waypointName = inputs[i++].value;
+    const waypointName = inputs[i++].name;
+    const waypoint = coordinates[waypointName];
     const duration = inputs[i++].value;
-    waypointPromises.push(forwardGeocode(waypointName));
-    durations.push(+duration);
+
+    if (!waypoint) {
+      console.log('ERROR: no coordinate for ' + waypointName);
+    }
+    waypointStops.push({waypoint, duration});
   }
 
-  const promises = [];
-  promises.push(forwardGeocode(start));
-  promises.push(forwardGeocode(end));
-  promises.push(Promise.all(waypointPromises));
-
-  return Promise.all(promises).then(values => {
-    const [startPoint, endPoint, waypoints] = values;
-    const waypointStops = waypoints.map((waypoint, i) => ({waypoint: waypoint, duration: durations[i]}));
-    const unixTime = +new Date(date) / 1000;
-
-    return {start: startPoint, date: unixTime, destination: endPoint, waypoints: waypointStops};
-  });
+  return {start: startPoint, date: unixTime, destination: endPoint, waypoints: waypointStops};
 }
 
 //Clear the current path.

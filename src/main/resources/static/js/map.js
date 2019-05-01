@@ -16,10 +16,10 @@ map.addControl(new mapboxgl.NavigationControl({
   showCompass: false
 }));
 
-let results = {};
+let coordinates = {};
 
-function addGeocoder(id, name) {
-  const $target = $('#' + id);
+function addGeocoder(name) {
+  const $target = $('#' + name);
 
   let geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
@@ -28,7 +28,8 @@ function addGeocoder(id, name) {
   $target.append(geocoder.onAdd(map));
   geocoder.on('result', result => {
   	console.log(result);
-  	results[id] = result.geometry.coordinates;
+  	// TODO: is this lon lat?
+  	coordinates[name] = result.geometry.coordinates;
   });
   
   const $input = $target.find('input');
@@ -37,8 +38,8 @@ function addGeocoder(id, name) {
   $input.prop('required', true);
 }
 
-addGeocoder('geocoderStart', 'start');
-addGeocoder('geocoderEnd', 'end');
+addGeocoder('start');
+addGeocoder('end');
 
 const WEATHER_TYPE = [
     'PLAIN', 'RAIN', 'SNOW', 'HEAT', 'FOG', 'WIND'
