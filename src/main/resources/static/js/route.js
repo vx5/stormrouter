@@ -69,50 +69,12 @@ function clearLayer(id) {
   map.removeSource(id);
 }
 
-//Clear weather icons
-/*function removeWeather() {
-  for (let i = 0; i < weatherOnMap.length; i++) {
-    clearLayer(weatherOnMap[i]);
-  }
-  weatherOnMap = [];
-}*/
-
-/*
-weatherInfo = {
-	lat:
-	lon:
-	enum weather:
-}
-*/
-/*function addWeather(weatherInfo) {
-  map.addLayer({
-    "id": "weather" + weatherId,
-    "type": "symbol",
-    "source": {
-      "type": "geojson",
-      "data": {
-        "type": "FeatureCollection",
-        "features": [{
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [weatherInfo.lon, weatherInfo.lat]
-          }
-        }]
-      }
-    },
-    "layout": {
-      "icon-image": WEATHER_TYPE[weatherInfo.weather],
-      "icon-size": 0.1
-    }
-  });
-  weatherOnMap.push("weather" + weatherId);
-  weatherId++;
-}*/
-
-
 //Add weather markers.
-function addWeatherMarker(type, lat, lon) {
+function addWeatherMarker(weatherData) {
+  const type = WEATHER_TYPE[weatherData.weatherType];
+  const lat = weatherData.lat;
+  const lon = weatherData.lon;
+  const summary = weatherData.weatherSum;
   const id = 'weather' + weatherId++;
   const img = new Image();
   img.id = id;
@@ -127,7 +89,7 @@ function addWeatherMarker(type, lat, lon) {
   const popup = new mapboxgl.Popup({
     closeButton: false,
     closeOnClick: false
-  }).setHTML('<h1>Popup!</h1>');
+  }).setHTML('<div id="popup">' + summary + '</div>');
 
   marker.setPopup(popup);
 
@@ -199,9 +161,15 @@ function displayWeather(weather) {
   }
 
   const bestWeather = weather[weather.best];
-
   removeWeatherMarkers();
-  //weather.forEach(weatherInfo => );
+  if(bestWeather == null){
+  	console.log("No best weather. NULL");
+  	return; 
+  }
+  const weatherInfo = bestWeather.weatherData;
+  for(let i = 0; i < weatherInfo.length; i++){
+  	addWeatherMarker(weatherInfo[i]);
+  }
 }
 
 $(document).ready(() => {
@@ -224,9 +192,9 @@ $(document).ready(() => {
         const map = response.map;
         const segments = response.segments;
         const weather = response.weather;
-
         displayPath(map);
         displayDirections(segments);
+        displayWeather(weather);
       });
     }).catch(reason => {
       console.log(reason);

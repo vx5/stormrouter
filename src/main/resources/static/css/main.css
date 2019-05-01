@@ -200,3 +200,7 @@ input[type="text"] {
 .without::-webkit-datetime-edit-ampm-field {
    display: none;
  }
+
+#popup{
+  color: black;
+}
