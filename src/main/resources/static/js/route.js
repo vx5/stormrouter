@@ -217,7 +217,7 @@ $(document).ready(() => {
         const path = response.path;
         const segments = response.segments;
         const weather = response.weather;
-        displayPath(path);
+        displayPath(parsePolyline(path));
         displayDirections(segments);
         displayWeather(weather);
       });
