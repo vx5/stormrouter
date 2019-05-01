@@ -12,6 +12,7 @@ class Waypoint {
   private float wayLat;
   private float wayLong;
   private long timeToReach;
+  private double distanceToReach;
 
   /**
    * Basic constructor that only requires, stores Waypoint's location.
@@ -58,5 +59,13 @@ class Waypoint {
    */
   long getTime() {
     return new Long(timeToReach);
+  }
+
+  void setDistToReach(double distToReach) {
+    distanceToReach = distToReach;
+  }
+
+  double getDistToReach() {
+    return new Double(distanceToReach);
   }
 }
