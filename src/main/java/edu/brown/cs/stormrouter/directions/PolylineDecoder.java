@@ -34,25 +34,28 @@ public final class PolylineDecoder {
 
       do {
         currentByte = encoded.charAt(currentStringIndex++) - 63;
-        currentResult |= (currentByte & 0x01f) << shiftAmount;
-
-        int temporaryLat = ((currentResult & 1) != 0 ? ~(currentResult >> 1)
-            : (currentResult >> 1));
-
-        do {
-          currentByte = encoded.charAt(currentStringIndex++) - 63;
-          currentResult |= (currentByte & 0x01f) << shiftAmount;
-        } while (currentByte >= 0x20);
-
-        int temporaryLon = ((currentResult & 1) != 0 ? ~(currentResult >> 1)
-            : (currentResult >> 1));
-
-        lat += temporaryLat;
-        lon += temporaryLon;
-
-        LatLon coords = new LatLon((lat / 1E5), (lon / 1E5));
-        currentList.add(coords);
+        currentResult |= (currentByte & 0x1f) << shiftAmount;
+        shiftAmount += 5;
       } while (currentByte >= 0x20);
+
+      int temporaryLat = ((currentResult & 1) != 0 ? ~(currentResult >> 1)
+          : (currentResult >> 1));
+      lat += temporaryLat;
+
+      shiftAmount = 0;
+      currentResult = 0;
+      do {
+        currentByte = encoded.charAt(currentStringIndex++) - 63;
+        currentResult |= (currentByte & 0x1f) << shiftAmount;
+        shiftAmount += 5;
+      } while (currentByte >= 0x20);
+
+      int temporaryLon = ((currentResult & 1) != 0 ? ~(currentResult >> 1)
+          : (currentResult >> 1));
+      lon += temporaryLon;
+
+      LatLon coords = new LatLon((lat / 1E5), (lon / 1E5));
+      currentList.add(coords);
     }
 
     return currentList;
