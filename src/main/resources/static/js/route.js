@@ -127,10 +127,10 @@ function displayDirections(directions){
 	const $directs = $("ol.directions-list");
 	$directs.empty();
 	for(let i = 0; i < directions.length; i++){
-		const duration = directions[i].duration;
+		const length = directions[i].length;
 		const instruction = directions[i].instructions;
 		$directs.append(
-			'<li><div class="instructions">For ' + duration + ', ' + instruction + '</div></li>'); 
+			'<li><div class="instructions">' + instruction + ' for ' + Math.round(length) + ' meters</div></li>');
 	}
 }
 
