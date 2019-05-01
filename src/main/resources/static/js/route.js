@@ -203,7 +203,6 @@ $(document).ready(() => {
           console.log(message);
           return;
         }
-
         const path = response.path;
         const segments = response.segments;
         const weather = response.weather;

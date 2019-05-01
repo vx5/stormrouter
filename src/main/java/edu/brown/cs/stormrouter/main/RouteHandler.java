@@ -73,16 +73,8 @@ public class RouteHandler implements Route {
       PathRanker ranker = new PathRanker();
       Map<String, Object> pathWeathers = ranker.bestPath(startPath);
       // Stores all relevant variables in map to be parsed through JSON
-
-      List<LatLon> pointsList = directionsData.getPoints();
-      double[][] points = new double[pointsList.size()][2];
-      for (int i = 0; i < pointsList.size(); i++) {
-        points[i][0] = pointsList.get(i).getLongitude();
-        points[i][1] = pointsList.get(i).getLatitude();
-      }
-
       Map<String, Object> variables = ImmutableMap.of("message", "", "path",
-          points, "segments", directions, "weather",
+          directionsData.getPoints(), "segments", directions, "weather",
           pathWeathers);
       return GSON.toJson(variables);
     } catch (NumberFormatException nfe) {

@@ -28,7 +28,7 @@ public class PathRanker {
   // Stores list of indices in paths to be used for waypoints
   private List<Integer> weatherIds = new ArrayList<Integer>();
   // Stores number of points that should be checked
-  private final int NUM_POINTS = 10;
+  private final int NUM_POINTS = 4;
   // Stores desired hour offsets to be checked, if possible
   private final int[] HR_OFFSETS = new int[] {
       -2, -1, 1, 2, 5
@@ -117,7 +117,6 @@ public class PathRanker {
     List<Waypoint> pathPoints = defaultPath.getWaypoints();
     // Stores information associate with first initial chosen id
     Waypoint startPoint = pathPoints.get(0);
-    // TODO: Figure out if this is needed: pathPoints.add(startPoint);
     String storeString = "0,0";
     checkedWeather.put(storeString, startPoint.getTime());
     // Obtains coordinates for use in tile calculation in loop
@@ -157,6 +156,30 @@ public class PathRanker {
     for (int i = 0; i < allWeatherIds.size(); i += skipNum) {
       // Adds requisite number to weatherIds
       weatherIds.add(allWeatherIds.get(i));
+    }
+    // NEW VERSION: VARIABLE NAMES CHANGED SO IT IS INOPERABLE
+    ArrayList<Integer> weatherIdsFake = new ArrayList<Integer>();
+    if (allWeatherIds.size() > NUM_POINTS) {
+      // Uses NUM_POINTS to identify time that should be spent in each segment
+      double totalPathDistance = pathPoints.get(pathPoints.size() - 1)
+          .getDistToReach() - pathPoints.get(0).getDistToReach();
+      double sectionDistance = Math
+          .ceil(totalPathDistance / (double) NUM_POINTS);
+      // Iterates through allWeatherIds based on certain journey durations
+      double distAtLast = Double.NEGATIVE_INFINITY;
+      for (int i = 0; i < allWeatherIds.size(); i++) {
+        // Stores actual coordinate
+        int coord = allWeatherIds.get(i);
+        // Calculates distance from start for current point
+        double distFromStart = pathPoints.get(coord).getDistToReach();
+        // Checks for sufficient distance for using a new path
+        if (distFromStart - distAtLast > sectionDistance) {
+          weatherIdsFake.add(coord);
+          distAtLast = distFromStart;
+        }
+      }
+    } else {
+      weatherIdsFake = new ArrayList<Integer>(allWeatherIds);
     }
   }
 
