@@ -24,11 +24,11 @@ public class PathRanker {
   private Map<String, Long> checkedWeather = new HashMap<String, Long>();
   private final float TILE_SIZE_MILES = 20;
   private final float TILE_SIZE_DEGREES = TILE_SIZE_MILES
-      / Units.DEGREES_PER_MILE;
+      * Units.DEGREES_PER_MILE;
   // Stores list of indices in paths to be used for waypoints
   private List<Integer> weatherIds = new ArrayList<Integer>();
   // Stores number of points that should be checked
-  private final int NUM_POINTS = 1;
+  private final int NUM_POINTS = 10;
   // Stores desired hour offsets to be checked, if possible
   private final int[] HR_OFFSETS = new int[] {
       -2, -1, 1, 2, 5
@@ -156,7 +156,7 @@ public class PathRanker {
     // Iterates using skip number
     for (int i = 0; i < allWeatherIds.size(); i += skipNum) {
       // Adds requisite number to weatherIds
-      weatherIds.add(i);
+      weatherIds.add(allWeatherIds.get(i));
     }
   }
 
@@ -236,15 +236,22 @@ public class PathRanker {
       Waypoint currPoint = defaultPath.getWaypoints().get(currId);
       long timeReached = currPoint.getTime();
       float[] currCoords = currPoint.getCoords();
+      // TEST
+      System.out.println("lat: " + currCoords[0] + ", long: " + currCoords[1]);
       TimePoint[] hrWeathers = WeatherAPIHandler
           .getWeather(currCoords[0], currCoords[1]).getHourly().getData();
+      // Stores time from now for iteration
+      int hrsFromNow = Units.UnixToHrsFromNow(timeReached);
+      // Stores relevant TimePoint
+      TimePoint hrWeather = hrWeathers[hrsFromNow];
+      // TEST
+      System.out.println("hrsFromNow: " + hrsFromNow);
       // Iterates through all paths, and scores the appropriate points
       for (String chosenHrOffset : chosenHrOffsets) {
         // Obtains specific time to be scored
         PathWeatherInfo toModify = diffTimesWeather.get(chosenHrOffset);
-        int hrsFromNow = Units.UnixToHrsFromNow(timeReached);
         // Scores time index
-        score(currCoords[0], currCoords[1], toModify, hrWeathers[hrsFromNow]);
+        score(currCoords[0], currCoords[1], toModify, hrWeather);
       }
     }
   }

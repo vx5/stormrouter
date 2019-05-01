@@ -30,9 +30,6 @@ public final class PathConverter {
    */
   public static Path convertPath(List<Segment> inputPath,
       RouteWaypoint[] waypoints, long unixStartTime) {
-    // TEST
-    System.out.println("pause place: " + waypoints[0].waypoint[0] + ","
-        + waypoints[0].waypoint[1]);
     // Makes new Path object using the given start time
     Path centerPath = new Path(unixStartTime);
     // Stores information associated with very first point in the weather-loaded
@@ -50,9 +47,6 @@ public final class PathConverter {
     for (Segment seg : inputPath) {
       // Selects end point
       LatLon endCoord = seg.getEnd();
-      // TEST
-      System.out.println("endCoord: " + endCoord.getLatitude() + ","
-          + endCoord.getLongitude());
       // Checks for intermediary waypoint (will check in order)
       if (waypoints.length > 0) {
         RouteWaypoint inter = waypoints[0];
@@ -86,10 +80,6 @@ public final class PathConverter {
       // Adds point
       centerPath.addWaypoint(newPoint);
     }
-    // TEST
-    List<Waypoint> pathPts = centerPath.getWaypoints();
-    float[] finalCoords = pathPts.get(pathPts.size() - 1).getCoords();
-    System.out.println("Final: " + finalCoords[0] + "," + finalCoords[1]);
     // Return filled path
     return centerPath;
   }
