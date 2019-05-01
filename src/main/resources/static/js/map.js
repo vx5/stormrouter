@@ -36,16 +36,13 @@ function addGeocoder(name) {
   
   const $input = $target.find('input');
 
-  $input.attr('name', name);
-  $input.focusout(() => {
-  	console.log($input);
-  	console.log($input[0]);
-  	console.log($input[0].nextElementSibling);
-  	console.log($($input[0].nextElementSibling).find('a'));
-  	console.log($($input[0].nextElementSibling).find('a')[0]);
-  	
-  	$($($input[0].nextElementSibling).find('.active')[0]).trigger('click');
+  $target.find('button').click(() => {
+    coordinates[name] = null;
+  })
+  $input.on('keyup', () => {
+    coordinates[name] = null;
   });
+  $input.attr('name', name);
   $input.prop('required', true);
 }
 
