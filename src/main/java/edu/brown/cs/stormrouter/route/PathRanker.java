@@ -236,16 +236,12 @@ public class PathRanker {
       Waypoint currPoint = defaultPath.getWaypoints().get(currId);
       long timeReached = currPoint.getTime();
       float[] currCoords = currPoint.getCoords();
-      // TEST
-      System.out.println("lat: " + currCoords[0] + ", long: " + currCoords[1]);
       TimePoint[] hrWeathers = WeatherAPIHandler
           .getWeather(currCoords[0], currCoords[1]).getHourly().getData();
       // Stores time from now for iteration
       int hrsFromNow = Units.UnixToHrsFromNow(timeReached);
       // Stores relevant TimePoint
       TimePoint hrWeather = hrWeathers[hrsFromNow];
-      // TEST
-      System.out.println("hrsFromNow: " + hrsFromNow);
       // Iterates through all paths, and scores the appropriate points
       for (String chosenHrOffset : chosenHrOffsets) {
         // Obtains specific time to be scored
