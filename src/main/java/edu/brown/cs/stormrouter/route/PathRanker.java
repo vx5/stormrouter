@@ -153,28 +153,28 @@ public class PathRanker {
     if (allWeatherIds.size() > NUM_POINTS) {
       // Uses NUM_POINTS to identify time that should be spent in each segment
       double totalPathDistance = pathPoints.get(pathPoints.size() - 1)
-          .getDistToReach() - pathPoints.get(0).getDistToReach();
+          .getDistToReach();
       double sectionDistance = Math
           .ceil(totalPathDistance / (double) NUM_POINTS);
       // Stores the distance required to reach the next point
-      double minDistToNext = new Double(sectionDistance);
+      double minDistToNext = 0;
       // Iterates through allWeatherIds based on certain journey durations
-      double distAtLast = Double.NEGATIVE_INFINITY;
+      double lastDistChosen = 0;
       for (int i = 0; i < allWeatherIds.size(); i++) {
         // Stores actual coordinate
         int coord = allWeatherIds.get(i);
         // Calculates distance from start for current point
         double distFromStart = pathPoints.get(coord).getDistToReach();
         // Calculates distance moved from last chosen point
-        double distMoved = distFromStart - distAtLast;
+        double distMoved = distFromStart - lastDistChosen;
         // Checks for sufficient distance for using a new path
         if (distMoved > minDistToNext) {
           // Adds index
           weatherIds.add(coord);
           // Moves marker for last point
-          distAtLast = distFromStart;
+          lastDistChosen = distFromStart;
           // Calculates distance to the next point
-          minDistToNext = sectionDistance - (distMoved - sectionDistance);
+          minDistToNext = sectionDistance - (distMoved - minDistToNext);
         }
       }
     } else {
