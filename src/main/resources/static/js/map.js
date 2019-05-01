@@ -26,15 +26,26 @@ function addGeocoder(name) {
     mapboxgl: mapboxgl
   });
   $target.append(geocoder.onAdd(map));
+
   geocoder.on('result', result => {
   	console.log(result);
   	// TODO: is this lon lat?
-  	coordinates[name] = result.geometry.coordinates;
+    const lnglat = result.result.geometry.coordinates;
+  	coordinates[name] = [lnglat[1], lnglat[0]];
   });
   
   const $input = $target.find('input');
 
   $input.attr('name', name);
+  $input.focusout(() => {
+  	console.log($input);
+  	console.log($input[0]);
+  	console.log($input[0].nextElementSibling);
+  	console.log($($input[0].nextElementSibling).find('a'));
+  	console.log($($input[0].nextElementSibling).find('a')[0]);
+  	
+  	$($($input[0].nextElementSibling).find('.active')[0]).trigger('click');
+  });
   $input.prop('required', true);
 }
 

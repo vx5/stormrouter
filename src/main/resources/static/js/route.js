@@ -46,7 +46,7 @@ function getFormInputs() {
     const duration = inputs[i++].value;
 
     if (!waypoint) {
-      console.log('ERROR: no coordinate for ' + waypointName);
+      throw 'ERROR: no coordinate for ' + waypointName;
     }
     waypointStops.push({waypoint, duration});
   }
@@ -123,11 +123,22 @@ function displayDirections(directions){
 	const $directs = $("ol.directions-list");
 	$directs.empty();
 	for(let i = 0; i < directions.length; i++){
-		const duration = directions[i].duration;
+		const length = directions[i].length;
 		const instruction = directions[i].instructions;
 		$directs.append(
-			'<li><div class="instructions">For ' + duration + ', ' + instruction + '</div></li>'); 
+			'<li><div class="instructions">' + instruction + ' for ' + formatLength(length) + '</div></li>');
 	}
+}
+
+// Converts a length in meters into a displayable format
+function formatLength(metersLength) {
+  let feetLength = metersLength * 3.28084;
+  if (feetLength < 1000) {
+    return Math.ceil(feetLength / 10) * 10 + " feet";
+  } else {
+    let milesLength = feetLength / 5280;
+    return milesLength.toFixed(1) + " miles";
+  }
 }
 
 /*
@@ -187,7 +198,34 @@ $(document).ready(() => {
   $('#itinerary-form').submit(event => {
     event.preventDefault();
 
-    getFormInputs().then(postParameters => {
+    try {
+      const postParameters = getFormInputs();
+
+      console.log(postParameters);
+      $.post('/stormrouter/route', {params: JSON.stringify(postParameters)}, responseJSON => {
+        const response = JSON.parse(responseJSON);
+        console.log(response);
+
+        const message = response.message;
+
+        if (message) {
+          console.log(message);
+          alert('There was an error processing your request.');
+          return;
+        }
+        const path = response.path;
+        const segments = response.segments;
+        const weather = response.weather;
+        displayPath(parsePolyline(path));
+        displayDirections(segments);
+        displayWeather(weather);
+      });
+    } catch (err) {
+      console.log(err);
+      alert('There was an error processing your request.');
+    }
+
+    /*getFormInputs().then(postParameters => {
       console.log(postParameters);
       $.post('/stormrouter/route', {params: JSON.stringify(postParameters)}, responseJSON => {
         const response = JSON.parse(responseJSON);
@@ -202,13 +240,13 @@ $(document).ready(() => {
         const path = response.path;
         const segments = response.segments;
         const weather = response.weather;
-        displayPath(path);
+        displayPath(parsePolyline(path));
         displayDirections(segments);
         displayWeather(weather);
       });
     }).catch(reason => {
       console.log(reason);
       alert('There was an error processing your request.');
-    });
+    });*/
   });
 });
