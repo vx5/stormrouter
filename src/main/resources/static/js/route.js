@@ -198,7 +198,7 @@ function displayPath(path) {
       "line-cap": "round"
     },
     "paint": {
-      "line-color": "#888",
+      "line-color": "#5995DA",
       "line-width": 8
     }
   });
