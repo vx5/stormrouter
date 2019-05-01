@@ -13,6 +13,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import edu.brown.cs.stormrouter.route.DirectionsWrapper;
 
 /**
@@ -26,18 +27,18 @@ public final class DirectionsAPIHandler {
   /**
    * Attempts to retrieve directions between the two specified points.
    *
-   * @param start - The latitude and longitude of the starting point
+   * @param start     - The latitude and longitude of the starting point
    * @param waypoints - An array of any waypoints that will be traversed on the
    *                  route
-   * @param end   - The latitude and longitude of the ending point
-   * @return - Returns a DirectionsWrapper object containing all of the data
-   * for each segment, and the full GeoJSON reference for rendering in the GUI
+   * @param end       - The latitude and longitude of the ending point
+   * @return - Returns a DirectionsWrapper object containing all of the data for
+   *         each segment, and the full GeoJSON reference for rendering in the
+   *         GUI
    * @throws Exception - Throws an exception if there is an error retrieving or
-   * parsing the data.
+   *                   parsing the data.
    */
   public static DirectionsWrapper getDirections(LatLon start,
-                                                List<LatLon> waypoints,
-                                                LatLon end) {
+      List<LatLon> waypoints, LatLon end) {
     List<Segment> segments = new ArrayList<>();
     JsonElement geoJSON = null;
 
@@ -49,7 +50,7 @@ public final class DirectionsAPIHandler {
     startArray.add(start.getLongitude());
     startArray.add(start.getLatitude());
     coordinatesArray.add(startArray);
-    for (LatLon waypoint : waypoints){
+    for (LatLon waypoint : waypoints) {
       JsonArray waypointArray = new JsonArray();
       waypointArray.add(waypoint.getLongitude());
       waypointArray.add(waypoint.getLatitude());
@@ -70,14 +71,15 @@ public final class DirectionsAPIHandler {
       request.setRequestMethod("POST");
       request.setRequestProperty("Authorization", API_KEY);
       request.setRequestProperty("Content-Type", "application/json");
-      request.setRequestProperty("Content-Length", "" + bodyString.getBytes().length);
+      request.setRequestProperty("Content-Length",
+          "" + bodyString.getBytes().length);
       request.setRequestProperty("Content-Language", "en-US");
       request.setDoOutput(true);
       request.setDoInput(true);
       request.connect();
 
-      OutputStreamWriter out
-          = new OutputStreamWriter(request.getOutputStream());
+      OutputStreamWriter out = new OutputStreamWriter(
+          request.getOutputStream());
       out.write(bodyString);
       out.close();
 
@@ -85,10 +87,12 @@ public final class DirectionsAPIHandler {
       if (responseCode == HttpURLConnection.HTTP_OK) {
         JsonParser parser = new JsonParser();
         JsonObject root = parser
-            .parse(new InputStreamReader(request.getInputStream())).getAsJsonObject();
+            .parse(new InputStreamReader(request.getInputStream()))
+            .getAsJsonObject();
 
         if (root != null && root.getAsJsonObject().get("routes") != null) {
-          JsonObject routes = root.getAsJsonArray("routes").get(0).getAsJsonObject();
+          JsonObject routes = root.getAsJsonArray("routes").get(0)
+              .getAsJsonObject();
           JsonObject segmentsObject = routes.getAsJsonArray("segments").get(0)
               .getAsJsonObject();
           JsonArray steps = segmentsObject.getAsJsonArray("steps");
@@ -105,11 +109,13 @@ public final class DirectionsAPIHandler {
             String name = step.get("name").getAsString();
             String instructions = step.get("instruction").getAsString();
             JsonArray routeWaypoints = step.getAsJsonArray("way_points");
-            LatLon startLatLon = polylinePts.get(routeWaypoints.get(0).getAsInt());
-            LatLon endLatLon = polylinePts.get(routeWaypoints.get(1).getAsInt());
+            LatLon startLatLon = polylinePts
+                .get(routeWaypoints.get(0).getAsInt());
+            LatLon endLatLon = polylinePts
+                .get(routeWaypoints.get(1).getAsInt());
 
             Segment segment = new Segment(startLatLon, endLatLon, distance,
-                duration, name, instructions);
+                duration, name, instructions, false);
             segments.add(segment);
             geoJSON = root;
           }
