@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
+import edu.brown.cs.stormrouter.main.RouteHandler.RouteWaypoint;
 
 /**
  * @author vx5
@@ -26,7 +27,8 @@ public final class PathConverter {
    * @param unixStartTime Long unix form of start time
    * @return Path object given input Segment list and start time
    */
-  public static Path convertPath(List<Segment> inputPath, long unixStartTime) {
+  public static Path convertPath(List<Segment> inputPath,
+      RouteWaypoint[] waypoints, long unixStartTime) {
     // Makes new Path object using the given start time
     Path centerPath = new Path(unixStartTime);
     // Stores information associated with very first point in the weather-loaded
@@ -38,15 +40,28 @@ public final class PathConverter {
     newPoint.setTime(timeIndex);
     // Adds that new point to the tracker
     centerPath.addWaypoint(newPoint);
+    // Stores amount by which next point must be delayed, 0 if no delay
+    int minDelay = 0;
     // Iterates through all segments left in path
     for (Segment seg : inputPath) {
       // Selects end point
       LatLon endCoord = seg.getEnd();
+      // Checks for intermediary waypoint
+      for (int i = 0; i < waypoints.length; i++) {
+        double[] interCoords = waypoints[i].waypoint;
+        LatLon interLoc = new LatLon(interCoords[0], interCoords[1]);
+      }
       // Constructs Waypoint
       newPoint = new Waypoint((float) endCoord.getLatitude(),
           (float) endCoord.getLongitude());
-      // Iterates, sets time index
+      // Iterates time index based on distance
       timeIndex += seg.getDuration();
+      // If applicable, iterates time index based on delay
+      if (minDelay != 0) {
+        timeIndex += minDelay;
+        minDelay = 0;
+      }
+      // Sets time index
       newPoint.setTime(timeIndex);
       // Adds point
       centerPath.addWaypoint(newPoint);

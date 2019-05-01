@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.stormrouter.directions.DirectionsAPIHandler;
 import edu.brown.cs.stormrouter.directions.LatLon;
-import edu.brown.cs.stormrouter.directions.PolylineDecoder;
 import edu.brown.cs.stormrouter.directions.Segment;
 import edu.brown.cs.stormrouter.route.DirectionsWrapper;
 import edu.brown.cs.stormrouter.route.Path;
@@ -24,9 +23,9 @@ import spark.Route;
 public class RouteHandler implements Route {
   private static final Gson GSON = new Gson();
 
-  private class RouteWaypoint {
-    double[] waypoint;
-    int duration;
+  public class RouteWaypoint {
+    public double[] waypoint;
+    public int duration;
 
     @Override
     public String toString() {
@@ -64,19 +63,19 @@ public class RouteHandler implements Route {
         waypointsList.add(new LatLon(coords[0], coords[1]));
       }
 
-      DirectionsWrapper directionsData
-          = DirectionsAPIHandler.getDirections(start, waypointsList, end);
+      DirectionsWrapper directionsData = DirectionsAPIHandler
+          .getDirections(start, waypointsList, end);
       List<Segment> directions = directionsData.getSegments();
 
       // Parse the start time format into UNIX time
-      Path startPath = PathConverter.convertPath(directions, date);
+      Path startPath = PathConverter.convertPath(directions, waypoints, date);
       // Creates ranker, generates alternate paths
       PathRanker ranker = new PathRanker();
       Map<String, Object> pathWeathers = ranker.bestPath(startPath);
       // Stores all relevant variables in map to be parsed through JSON
-      Map<String, Object> variables = ImmutableMap.of("message", "",
-          "map", directionsData.getGeoJSON(), "segments", directions,
-          "weather", pathWeathers);
+      Map<String, Object> variables = ImmutableMap.of("message", "", "map",
+          directionsData.getGeoJSON(), "segments", directions, "weather",
+          pathWeathers);
       return GSON.toJson(variables);
     } catch (NumberFormatException nfe) {
       Map<String, Object> variables = ImmutableMap.of("message",
