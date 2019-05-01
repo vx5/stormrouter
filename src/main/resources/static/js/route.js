@@ -9,7 +9,7 @@ let geocoder = new L.mapbox.geocoder('mapbox.places');
 //let weatherOnMap = [];
 let markers = [];
 let weatherId = 0;
-let path = false;
+let pathExists = false;
 
 function forwardGeocode(input) {
   return new Promise((resolve, reject) => {
@@ -60,7 +60,7 @@ function getFormInputs() {
 
 //Clear the current path.
 function clearPath() {
-  if(!path) return;
+  if(!pathExists) return;
   map.removeLayer('route');
   map.removeSource('route');
 }
@@ -138,13 +138,23 @@ function displayDirections(directions){
 Path is geoJson.
  */
 function displayPath(path) {
+  console.log(path);
+  // return;
+
   clearPath();
   map.addLayer({
     "id": "route",
     "type": "line",
     "source": {
       "type": "geojson",
-      "data": path
+      "data": {
+		"type": "Feature",
+		"properties": {},
+		"geometry": {
+		  "type": "LineString",
+		  "coordinates": path
+		}
+	  }
     },
     "layout": {
       "line-join": "round",
@@ -155,7 +165,8 @@ function displayPath(path) {
       "line-width": 8
     }
   });
-  path = true;
+  
+  pathExists = true;
 }
 
 function displayWeather(weather) {
@@ -196,7 +207,7 @@ $(document).ready(() => {
         const map = response.map;
         const segments = response.segments;
         const weather = response.weather;
-        displayPath(map);
+        displayPath(parsePolyline(map));
         displayDirections(segments);
         displayWeather(weather);
       });
