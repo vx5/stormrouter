@@ -109,7 +109,7 @@ public final class DirectionsAPIHandler {
             LatLon endLatLon = polylinePts.get(routeWaypoints.get(1).getAsInt());
 
             Segment segment = new Segment(startLatLon, endLatLon, distance,
-                duration, name, instructions);
+                duration, name, instructions, false);
             segments.add(segment);
             geoJSON = root;
           }

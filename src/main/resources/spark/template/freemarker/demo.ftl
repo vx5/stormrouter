@@ -21,8 +21,8 @@
               <li>
                 <div class="img"></div>
                 <div class="instructions">Right</div>
-              </li>
-            </ol> -->
+              </li> -->
+            </ol> 
             <button>Get Suggested Times</button>
           </div>
 
