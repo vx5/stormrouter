@@ -16,14 +16,21 @@ map.addControl(new mapboxgl.NavigationControl({
   showCompass: false
 }));
 
+let results = {};
+
 function addGeocoder(id, name) {
   const $target = $('#' + id);
 
-  $target.append(new MapboxGeocoder({
+  let geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl
-  }).onAdd(map));
-
+  });
+  $target.append(geocoder.onAdd(map));
+  geocoder.on('result', result => {
+  	console.log(result);
+  	results[id] = result.geometry.coordinates;
+  });
+  
   const $input = $target.find('input');
 
   $input.attr('name', name);
@@ -32,8 +39,6 @@ function addGeocoder(id, name) {
 
 addGeocoder('geocoderStart', 'start');
 addGeocoder('geocoderEnd', 'end');
-
-$(".mapboxgl-ctrl-geocoder").css("z-index", null);
 
 const WEATHER_TYPE = [
     'PLAIN', 'RAIN', 'SNOW', 'HEAT', 'FOG', 'WIND'

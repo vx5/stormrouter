@@ -204,10 +204,10 @@ $(document).ready(() => {
           return;
         }
 
-        const map = response.map;
+        const path = response.path;
         const segments = response.segments;
         const weather = response.weather;
-        displayPath(parsePolyline(map));
+        displayPath(path);
         displayDirections(segments);
         displayWeather(weather);
       });

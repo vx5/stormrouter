@@ -1,6 +1,7 @@
 let numWays = 0;
 let geocoderId = 0;
 const LIMIT = 4;
+let formGeocodeId = {};
 
 function addWaypoint() {
   if (numWays >= LIMIT) {
@@ -24,6 +25,7 @@ function addWaypoint() {
       '  </div>\n' +
       '</li>');
 
+  formGeocodeId[numWays] = geocoderId;
   addGeocoder('geocoder' + geocoderId, 'waypoint' + geocoderId);
   geocoderId++;
 }
