@@ -149,22 +149,15 @@ public class PathRanker {
         checkedWeather.put(storeString, iterUnixTime);
       }
     }
-    // Uses NUM_POINTS to reduce number of points
-    int skipNum = (int) Math.ceil(allWeatherIds.size() / (double) NUM_POINTS);
-    // Iterates through all points to add to the weatherIds
-    // Iterates using skip number
-    for (int i = 0; i < allWeatherIds.size(); i += skipNum) {
-      // Adds requisite number to weatherIds
-      weatherIds.add(allWeatherIds.get(i));
-    }
-    // NEW VERSION: VARIABLE NAMES CHANGED SO IT IS INOPERABLE
-    ArrayList<Integer> weatherIdsFake = new ArrayList<Integer>();
+    // Checks for case where reduction is necessary
     if (allWeatherIds.size() > NUM_POINTS) {
       // Uses NUM_POINTS to identify time that should be spent in each segment
       double totalPathDistance = pathPoints.get(pathPoints.size() - 1)
           .getDistToReach() - pathPoints.get(0).getDistToReach();
       double sectionDistance = Math
           .ceil(totalPathDistance / (double) NUM_POINTS);
+      // Stores the distance required to reach the next point
+      double minDistToNext = new Double(sectionDistance);
       // Iterates through allWeatherIds based on certain journey durations
       double distAtLast = Double.NEGATIVE_INFINITY;
       for (int i = 0; i < allWeatherIds.size(); i++) {
@@ -172,14 +165,20 @@ public class PathRanker {
         int coord = allWeatherIds.get(i);
         // Calculates distance from start for current point
         double distFromStart = pathPoints.get(coord).getDistToReach();
+        // Calculates distance moved from last chosen point
+        double distMoved = distFromStart - distAtLast;
         // Checks for sufficient distance for using a new path
-        if (distFromStart - distAtLast > sectionDistance) {
-          weatherIdsFake.add(coord);
+        if (distMoved > minDistToNext) {
+          // Adds index
+          weatherIds.add(coord);
+          // Moves marker for last point
           distAtLast = distFromStart;
+          // Calculates distance to the next point
+          minDistToNext = sectionDistance - (distMoved - sectionDistance);
         }
       }
     } else {
-      weatherIdsFake = new ArrayList<Integer>(allWeatherIds);
+      weatherIds = new ArrayList<Integer>(allWeatherIds);
     }
   }
 
