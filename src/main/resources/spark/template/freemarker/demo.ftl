@@ -51,7 +51,7 @@
           <div class="form-row">
             <div class="location-field">
               <label for="start">Start Location</label>
-              <div id='geocoderStart' class='geocoder'></div>
+              <div id="start" class="geocoder"></div>
             </div>
             <div class="date-field">
               <label for="datepicker">Date &amp; Time</label>
@@ -68,7 +68,7 @@
           <div class="form-row">
             <div class="location-field">
               <label for="destination">Destination</label>
-              <div id='geocoderEnd' class='geocoder'></div>
+              <div id="end" class="geocoder"></div>
             </div>
             <button type="submit" id="route">Submit</button>
           </div>
