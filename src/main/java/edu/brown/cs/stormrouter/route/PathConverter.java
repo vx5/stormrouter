@@ -35,10 +35,12 @@ public final class PathConverter {
     // Stores information associated with very first point in the weather-loaded
     // tracker
     long timeIndex = unixStartTime;
+    double distSoFar = 0;
     LatLon startCoord = inputPath.get(0).getStart();
     Waypoint newPoint = new Waypoint((float) startCoord.getLatitude(),
         (float) startCoord.getLongitude());
     newPoint.setTime(timeIndex);
+    newPoint.setDistToReach(distSoFar);
     // Adds that new point to the tracker
     centerPath.addWaypoint(newPoint);
     // Stores amount by which next point must be delayed, 0 if no delay
@@ -64,7 +66,7 @@ public final class PathConverter {
       // Constructs Waypoint
       newPoint = new Waypoint((float) endCoord.getLatitude(),
           (float) endCoord.getLongitude());
-      // Iterates time index based on distance
+      // Iterates time index based on duration
       timeIndex += seg.getDuration();
       // If applicable, iterates time index based on delay
       if (minDelay != 0) {
@@ -74,6 +76,9 @@ public final class PathConverter {
       }
       // Sets time index
       newPoint.setTime(timeIndex);
+      // Iterates and sets distance
+      distSoFar += seg.getLength();
+      newPoint.setDistToReach(distSoFar);
       // Adds point
       centerPath.addWaypoint(newPoint);
     }
