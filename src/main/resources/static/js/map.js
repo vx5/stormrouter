@@ -28,12 +28,21 @@ function addGeocoder(id, name) {
   $target.append(geocoder.onAdd(map));
   geocoder.on('result', result => {
   	console.log(result);
-  	results[id] = result.geometry.coordinates;
+  	results[id] = result.result.geometry.coordinates;
   });
   
   const $input = $target.find('input');
 
   $input.attr('name', name);
+  $input.focusout(() => {
+  	console.log($input);
+  	console.log($input[0]);
+  	console.log($input[0].nextElementSibling);
+  	console.log($($input[0].nextElementSibling).find('a'));
+  	console.log($($input[0].nextElementSibling).find('a')[0]);
+  	
+  	$($($input[0].nextElementSibling).find('.active')[0]).trigger('click');
+  });
   $input.prop('required', true);
 }
 
