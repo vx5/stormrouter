@@ -11,6 +11,8 @@ let markers = [];
 let weatherId = 0;
 let pathExists = false;
 
+let skycons = new Skycons({"color": "#00022E"});
+
 function forwardGeocode(input) {
   return new Promise((resolve, reject) => {
     geocoder.query({
@@ -73,17 +75,20 @@ function clearLayer(id) {
 
 //Add weather markers.
 function addWeatherMarker(weatherData) {
-  const type = WEATHER_TYPE[weatherData.weatherType];
+  const iconString = weatherData.icon;
   const lat = weatherData.lat;
   const lon = weatherData.lon;
   const summary = weatherData.weatherSum;
   const id = 'weather' + weatherId++;
-  const img = new Image();
-  img.id = id;
-  img.src = '/js/images/' + type + '.svg';
-  img.width = 30;
+  let markerCanvas = document.createElement("canvas");
+  markerCanvas.width = 48;
+  markerCanvas.height = 48;
+  markerCanvas.id = id;
+  document.body.appendChild(markerCanvas);
+  skycons.add(id, getSkyconForString(iconString));
+  skycons.play();
 
-  const marker = new mapboxgl.Marker(img)
+  const marker = new mapboxgl.Marker(markerCanvas)
       .setLngLat([lon, lat])
       .addTo(map);
   markers.push(marker);
@@ -95,15 +100,40 @@ function addWeatherMarker(weatherData) {
 
   marker.setPopup(popup);
 
-  const $img = $('#' + id);
-
-  $img.mouseover(() => {
+  marker.getElement().addEventListener('mouseover', () => {
     marker.togglePopup();
   });
 
-  $img.mouseleave(() => {
+  marker.getElement().addEventListener('mouseout', () => {
     marker.togglePopup();
   });
+}
+
+function getSkyconForString(iconString) {
+  switch (iconString) {
+    case "clear-day":
+      return Skycons.CLEAR_DAY;
+    case "clear-night":
+      return Skycons.CLEAR_NIGHT;
+    case "partly-cloudy-day":
+      return Skycons.PARTLY_CLOUDY_DAY;
+    case "partly-cloudy-night":
+      return Skycons.PARTLY_CLOUDY_NIGHT;
+    case "cloudy":
+      return Skycons.CLOUDY;
+    case "rain":
+      return Skycons.RAIN;
+    case "sleet":
+      return Skycons.SLEET;
+    case "snow":
+      return Skycons.SNOW;
+    case "wind":
+      return Skycons.WIND;
+    case "fog":
+      return Skycons.FOG;
+    default:
+      return Skycons.CLEAR_DAY;
+  }
 }
 
 //Remove all weather markers.
