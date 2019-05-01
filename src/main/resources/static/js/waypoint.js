@@ -1,7 +1,7 @@
 let numWays = 0;
 let geocoderId = 0;
 const LIMIT = 4;
-let formGeocodeId = {};
+//let formGeocodeId = {};
 
 function addWaypoint() {
   if (numWays >= LIMIT) {
@@ -9,13 +9,14 @@ function addWaypoint() {
     return;
   }
   numWays++;
+  const geocoderName = 'waypoint' + geocoderId;
   $(".waypoints").append(
       '<li>\n' +
       '  <div class="form-row">\n' +
       '    <div class="location-field">\n' +
       '      <label for="way">Waypoint </label>\n' +
       '        <i class="fas fa-minus" id="delete-waypoint" onclick="deleteWaypoint(this)"></i>' +
-      `      <div id="geocoder${geocoderId}" class="geocoder"></div>` +
+      `      <div id="${geocoderName}" class="geocoder"></div>` +
       '    </div>\n' +
       '    <div class="duration-field">\n' +
       '      <label for="duration">Duration</label>\n' +
@@ -24,9 +25,9 @@ function addWaypoint() {
       '    </div>\n' +
       '  </div>\n' +
       '</li>');
-
-  formGeocodeId[numWays] = geocoderId;
-  addGeocoder('geocoder' + geocoderId, 'waypoint' + geocoderId);
+  // TODO: should numWays be ++ above?
+  //formGeocodeId[numWays] = geocoderId;
+  addGeocoder(geocoderName);
   geocoderId++;
 }
 
