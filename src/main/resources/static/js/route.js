@@ -130,8 +130,19 @@ function displayDirections(directions){
 		const length = directions[i].length;
 		const instruction = directions[i].instructions;
 		$directs.append(
-			'<li><div class="instructions">' + instruction + ' for ' + Math.round(length) + ' meters</div></li>');
+			'<li><div class="instructions">' + instruction + ' for ' + formatLength(length) + '</div></li>');
 	}
+}
+
+// Converts a length in meters into a displayable format
+function formatLength(metersLength) {
+  let feetLength = metersLength * 3.28084;
+  if (feetLength < 1000) {
+    return Math.ceil(feetLength / 10) * 10 + " feet";
+  } else {
+    let milesLength = feetLength / 5280;
+    return milesLength.toFixed(1) + " miles";
+  }
 }
 
 /*
