@@ -30,6 +30,9 @@ function addWaypoint() {
 
 
 function deleteWaypoint(elem) {
+  //Delete geocode. 
+  $($(elem)[0].nextElementSibling).find('button').trigger('click');
+  //Delete the form row.
   $($(elem)[0].parentNode)[0].parentNode.remove();
   numWays--;
 }
