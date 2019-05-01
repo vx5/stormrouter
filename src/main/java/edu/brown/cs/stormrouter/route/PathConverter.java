@@ -1,5 +1,6 @@
 package edu.brown.cs.stormrouter.route;
 
+import java.util.Arrays;
 import java.util.List;
 
 import edu.brown.cs.stormrouter.directions.LatLon;
@@ -46,10 +47,18 @@ public final class PathConverter {
     for (Segment seg : inputPath) {
       // Selects end point
       LatLon endCoord = seg.getEnd();
-      // Checks for intermediary waypoint
-      for (int i = 0; i < waypoints.length; i++) {
-        double[] interCoords = waypoints[i].waypoint;
-        LatLon interLoc = new LatLon(interCoords[0], interCoords[1]);
+      // Checks for intermediary waypoint (will check in order)
+      if (waypoints.length > 0) {
+        RouteWaypoint inter = waypoints[0];
+        // Generates LatLon object for comparison testing
+        LatLon interLoc = new LatLon(inter.waypoint[0], inter.waypoint[1]);
+        // Checks for coordinate match
+        if (endCoord.equals(interLoc)) {
+          // Updates minute delay
+          minDelay = inter.duration;
+          // Removes first element from array
+          waypoints = Arrays.copyOfRange(waypoints, 1, waypoints.length);
+        }
       }
       // Constructs Waypoint
       newPoint = new Waypoint((float) endCoord.getLatitude(),
@@ -58,7 +67,7 @@ public final class PathConverter {
       timeIndex += seg.getDuration();
       // If applicable, iterates time index based on delay
       if (minDelay != 0) {
-        timeIndex += minDelay;
+        timeIndex += minDelay * Units.S_PER_MIN;
         minDelay = 0;
       }
       // Sets time index
