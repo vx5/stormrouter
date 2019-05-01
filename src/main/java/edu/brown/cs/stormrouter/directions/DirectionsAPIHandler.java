@@ -40,6 +40,7 @@ public final class DirectionsAPIHandler {
   public static DirectionsWrapper getDirections(LatLon start,
       List<LatLon> waypoints, LatLon end) {
     List<Segment> segments = new ArrayList<>();
+    List<LatLon> points = new ArrayList<>();
     JsonElement geoJSON = null;
 
     // Build out the main JSON request body
@@ -101,7 +102,7 @@ public final class DirectionsAPIHandler {
 
             // Retrieve and decode the polyline string
             String polyline = routes.get("geometry").getAsString();
-            List<LatLon> polylinePts = PolylineDecoder.decodePolyline(polyline);
+            points = PolylineDecoder.decodePolyline(polyline);
 
             for (int j = 0; j < steps.size(); j++) {
               JsonObject step = steps.get(j).getAsJsonObject();
@@ -111,10 +112,8 @@ public final class DirectionsAPIHandler {
               String name = step.get("name").getAsString();
               String instructions = step.get("instruction").getAsString();
               JsonArray routeWaypoints = step.getAsJsonArray("way_points");
-              LatLon startLatLon = polylinePts
-                  .get(routeWaypoints.get(0).getAsInt());
-              LatLon endLatLon = polylinePts
-                  .get(routeWaypoints.get(1).getAsInt());
+              LatLon startLatLon = points.get(routeWaypoints.get(0).getAsInt());
+              LatLon endLatLon = points.get(routeWaypoints.get(1).getAsInt());
 
               // Add a flag for the final step in a path
               boolean finalStep = false;
@@ -140,6 +139,6 @@ public final class DirectionsAPIHandler {
       System.out.println("Error reading response");
     }
 
-    return new DirectionsWrapper(segments, geoJSON);
+    return new DirectionsWrapper(segments, points, geoJSON);
   }
 }

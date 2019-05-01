@@ -1,6 +1,7 @@
 package edu.brown.cs.stormrouter.route;
 
 import com.google.gson.JsonElement;
+import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
 
 import java.util.List;
@@ -13,14 +14,18 @@ import java.util.List;
 public class DirectionsWrapper {
   private List<Segment> segments;
   private JsonElement geoJSON;
+  private List<LatLon> points;
 
   /**
    * Constructs a new DirectionsWrapper from the data
    * @param segments - A list of Segment fields retrieved from the GeoJSON
+   * @param points - The list of all points making up the route
    * @param geoJSON - The full GeoJSON returned from a directions call
    */
-  public DirectionsWrapper(List<Segment> segments, JsonElement geoJSON) {
+  public DirectionsWrapper(List<Segment> segments, List<LatLon> points,
+                           JsonElement geoJSON) {
     this.segments = segments;
+    this.points = points;
     this.geoJSON = geoJSON;
   }
 
@@ -36,5 +41,12 @@ public class DirectionsWrapper {
    */
   public JsonElement getGeoJSON() {
     return geoJSON;
+  }
+
+  /**
+   * @return - The full list of points making up the route
+   */
+  public List<LatLon> getPoints() {
+    return points;
   }
 }
