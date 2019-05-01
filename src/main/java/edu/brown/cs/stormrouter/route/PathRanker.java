@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.brown.cs.stormrouter.weather.TimePoint;
-import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
 /**
  * @author vx5
@@ -237,9 +236,12 @@ public class PathRanker {
       // Gets relevant point in default path
       Waypoint currPoint = defaultPath.getWaypoints().get(currId);
       long durationToReach = currPoint.getTime();
+      // TEST
+      System.out.println("duration: " + durationToReach);
       float[] currCoords = currPoint.getCoords();
-      TimePoint[] hrWeathers = WeatherAPIHandler
-          .getWeather(currCoords[0], currCoords[1]).getHourly().getData();
+      TimePoint[] hrWeathers = new TimePoint[49];
+      // WeatherAPIHandler.getWeather(currCoords[0],
+      // currCoords[1]).getHourly().getData();
       // Iterates through all paths, and scores the appropriate points
       for (String chosenHrOffset : chosenHrOffsets) {
         // Obtains specific time to be scored
