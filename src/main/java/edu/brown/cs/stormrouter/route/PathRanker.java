@@ -58,7 +58,7 @@ public class PathRanker {
     fillIds();
     // Uses list of points generated above to score paths
     scorePaths();
-    // Iterates through paths, checks for best score
+    // Iterates through paths, checks for which offset has the best score
     Set<String> chosenHrOffsets = diffTimesWeather.keySet();
     String bestPathKey = "";
     int bestPathScore = Integer.MAX_VALUE;
