@@ -80,7 +80,7 @@ public class PathRanker {
   private void genNewPaths() {
     // Sets the start, end time of the path that is desired
     long unixStart = defaultPath.getStartTime();
-    List<Waypoint> pathPoints = defaultPath.getWaypoints();
+    List<Pathpoint> pathPoints = defaultPath.getPathpoints();
     // Adds initial path to map
     diffTimesWeather.put("0", new PathWeatherInfo(unixStart));
     // Here, the time in seconds is obtained, then transformed to hours
@@ -110,9 +110,9 @@ public class PathRanker {
     ArrayList<Integer> allWeatherIds = new ArrayList<Integer>();
     allWeatherIds.add(0);
     // Acquires list of Waypoints of the default path
-    List<Waypoint> pathPoints = defaultPath.getWaypoints();
+    List<Pathpoint> pathPoints = defaultPath.getPathpoints();
     // Stores information associate with first initial chosen id
-    Waypoint startPoint = pathPoints.get(0);
+    Pathpoint startPoint = pathPoints.get(0);
     String storeString = "0,0";
     checkedWeather.put(storeString, startPoint.getTime());
     // Obtains coordinates for use in tile calculation in loop
@@ -120,7 +120,7 @@ public class PathRanker {
     // Iterates through pathPoints to check for default paths
     for (int i = 1; i < pathPoints.size(); i++) {
       // Obtain the relevant pathPoint
-      Waypoint iterPoint = pathPoints.get(i);
+      Pathpoint iterPoint = pathPoints.get(i);
       // Calculates all storage information for this event
       // Gets the time block
       long iterUnixTime = iterPoint.getTime();
@@ -241,7 +241,7 @@ public class PathRanker {
     // Iterates through all weather indices
     for (int currId : weatherIds) {
       // Gets relevant point in default path
-      Waypoint currPoint = defaultPath.getWaypoints().get(currId);
+      Pathpoint currPoint = defaultPath.getPathpoints().get(currId);
       long timeReached = currPoint.getTime();
       float[] currCoords = currPoint.getCoords();
       TimePoint[] hrWeathers = WeatherAPIHandler

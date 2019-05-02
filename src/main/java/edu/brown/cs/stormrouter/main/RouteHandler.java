@@ -78,7 +78,11 @@ public class RouteHandler implements Route {
           pathWeathers);
       return GSON.toJson(variables);
     } catch (Exception e) {
+      // Generates default message to be displayed
       String toDisplay = "We're sorry! There was an error processing your request";
+      // Checks and handles of two designated, expected errors:
+      // a) The exhaustion of API calls
+      // b) Inability to judge the given path using weather data
       if (e.getMessage().equals("Out of API calls")) {
         toDisplay = "We're unfortunately unable to provide services until tomorrow EST";
       } else if (e.getMessage().equals("Path too long")) {
@@ -86,8 +90,10 @@ public class RouteHandler implements Route {
             + "this may have happened because the journey was too long, or the departure "
             + "time was too far from right now. Please try again with a different journey";
       } else {
+        // Prints stacktrace in case of unexpected error (TODO: remove)
         e.printStackTrace();
       }
+      // Sends Map associated with Exceptions
       Map<String, Object> variables = ImmutableMap.of("message", toDisplay,
           "routes", new String[0]);
       return GSON.toJson(variables);
