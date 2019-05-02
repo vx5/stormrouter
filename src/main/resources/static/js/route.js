@@ -206,19 +206,33 @@ function displayPath(path) {
   pathExists = true;
 }
 
-function displayWeather(weather) {
+function displayBestWeather(weather) {
   if (!weather) {
     console.log('no weather found');
     return;
   }
-
+  console.log(weather);
   const bestWeather = weather[weather.best];
+  $("#slider").val(timeStamp.indexOf(parseInt(weather.best)));
+  $($("#slider")[0].nextElementSibling).text(weather.best + " hr");
   removeWeatherMarkers();
-  if(bestWeather == null){
+  if(weather == null){
   	console.log("No best weather. NULL");
   	return; 
   }
   const weatherInfo = bestWeather.weatherData;
+  for(let i = 0; i < weatherInfo.length; i++){
+  	addWeatherMarker(weatherInfo[i]);
+  }
+}
+
+function displayWeather(weather){
+  if(weather == null){
+  	console.log("No weather at this time.");
+  	return; 
+  }
+  removeWeatherMarkers();
+  const weatherInfo = weather.weatherData;
   for(let i = 0; i < weatherInfo.length; i++){
   	addWeatherMarker(weatherInfo[i]);
   }
@@ -243,12 +257,12 @@ $(document).ready(() => {
           alert(message);
           return;
         }
-        const path = response.path;
-        const segments = response.segments;
-        const weather = response.weather;
-        displayPath(parsePolyline(path));
-        displayDirections(segments);
-        displayWeather(weather);
+        curPath = response.path;
+        curSegments = response.segments;
+        curWeather = response.weather;
+        displayPath(parsePolyline(curPath));
+        displayDirections(curSegments);
+        displayBestWeather(curWeather);
         showContent($collapsable[0], $($arrow[0])[0]);
         collapse($collapsable[1], $($arrow[1])[0]);
       });

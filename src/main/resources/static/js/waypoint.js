@@ -29,7 +29,7 @@ function addWaypoint() {
   //formGeocodeId[numWays] = geocoderId;
   addGeocoder(geocoderName);
   geocoderId++;
-}
+} 
 
 
 function deleteWaypoint(elem) {

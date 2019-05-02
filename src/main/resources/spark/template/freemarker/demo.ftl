@@ -12,18 +12,17 @@
           <!-- Directions list -->
           <div class="directions">
             <h4 class="section-header">Directions</h4>
+            <div class="slider">
+              <input type="range" id="slider" min="0" max="5" value="2"/>
+              <span>0 hr</span>
+            </div>
             <ol class="directions-list">
-              <!-- Test rows -->
               <!-- <li>
                 <div class="img"></div>
                 <div class="instructions">Left</div>
-              </li>
-              <li>
-                <div class="img"></div>
-                <div class="instructions">Right</div>
-              </li> -->
+              </li>-->
             </ol> 
-            <button>Get Suggested Times</button>
+            <!-- <button>Get Suggested Times</button> -->
           </div>
 
         </div>
