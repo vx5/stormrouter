@@ -17,28 +17,41 @@ map.addControl(new mapboxgl.NavigationControl({
 }));
 
 let coordinates = {};
+let locationMarkers = [];
 
 function addGeocoder(name) {
   const $target = $('#' + name);
 
   let geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
-    mapboxgl: mapboxgl
+    mapboxgl: mapboxgl,
+    marker: false
   });
   $target.append(geocoder.onAdd(map));
 
   geocoder.on('result', result => {
   	console.log(result);
-  	// TODO: is this lon lat?
+
     const lnglat = result.result.geometry.coordinates;
   	coordinates[name] = [lnglat[1], lnglat[0]];
+
+    const marker = new mapboxgl.Marker()
+        .setLngLat(lnglat)
+        .addTo(map);
+    markers.push(marker);
+    locationMarkers.push(marker);
+
+    // zoom to display all markers
+    const bounds = new mapboxgl.LngLatBounds();
+    locationMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
+    map.fitBounds(bounds);
   });
   
   const $input = $target.find('input');
 
   $target.find('button').click(() => {
     coordinates[name] = null;
-  })
+  });
   $input.on('keyup', () => {
     coordinates[name] = null;
   });
