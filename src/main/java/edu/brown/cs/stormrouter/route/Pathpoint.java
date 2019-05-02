@@ -7,7 +7,7 @@ package edu.brown.cs.stormrouter.route;
  *         is used in the Path class, as paths are represented through lists of
  *         Waypoints.
  */
-class Waypoint {
+class Pathpoint {
   // Instance variable to store key attributes of each Waypoint
   private float wayLat;
   private float wayLong;
@@ -20,7 +20,7 @@ class Waypoint {
    * @param newLat  latitude of corresponding waypoint
    * @param newLong longitude of corresponding waypoint
    */
-  Waypoint(float newLat, float newLong) {
+  Pathpoint(float newLat, float newLong) {
     // Stores latitude and longitude
     wayLat = newLat;
     wayLong = newLong;
@@ -35,7 +35,7 @@ class Waypoint {
   float[] getCoords() {
     // Returns float array containing coordinates
     return new float[] {
-        wayLat, wayLong
+        new Float(wayLat), new Float(wayLong)
     };
   }
 
@@ -61,10 +61,21 @@ class Waypoint {
     return new Long(timeToReach);
   }
 
+  /**
+   * Sets the distance required to reach this point from the path start.
+   * 
+   * @param distToReach Double-type distance required to reach this point from
+   *                    path start
+   */
   void setDistToReach(double distToReach) {
     distanceToReach = distToReach;
   }
 
+  /**
+   * Returns distance required to reach this point from the path start.
+   * 
+   * @return the distance required to reach this point from the path start
+   */
   double getDistToReach() {
     return new Double(distanceToReach);
   }

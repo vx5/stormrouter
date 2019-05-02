@@ -10,8 +10,8 @@ import java.util.List;
  *         series of point locations.
  */
 public class Path {
-  // Stores list of all waypoints in this path
-  private List<Waypoint> pathPoints = new ArrayList<Waypoint>();
+  // Stores list of all points in this path
+  private List<Pathpoint> pathPoints = new ArrayList<Pathpoint>();
   // Stores offset, in UNIX time, of this path from the original time
   private long startTime;
 
@@ -35,21 +35,21 @@ public class Path {
   }
 
   /**
-   * Adds a given Waypoint to the Path, at its current end.
+   * Adds a given Pathpoint to the Path, at its current end.
    * 
-   * @param endPoint Waypoint to be added to end of path
+   * @param endPoint Pathpoint to be added to end of path
    */
-  void addWaypoint(Waypoint endPoint) {
+  void addPathpoint(Pathpoint endPoint) {
     pathPoints.add(endPoint);
   }
 
   /**
-   * Returns all Waypoints stored in this path.
+   * Returns all Pathpoints stored in this path.
    * 
-   * @return List of all Waypoints stored in the path
+   * @return List of all Pathpoints stored in the path
    */
-  List<Waypoint> getWaypoints() {
-    return new ArrayList<Waypoint>(pathPoints);
+  List<Pathpoint> getPathpoints() {
+    return new ArrayList<Pathpoint>(pathPoints);
   }
 
 }

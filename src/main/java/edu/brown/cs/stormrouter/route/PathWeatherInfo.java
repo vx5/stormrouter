@@ -35,6 +35,7 @@ public class PathWeatherInfo {
    * @param weatherType Stringr representing type of weather to be displayed
    * @param weatherSum  String summary of weather occurring at this point
    * @param scoreIncr   integer representing score of the given weather point
+   * @param pointTime   Unix time at which point is reached
    */
   public void addWeatherData(float pointLat, float pointLong,
       String weatherType, String weatherSum, int scoreIncr, long pointTime) {

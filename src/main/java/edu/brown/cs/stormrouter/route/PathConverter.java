@@ -25,6 +25,8 @@ public final class PathConverter {
    * input start time.
    * 
    * @param inputPath     List of Segments representing directions
+   * @param waypoints     Array of RouteWaypoints, representing stopovers in
+   *                      route
    * @param unixStartTime Long unix form of start time
    * @return Path object given input Segment list and start time
    * @throws Exception if generated path is out of range
@@ -38,12 +40,12 @@ public final class PathConverter {
     long timeIndex = unixStartTime;
     double distSoFar = 0;
     LatLon startCoord = inputPath.get(0).getStart();
-    Waypoint newPoint = new Waypoint((float) startCoord.getLatitude(),
+    Pathpoint newPoint = new Pathpoint((float) startCoord.getLatitude(),
         (float) startCoord.getLongitude());
     newPoint.setTime(timeIndex);
     newPoint.setDistToReach(distSoFar);
     // Adds that new point to the tracker
-    centerPath.addWaypoint(newPoint);
+    centerPath.addPathpoint(newPoint);
     // Stores amount by which next point must be delayed, 0 if no delay
     int minDelay = 0;
     // Iterates through all segments left in path
@@ -65,7 +67,7 @@ public final class PathConverter {
         }
       }
       // Constructs Waypoint
-      newPoint = new Waypoint((float) endCoord.getLatitude(),
+      newPoint = new Pathpoint((float) endCoord.getLatitude(),
           (float) endCoord.getLongitude());
       // Iterates time index based on duration
       timeIndex += seg.getDuration();
@@ -85,7 +87,7 @@ public final class PathConverter {
       distSoFar += seg.getLength();
       newPoint.setDistToReach(distSoFar);
       // Adds point
-      centerPath.addWaypoint(newPoint);
+      centerPath.addPathpoint(newPoint);
     }
     // Return filled path
     return centerPath;
