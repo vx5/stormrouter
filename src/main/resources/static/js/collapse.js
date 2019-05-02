@@ -22,17 +22,19 @@ function collapse(element, buttonElem) {
 
   const button = buttonElem.classList[1].split('-');
   const newButton = 'fa-angle-' + reverseArrow(button[2]);
-  // console.log(newButton);
   buttonElem.className = "fas " + newButton;
 }
 
-// collapse($(".collapsable")[0, $($(".collapse > i")[0])[0]);
+function showContent(element, buttonElem){
+  if (element.style.display === 'none')
+    collapse(element, buttonElem);
+}
 
+const $collapse = $(".collapse");
+const $collapsable = $(".collapsable");
+const $arrow = $(".collapse > i");
 
-$(document).ready(() => {
-  const $collapse = $(".collapse");
-  const $collapsable = $(".collapsable");
-  const $arrow = $(".collapse > i");
+$(document).ready(() => {  
   for (let i = 0; i < $collapse.length; i++) {
     const cur = $($collapse[i]);
     cur.click(() => {

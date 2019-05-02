@@ -249,6 +249,8 @@ $(document).ready(() => {
         displayPath(parsePolyline(path));
         displayDirections(segments);
         displayWeather(weather);
+        showContent($collapsable[0], $($arrow[0])[0]);
+        collapse($collapsable[1], $($arrow[1])[0]);
       });
     } catch (err) {
       console.log(err);
