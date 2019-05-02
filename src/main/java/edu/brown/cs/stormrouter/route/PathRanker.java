@@ -63,8 +63,9 @@ public class PathRanker {
     String bestPathKey = "";
     int bestPathScore = Integer.MAX_VALUE;
     for (String offset : chosenHrOffsets) {
-      PathWeatherInfo timePath = diffTimesWeather.get(offset);
-      if (timePath.getScore() < bestPathScore) {
+      int offsetScore = diffTimesWeather.get(offset).getScore();
+      if (offsetScore < bestPathScore) {
+        bestPathScore = offsetScore;
         bestPathKey = offset;
       }
     }
@@ -92,7 +93,7 @@ public class PathRanker {
       // a) the would-be start time is not before now
       // b) the would-be end time is not past the 48-hour window DarkSky offers
       // weather data for
-      long pathStartTime = unixStart - unixOffset;
+      long pathStartTime = unixStart + unixOffset;
       long pathEndTime = unixEnd + unixOffset;
       if (System.currentTimeMillis() * Units.S_PER_MS <= pathStartTime
           && System.currentTimeMillis() * Units.S_PER_MS
@@ -231,7 +232,7 @@ public class PathRanker {
     }
     // Now, performs change to relevant pathInfo object
     pathInfo.addWeatherData(pointLat, pointLong, weather.getIcon(),
-        weather.getSummary(), pointScore);
+        weather.getSummary(), pointScore, weather.getTime());
   }
 
   private void scorePaths() throws Exception {
@@ -245,12 +246,13 @@ public class PathRanker {
       float[] currCoords = currPoint.getCoords();
       TimePoint[] hrWeathers = WeatherAPIHandler
           .getWeather(currCoords[0], currCoords[1]).getHourly().getData();
-      // Stores time from now for iteration
-      int hrsFromNow = Units.UnixToHrsFromNow(timeReached);
-      // Stores relevant TimePoint
-      TimePoint hrWeather = hrWeathers[hrsFromNow];
       // Iterates through all paths, and scores the appropriate points
       for (String chosenHrOffset : chosenHrOffsets) {
+        // Stores time from now for iteration
+        int hrsFromNow = Units.UnixToHrsFromNow(timeReached)
+            + Integer.parseInt(chosenHrOffset);
+        // Stores relevant TimePoint
+        TimePoint hrWeather = hrWeathers[hrsFromNow];
         // Obtains specific time to be scored
         PathWeatherInfo toModify = diffTimesWeather.get(chosenHrOffset);
         // Scores time index

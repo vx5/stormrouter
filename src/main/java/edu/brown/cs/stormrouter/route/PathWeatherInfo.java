@@ -37,10 +37,10 @@ public class PathWeatherInfo {
    * @param scoreIncr   integer representing score of the given weather point
    */
   public void addWeatherData(float pointLat, float pointLong,
-      String weatherType, String weatherSum, int scoreIncr) {
+      String weatherType, String weatherSum, int scoreIncr, long pointTime) {
     // Adds details to set
-    weatherData.add(
-        new PathWeatherPoint(pointLat, pointLong, weatherType, weatherSum));
+    weatherData.add(new PathWeatherPoint(pointLat, pointLong, weatherType,
+        weatherSum, pointTime));
     // Increments score
     pathScore += scoreIncr;
   }

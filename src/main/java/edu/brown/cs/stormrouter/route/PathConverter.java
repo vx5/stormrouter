@@ -27,9 +27,10 @@ public final class PathConverter {
    * @param inputPath     List of Segments representing directions
    * @param unixStartTime Long unix form of start time
    * @return Path object given input Segment list and start time
+   * @throws Exception if generated path is out of range
    */
   public static Path convertPath(List<Segment> inputPath,
-      RouteWaypoint[] waypoints, long unixStartTime) {
+      RouteWaypoint[] waypoints, long unixStartTime) throws Exception {
     // Makes new Path object using the given start time
     Path centerPath = new Path(unixStartTime);
     // Stores information associated with very first point in the weather-loaded
@@ -73,6 +74,10 @@ public final class PathConverter {
         timeIndex += minDelay * Units.S_PER_MIN;
         // Resets delay variable
         minDelay = 0;
+      }
+      // Checks time index for validity
+      if (Units.UnixToHrsFromNow(timeIndex) > 48) {
+        throw new Exception("Path too long");
       }
       // Sets time index
       newPoint.setTime(timeIndex);

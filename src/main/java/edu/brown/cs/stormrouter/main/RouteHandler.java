@@ -81,6 +81,10 @@ public class RouteHandler implements Route {
       String toDisplay = "We're sorry! There was an error processing your request";
       if (e.getMessage().equals("Out of API calls")) {
         toDisplay = "We're unfortunately unable to provide services until tomorrow EST";
+      } else if (e.getMessage().equals("Path too long")) {
+        toDisplay = "Part of the journey you've entered lies outside weather coverage — "
+            + "this may have happened because the journey was too long, or the departure "
+            + "time was too far from right now. Please try again with a different journey";
       } else {
         e.printStackTrace();
       }
