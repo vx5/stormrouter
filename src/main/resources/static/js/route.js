@@ -239,8 +239,8 @@ $(document).ready(() => {
         const message = response.message;
 
         if (message) {
-          console.log(message);
-          alert('There was an error processing your request.');
+          // console.log(message);
+          alert(message);
           return;
         }
         const path = response.path;

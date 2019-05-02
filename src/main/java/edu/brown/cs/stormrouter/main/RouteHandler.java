@@ -77,15 +77,15 @@ public class RouteHandler implements Route {
           directionsData.getPoints(), "segments", directions, "weather",
           pathWeathers);
       return GSON.toJson(variables);
-    } catch (NumberFormatException nfe) {
-      Map<String, Object> variables = ImmutableMap.of("message",
-          "There was an error processing.", "routes", new String[0]);
-      nfe.printStackTrace();
-      return GSON.toJson(variables);
     } catch (Exception e) {
-      Map<String, Object> variables = ImmutableMap.of("message",
-          "There was an error processing.", "routes", new String[0]);
-      e.printStackTrace();
+      String toDisplay = "We're sorry! There was an error processing your request";
+      if (e.getMessage().equals("Out of API calls")) {
+        toDisplay = "We're unfortunately unable to provide services until tomorrow EST";
+      } else {
+        e.printStackTrace();
+      }
+      Map<String, Object> variables = ImmutableMap.of("message", toDisplay,
+          "routes", new String[0]);
       return GSON.toJson(variables);
     }
   }
