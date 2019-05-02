@@ -26,6 +26,9 @@ function collapse(element, buttonElem) {
   buttonElem.className = "fas " + newButton;
 }
 
+// collapse($(".collapsable")[0, $($(".collapse > i")[0])[0]);
+
+
 $(document).ready(() => {
   const $collapse = $(".collapse");
   const $collapsable = $(".collapsable");

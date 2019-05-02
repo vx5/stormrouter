@@ -7,7 +7,7 @@
     <!-- Side Bar -->
     <div id="side-bar" class="column panel">
       <div class="full-height flex-container">
-        <div id="side-bar-content" class="left column collapsable">
+        <div id="side-bar-content" class="left column collapsable" style="display: none;">
 
           <!-- Directions list -->
           <div class="directions">
@@ -30,7 +30,7 @@
 
         <!-- Collapse tab -->
         <div class="column collapse" id="side">
-          <i class="fas fa-angle-left"></i>
+          <i class="fas fa-angle-right"></i>
         </div>
       </div>
     </div>
