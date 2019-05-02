@@ -17,7 +17,7 @@ map.addControl(new mapboxgl.NavigationControl({
 }));
 
 let coordinates = {};
-let locationMarkers = [];
+let locationMarkers = {};
 
 function addGeocoder(name) {
   const $target = $('#' + name);
@@ -39,21 +39,41 @@ function addGeocoder(name) {
         .setLngLat(lnglat)
         .addTo(map);
     markers.push(marker);
-    locationMarkers.push(marker);
+    locationMarkers[name] = marker;
 
     // zoom to display all markers
     const bounds = new mapboxgl.LngLatBounds();
-    locationMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
-    map.fitBounds(bounds);
+    //locationMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
+    for (const [key, value] of Object.entries(locationMarkers)) {
+      bounds.extend(value.getLngLat());
+    }
+    map.fitBounds(bounds, {
+      padding: {
+        top: 60,
+        bottom: $('#bottom-bar').height() + 30,
+        left: $('#side-bar').width() + 30,
+        right: 30
+      }
+    });
   });
   
   const $input = $target.find('input');
 
   $target.find('button').click(() => {
     coordinates[name] = null;
+    const marker = locationMarkers[name];
+    if (marker) {
+      marker.remove();
+      locationMarkers[name] = null;
+    }
   });
   $input.on('keyup', () => {
     coordinates[name] = null;
+    const marker = locationMarkers[name];
+    if (marker) {
+      marker.remove();
+      locationMarkers[name] = null;
+    }
   });
   $input.attr('name', name);
   $input.prop('required', true);
