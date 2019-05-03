@@ -38,7 +38,7 @@ function addGeocoder(name) {
     const marker = new mapboxgl.Marker()
         .setLngLat(lnglat)
         .addTo(map);
-    markers.push(marker);
+    // markers.push(marker);
     locationMarkers[name] = marker;
 
     // zoom to display all markers
