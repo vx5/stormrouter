@@ -182,6 +182,10 @@ input[type="text"] {
   margin-bottom: 0;
 }
 
+.direction-icon {
+  margin-right: 4px;
+}
+
 .img {
   width: 20px;
   height: 20px;

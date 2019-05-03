@@ -96,3 +96,8 @@ div.collapse:hover {
 #slider{
   margin-right: 0px;
 }
+
+#depart{
+  margin-left: 20px;
+  font-size: 14px;
+}

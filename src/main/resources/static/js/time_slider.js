@@ -15,7 +15,10 @@ function resetWeather(weather){
   	if(x == 'best') continue;
   	timeStamp.push(x);
   }
-  timeStamp.sort();
+  timeStamp.sort(function(a,b){
+    return (parseInt(a) > parseInt(b)) ? 1 : ((parseInt(a) == parseInt(b)) ? 0 : -1);
+  });
+  console.log(timeStamp);
   const $slider = $("#slider");
   $($slider[0].previousElementSibling).text('Best Departure Time: ' + weather.best + " hr");
   $slider.prop({
