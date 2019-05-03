@@ -179,7 +179,7 @@ public class PathRanker {
   }
 
   private void score(float pointLat, float pointLong, PathWeatherInfo pathInfo,
-      TimePoint weather) {
+      TimePoint weather, long unixReached) {
     // Initializes variable to count score
     int pointScore = 0;
     // Checks for case of precipitation
@@ -232,7 +232,7 @@ public class PathRanker {
     }
     // Now, performs change to relevant pathInfo object
     pathInfo.addWeatherData(pointLat, pointLong, weather.getIcon(),
-        weather.getSummary(), pointScore, weather.getTime());
+        weather.getSummary(), pointScore, unixReached, weather.getTime());
   }
 
   private void scorePaths() throws Exception {
@@ -249,14 +249,16 @@ public class PathRanker {
       // Iterates through all paths, and scores the appropriate points
       for (String chosenHrOffset : chosenHrOffsets) {
         // Stores time from now for iteration
-        int hrsFromNow = Units.UnixToHrsFromNow(timeReached)
-            + Integer.parseInt(chosenHrOffset);
+        int hrOffset = Integer.parseInt(chosenHrOffset);
+        int hrsFromNow = Units.UnixToHrsFromNow(timeReached) + hrOffset;
+        long trueTimeReached = timeReached + Units.hrToS(hrOffset);
         // Stores relevant TimePoint
         TimePoint hrWeather = hrWeathers[hrsFromNow];
         // Obtains specific time to be scored
         PathWeatherInfo toModify = diffTimesWeather.get(chosenHrOffset);
         // Scores time index
-        score(currCoords[0], currCoords[1], toModify, hrWeather);
+        score(currCoords[0], currCoords[1], toModify, hrWeather,
+            trueTimeReached);
       }
     }
   }

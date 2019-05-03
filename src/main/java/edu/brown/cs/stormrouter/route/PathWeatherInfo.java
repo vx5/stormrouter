@@ -36,12 +36,15 @@ public class PathWeatherInfo {
    * @param weatherSum  String summary of weather occurring at this point
    * @param scoreIncr   integer representing score of the given weather point
    * @param pointTime   Unix time at which point is reached
+   * @param timeBlock   Unix time at which weather time block starts (local
+   *                    time)
    */
   public void addWeatherData(float pointLat, float pointLong,
-      String weatherType, String weatherSum, int scoreIncr, long pointTime) {
+      String weatherType, String weatherSum, int scoreIncr, long pointTime,
+      long timeBlock) {
     // Adds details to set
     weatherData.add(new PathWeatherPoint(pointLat, pointLong, weatherType,
-        weatherSum, pointTime));
+        weatherSum, pointTime, timeBlock));
     // Increments score
     pathScore += scoreIncr;
   }
