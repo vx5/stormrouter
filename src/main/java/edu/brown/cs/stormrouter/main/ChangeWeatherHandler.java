@@ -23,8 +23,9 @@ public class ChangeWeatherHandler implements Route {
     WSet.setRainFactor(newRainFactor);
     WSet.setSnowFactor(newSnowFactor);
     WSet.setWindFactor(newWindFactor);
-    // Returns null, as this handler is, in essence, void
-    return null;
+    // Returns 0-integer to prevent any errors, though the method is otherwise
+    // void
+    return new Integer(0);
   }
 
 }
