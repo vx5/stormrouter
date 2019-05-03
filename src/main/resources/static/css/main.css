@@ -172,7 +172,6 @@ input[type="text"] {
 
 .directions-list li {
   font-size: 12px;
-  border: 1px solid white;
   margin-bottom: 10px;
   display: flex;
   justify-content: flex-start;

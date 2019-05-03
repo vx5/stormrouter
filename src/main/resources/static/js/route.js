@@ -156,9 +156,47 @@ function displayDirections(directions){
 		const length = directions[i].length;
 		const instruction = directions[i].instructions;
 		const type = directions[i].type;
+		let iconName = iconForDirectionType(type);
 		$directs.append(
-			'<li><div class="instructions">' + instruction + ' for ' + formatLength(length) + '</div></li>');
+			'<li>'
+        + '<img src="/img/' + iconName + '" width=24 height=24">'
+        + '<div class="instructions">' + instruction + ' for ' + formatLength(length) + '</div></li>');
 	}
+}
+
+function iconForDirectionType(type) {
+  switch (type) {
+    case 0:
+      return "turn_left.svg";
+    case 1:
+      return "turn_right.svg";
+    case 2:
+      return "turn_sharp_left.svg";
+    case 3:
+      return "turn_sharp_right.svg";
+    case 4:
+      return "turn_slight_left.svg";
+    case 5:
+      return "turn_slight_right.svg";
+    case 6:
+      return "turn_straight.svg";
+    case 7:
+      return "roundabout.svg";
+    case 8:
+      return "roundabout.svg";
+    case 9:
+      return "uturn.svg";
+    case 10:
+      return "arrive.svg";
+    case 11:
+      return "depart.svg";
+    case 12:
+      return "fork_slight_left.svg";
+    case 13:
+      return "fork_slight_right.svg";
+    default:
+      return "turn_straight.svg";
+  }
 }
 
 // Converts a length in meters into a displayable format
