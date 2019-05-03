@@ -1,6 +1,7 @@
 package edu.brown.cs.stormrouter.route;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -43,16 +44,21 @@ public final class PathConverter {
     // Obtains time zone using API
     String timeZone = WeatherAPIHandler.getWeather(startLat, startLong)
         .getTimezone();
-    // TEST
-    System.out.println("Zone: " + timeZone);
     // Sets up time zones for start location and current time zone
     TimeZone localZone = TimeZone.getTimeZone(timeZone);
     TimeZone thisZone = TimeZone.getDefault();
+    // Stores raw offsets to standard time
+    long localZoneOffset = localZone.getRawOffset();
+    long thisZoneOffset = thisZone.getRawOffset();
+    // Checks for daylight savings, makes appropriate adjustments if necessary
+    if (localZone.inDaylightTime(new Date(unixStartTime))) {
+      localZoneOffset += localZone.getDSTSavings();
+    }
+    if (thisZone.inDaylightTime(new Date(System.currentTimeMillis()))) {
+      thisZoneOffset += thisZone.getDSTSavings();
+    }
     // Calculates millisecond difference in start time
-    long msAhead = (long) (localZone.getRawOffset() - thisZone.getRawOffset());
-    // TEST
-    System.out.println("Offset: "
-        + (msAhead / (Units.MS_PER_S * Units.S_PER_MIN * Units.MIN_PER_HR)));
+    long msAhead = localZoneOffset - thisZoneOffset;
     long unixStartTimeSystemZone = (unixStartTime * 1000L) - msAhead;
     // Checks for past time
     if (unixStartTimeSystemZone <= System.currentTimeMillis()) {
