@@ -21,8 +21,7 @@ function resetWeather(weather){
   $slider.prop({
   	min: 0,
   	max: timeStamp.length - 1,
-  	value: 0
+  	value: timeStamp.indexOf(weather.best)
   });
-  $slider.val(timeStamp.indexOf(weather.best));
   $($slider[0].nextElementSibling).text(weather.best + " hr");
 }
