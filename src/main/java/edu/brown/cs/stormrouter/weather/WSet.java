@@ -1,4 +1,4 @@
-package edu.brown.cs.stormrouter.route;
+package edu.brown.cs.stormrouter.weather;
 
 import edu.brown.cs.stormrouter.weather.TimePoint;
 
