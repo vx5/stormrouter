@@ -159,7 +159,7 @@ function displayDirections(directions){
 		let iconName = iconForDirectionType(type);
 		$directs.append(
 			'<li>'
-        + '<img src="/img/' + iconName + '" width=24 height=24">'
+        + '<img class="direction-icon" src="/img/' + iconName + '" width="24">'
         + '<div class="instructions">' + instruction + ' for ' + formatLength(length) + '</div></li>');
 	}
 }
