@@ -213,8 +213,7 @@ function displayBestWeather(weather) {
   }
   console.log(weather);
   const bestWeather = weather[weather.best];
-  $("#slider").val(timeStamp.indexOf(parseInt(weather.best)));
-  $($("#slider")[0].nextElementSibling).text(weather.best + " hr");
+  resetWeather(weather);
   removeWeatherMarkers();
   if(weather == null){
   	console.log("No best weather. NULL");

@@ -45,6 +45,7 @@ function addGeocoder(name) {
     const bounds = new mapboxgl.LngLatBounds();
     //locationMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
     for (const [key, value] of Object.entries(locationMarkers)) {
+      if(!value) continue;
       bounds.extend(value.getLngLat());
     }
     map.fitBounds(bounds, {
