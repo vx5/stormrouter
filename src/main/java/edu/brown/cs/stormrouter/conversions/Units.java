@@ -1,4 +1,4 @@
-package edu.brown.cs.stormrouter.route;
+package edu.brown.cs.stormrouter.conversions;
 
 /**
  * @author vx5
@@ -6,14 +6,14 @@ package edu.brown.cs.stormrouter.route;
  *         Class which stores both constants and methods relevant to interunit
  *         conversion.
  */
-final class Units {
+public final class Units {
   // Stores all key unit conversion amounts
-  static final int MS_PER_S = 1000;
-  static final float S_PER_MS = 1 / (float) MS_PER_S;
-  static final int S_PER_MIN = 60;
-  static final int MIN_PER_HR = 60;
-  static final float MILES_PER_DEGREE = 69;
-  static final float DEGREES_PER_MILE = 1 / MILES_PER_DEGREE;
+  public static final int MS_PER_S = 1000;
+  public static final float S_PER_MS = 1 / (float) MS_PER_S;
+  public static final int S_PER_MIN = 60;
+  public static final int MIN_PER_HR = 60;
+  public static final float MILES_PER_DEGREE = 69;
+  public static final float DEGREES_PER_MILE = 1 / MILES_PER_DEGREE;
 
   /**
    * Convert hours to seconds.
@@ -21,7 +21,7 @@ final class Units {
    * @param hr input number of hours
    * @return number of seconds
    */
-  static long hrToS(double hr) {
+  public static long hrToS(double hr) {
     // Converts hours to milliseconds, using 60
     // for minutes, 60 for seconds, 1000 for milliseconds
     return (long) hr * MIN_PER_HR * S_PER_MIN;
@@ -34,7 +34,7 @@ final class Units {
    * @param unix Long unix time
    * @return number of hours from time method is called
    */
-  static int UnixToHrsFromNow(long unix) {
+  public static int UnixToHrsFromNow(long unix) {
     // Calculates number of milliseconds from now
     long sFromNow = (long) (unix - (System.currentTimeMillis() * S_PER_MS));
     // Performs dimensional analysis conversions, truncation

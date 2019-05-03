@@ -94,6 +94,9 @@ public class RouteHandler implements Route {
       } else if (msg.equals("Invalid departure time")) {
         toDisplay = "Please select a departure time later than the current time "
             + "(at the departure time zone)";
+      } else if (msg.equals("No path")) {
+        toDisplay = "We unfortunately couldn't connect those points. Please try again "
+            + "with a different journey!";
       } else {
         // Prints stacktrace in case of unexpected error (TODO: remove)
         e.printStackTrace();

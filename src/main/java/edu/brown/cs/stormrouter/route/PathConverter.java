@@ -1,14 +1,13 @@
 package edu.brown.cs.stormrouter.route;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
+import edu.brown.cs.stormrouter.conversions.TimeZoneOps;
+import edu.brown.cs.stormrouter.conversions.Units;
 import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
 import edu.brown.cs.stormrouter.main.RouteHandler.RouteWaypoint;
-import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
 /**
  * @author vx5
@@ -36,29 +35,14 @@ public final class PathConverter {
    */
   public static Path convertPath(List<Segment> inputPath,
       RouteWaypoint[] waypoints, long unixStartTime) throws Exception {
+    // Checks for path existing
+    if (inputPath.size() == 0) {
+      throw new Exception("No path");
+    }
     LatLon startCoord = inputPath.get(0).getStart();
-    float startLat = (float) startCoord.getLatitude();
-    float startLong = (float) startCoord.getLongitude();
-    // META: Checks that entered start time is valid in local time at start
-    // location
-    // Obtains time zone using API
-    String timeZone = WeatherAPIHandler.getWeather(startLat, startLong)
-        .getTimezone();
-    // Sets up time zones for start location and current time zone
-    TimeZone localZone = TimeZone.getTimeZone(timeZone);
-    TimeZone thisZone = TimeZone.getDefault();
-    // Stores raw offsets to standard time
-    long localZoneOffset = localZone.getRawOffset();
-    long thisZoneOffset = thisZone.getRawOffset();
-    // Checks for daylight savings, makes appropriate adjustments if necessary
-    if (localZone.inDaylightTime(new Date(unixStartTime))) {
-      localZoneOffset += localZone.getDSTSavings();
-    }
-    if (thisZone.inDaylightTime(new Date(System.currentTimeMillis()))) {
-      thisZoneOffset += thisZone.getDSTSavings();
-    }
     // Calculates millisecond difference in start time
-    long msAhead = localZoneOffset - thisZoneOffset;
+    long msAhead = TimeZoneOps.getCurrentMsAhead(unixStartTime,
+        startCoord.getLatitude(), startCoord.getLongitude());
     long unixStartTimeSystemZone = (unixStartTime * 1000L) - msAhead;
     // Checks for past time
     if (unixStartTimeSystemZone <= System.currentTimeMillis()) {
