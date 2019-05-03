@@ -29,26 +29,22 @@ public class PathWeatherPoint {
    *                  represent this point
    * @param newSum    Summary of weather information and time at this point
    * @param pointTime long Unix time at which point is reached
-   * @param timeBlock long time at which weather block starts
    */
   @SuppressWarnings("deprecation")
   public PathWeatherPoint(float newLat, float newLong, String iconType,
-      String newSum, long pointTime, long timeBlock) {
+      String newSum, long pointTime) {
     // Sets requisite instance fields
     lat = newLat;
     lon = newLong;
     icon = iconType;
     // Determines String representing time window to be displayed
     weatherSum = "Expected arrival at ";
-    // Creates Date object for weather block time
-    Date blockTime = new Date(timeBlock * 1000L);
+    // Creates Date object for weather arrival time
     Date arrivalTime = new Date(pointTime * 1000L);
-    // Transfers minutes to the blockTime
-    blockTime.setMinutes(arrivalTime.getMinutes());
     // Generates formatter to produce appropriate date
     SimpleDateFormat formatter = new SimpleDateFormat("h:mm a EEE");
     // Adds requisite date times
-    weatherSum += formatter.format(blockTime) + " local time to weather: "
+    weatherSum += formatter.format(arrivalTime) + " local time to weather: "
         + newSum;
   }
 }

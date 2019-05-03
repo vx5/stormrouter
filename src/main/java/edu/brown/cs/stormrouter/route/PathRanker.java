@@ -18,6 +18,8 @@ import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 public class PathRanker {
   // Stores default path
   private Path defaultPath;
+  // Stores path long time zone offset, in seconds
+  private long tzOffset;
   // Stores information of all valid start time indices
   private Map<String, PathWeatherInfo> diffTimesWeather = new HashMap<String, PathWeatherInfo>();
   // Stores information about what place-time events have had weather pulled
@@ -52,6 +54,7 @@ public class PathRanker {
   public Map<String, Object> bestPath(Path centerPath) throws Exception {
     // Assign the given path as default
     defaultPath = centerPath;
+    tzOffset = centerPath.getOffset();
     // Generates alternate paths at desired time offsets, if they are valid
     genNewPaths();
     // Determine which points whether should be pulled for
@@ -96,8 +99,9 @@ public class PathRanker {
       long pathStartTime = unixStart + unixOffset;
       long pathEndTime = unixEnd + unixOffset;
       if (System.currentTimeMillis() * Units.S_PER_MS <= pathStartTime
+          - tzOffset
           && System.currentTimeMillis() * Units.S_PER_MS
-              + Units.hrToS(48.05) >= pathEndTime) {
+              + Units.hrToS(48.05) >= pathEndTime - tzOffset) {
         diffTimesWeather.put(Integer.toString(hrOffset),
             new PathWeatherInfo(unixStart + unixOffset));
       }
@@ -232,7 +236,7 @@ public class PathRanker {
     }
     // Now, performs change to relevant pathInfo object
     pathInfo.addWeatherData(pointLat, pointLong, weather.getIcon(),
-        weather.getSummary(), pointScore, unixReached, weather.getTime());
+        weather.getSummary(), pointScore, unixReached);
   }
 
   private void scorePaths() throws Exception {
@@ -250,10 +254,11 @@ public class PathRanker {
       for (String chosenHrOffset : chosenHrOffsets) {
         // Stores time from now for iteration
         int hrOffset = Integer.parseInt(chosenHrOffset);
-        int hrsFromNow = Units.UnixToHrsFromNow(timeReached) + hrOffset;
+        int hrsFromNowSys = Units.UnixToHrsFromNow(timeReached - tzOffset)
+            + hrOffset;
         long trueTimeReached = timeReached + Units.hrToS(hrOffset);
         // Stores relevant TimePoint
-        TimePoint hrWeather = hrWeathers[hrsFromNow];
+        TimePoint hrWeather = hrWeathers[hrsFromNowSys];
         // Obtains specific time to be scored
         PathWeatherInfo toModify = diffTimesWeather.get(chosenHrOffset);
         // Scores time index

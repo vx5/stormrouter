@@ -80,15 +80,20 @@ public class RouteHandler implements Route {
     } catch (Exception e) {
       // Generates default message to be displayed
       String toDisplay = "We're sorry! There was an error processing your request";
+      // Gets message from exception
+      String msg = e.getMessage();
       // Checks and handles of two designated, expected errors:
       // a) The exhaustion of API calls
       // b) Inability to judge the given path using weather data
-      if (e.getMessage().equals("Out of API calls")) {
+      if (msg.equals("Out of API calls")) {
         toDisplay = "We're unfortunately unable to provide services until tomorrow EST";
-      } else if (e.getMessage().equals("Path too long")) {
+      } else if (msg.equals("Path too long")) {
         toDisplay = "Part of the journey you've entered lies outside weather coverage — "
             + "this may have happened because the journey was too long, or the departure "
             + "time was too far from right now. Please try again with a different journey";
+      } else if (msg.equals("Invalid departure time")) {
+        toDisplay = "Please select a departure time later than the current time "
+            + "(at the departure time zone)";
       } else {
         // Prints stacktrace in case of unexpected error (TODO: remove)
         e.printStackTrace();

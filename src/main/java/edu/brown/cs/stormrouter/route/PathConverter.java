@@ -2,10 +2,12 @@ package edu.brown.cs.stormrouter.route;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.TimeZone;
 
 import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
 import edu.brown.cs.stormrouter.main.RouteHandler.RouteWaypoint;
+import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
 /**
  * @author vx5
@@ -27,19 +29,44 @@ public final class PathConverter {
    * @param inputPath     List of Segments representing directions
    * @param waypoints     Array of RouteWaypoints, representing stopovers in
    *                      route
-   * @param unixStartTime Long unix form of start time
+   * @param unixStartTime Long unix form of start time (in local time)
    * @return Path object given input Segment list and start time
    * @throws Exception if generated path is out of range
    */
   public static Path convertPath(List<Segment> inputPath,
       RouteWaypoint[] waypoints, long unixStartTime) throws Exception {
+    LatLon startCoord = inputPath.get(0).getStart();
+    float startLat = (float) startCoord.getLatitude();
+    float startLong = (float) startCoord.getLongitude();
+    // META: Checks that entered start time is valid in local time at start
+    // location
+    // Obtains time zone using API
+    String timeZone = WeatherAPIHandler.getWeather(startLat, startLong)
+        .getTimezone();
+    // TEST
+    System.out.println("Zone: " + timeZone);
+    // Sets up time zones for start location and current time zone
+    TimeZone localZone = TimeZone.getTimeZone(timeZone);
+    TimeZone thisZone = TimeZone.getDefault();
+    // Calculates millisecond difference in start time
+    long msAhead = (long) (localZone.getRawOffset() - thisZone.getRawOffset());
+    // TEST
+    System.out.println("Offset: "
+        + (msAhead / (Units.MS_PER_S * Units.S_PER_MIN * Units.MIN_PER_HR)));
+    long unixStartTimeSystemZone = (unixStartTime * 1000L) - msAhead;
+    // Checks for past time
+    if (unixStartTimeSystemZone <= System.currentTimeMillis()) {
+      throw new Exception("Invalid departure time");
+    }
+    // If no error, move on with Path generation
+    // Generates proper seconds offset
+    long unixOffset = msAhead / 1000L;
     // Makes new Path object using the given start time
-    Path centerPath = new Path(unixStartTime);
+    Path centerPath = new Path(unixStartTime, unixOffset);
     // Stores information associated with very first point in the weather-loaded
     // tracker
     long timeIndex = unixStartTime;
     double distSoFar = 0;
-    LatLon startCoord = inputPath.get(0).getStart();
     Pathpoint newPoint = new Pathpoint((float) startCoord.getLatitude(),
         (float) startCoord.getLongitude());
     newPoint.setTime(timeIndex);
