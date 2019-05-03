@@ -111,6 +111,7 @@ public final class DirectionsAPIHandler {
               double duration = step.get("duration").getAsDouble();
               String name = step.get("name").getAsString();
               String instructions = step.get("instruction").getAsString();
+              int type = step.get("type").getAsInt();
               JsonArray routeWaypoints = step.getAsJsonArray("way_points");
               LatLon startLatLon = points.get(routeWaypoints.get(0).getAsInt());
               LatLon endLatLon = points.get(routeWaypoints.get(1).getAsInt());
@@ -122,7 +123,7 @@ public final class DirectionsAPIHandler {
               }
 
               Segment segment = new Segment(startLatLon, endLatLon, distance,
-                  duration, name, instructions, finalStep);
+                  duration, name, instructions, type, finalStep);
               segments.add(segment);
               geoJSON = root;
             }

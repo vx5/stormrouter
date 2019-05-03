@@ -12,6 +12,7 @@ public class Segment {
   private String name;
   private String instructions;
   private boolean terminal;
+  private int type;
 
   /**
    * Constructs a new segment object from all of the data returned by the
@@ -23,16 +24,18 @@ public class Segment {
    * @param duration     - The expected duration of travel in seconds
    * @param name         - The name of the segment (such as street name)
    * @param instructions - The driving directions for the segment
+   * @param type         - Integer value specifying the type of direction
    * @param terminal     - Whether this is the final segment of a subpath
    */
   public Segment(LatLon start, LatLon end, double length, double duration,
-      String name, String instructions, boolean terminal) {
+      String name, String instructions, int type, boolean terminal) {
     this.start = start;
     this.end = end;
     this.length = length;
     this.duration = duration;
     this.name = name;
     this.instructions = instructions;
+    this.type = type;
     this.terminal = terminal;
   }
 
@@ -58,6 +61,10 @@ public class Segment {
 
   public String getInstructions() {
     return instructions;
+  }
+
+  public int getType() {
+    return type;
   }
 
   public boolean isTerminal() {

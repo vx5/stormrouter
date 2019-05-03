@@ -155,6 +155,7 @@ function displayDirections(directions){
 	for(let i = 0; i < directions.length; i++){
 		const length = directions[i].length;
 		const instruction = directions[i].instructions;
+		const type = directions[i].type;
 		$directs.append(
 			'<li><div class="instructions">' + instruction + ' for ' + formatLength(length) + '</div></li>');
 	}
