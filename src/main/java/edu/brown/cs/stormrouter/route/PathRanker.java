@@ -183,63 +183,6 @@ public class PathRanker {
     }
   }
 
-  private void score(float pointLat, float pointLong, PathWeatherInfo pathInfo,
-      TimePoint weather, long unixReached) {
-    // Initializes variable to count score
-    int pointScore = 0;
-    // Checks for case of precipitation
-    double precipIntensity = weather.getPrecipIntensity();
-    if (precipIntensity > 0.01) {
-      // Checks for case of rain
-      if (weather.getPrecipType().equals("rain")) {
-        // Checks for different amounts of precipitation, awards points
-        // accordingly
-        if (precipIntensity < 0.1) {
-          pointScore += 5;
-        } else if (precipIntensity < 0.3) {
-          pointScore += 15;
-        } else {
-          pointScore += 40;
-        }
-        // Checks for case of sleet or snow
-      } else {
-        // Checks for different amounts of precipitation, awards points
-        // accordingly
-        if (precipIntensity < 0.05) {
-          pointScore += 5;
-        } else if (precipIntensity < 0.15) {
-          pointScore += 25;
-        } else {
-          pointScore += 60;
-        }
-      }
-    }
-    // Checks for case of very high temperature
-    if (weather.getTemperature() > 105) {
-      pointScore += 30;
-    }
-    // Checks for case of low visibility
-    double visibility = weather.getVisibility();
-    if (visibility < 0.25) {
-      pointScore += 30;
-    } else if (visibility < 0.62) {
-      pointScore += 15;
-    }
-    // Checks for case of high wind speed / wind gust
-    double windSpeed = weather.getWindSpeed();
-    double windGust = weather.getWindGust();
-    if (windGust > 65) {
-      pointScore += 100;
-    } else if (windGust > 58 || windSpeed > 40) {
-      pointScore += 40;
-    } else if (windGust > 45 || windSpeed > 30) {
-      pointScore += 15;
-    }
-    // Now, performs change to relevant pathInfo object
-    pathInfo.addWeatherData(pointLat, pointLong, weather.getIcon(),
-        weather.getSummary(), pointScore, unixReached);
-  }
-
   private void scorePaths() throws Exception {
     // Stores array over all PathWeatherInfos
     Set<String> chosenHrOffsets = diffTimesWeather.keySet();
@@ -260,10 +203,13 @@ public class PathRanker {
         long trueTimeReached = timeReached + Units.hrToS(hrOffset);
         // Stores relevant TimePoint
         TimePoint hrWeather = hrWeathers[hrsFromNowSys];
+        // Scores TimePoint
+        int ptScore = WSet.scoreWeather(hrWeather);
         // Obtains specific time to be scored
         PathWeatherInfo toModify = diffTimesWeather.get(chosenHrOffset);
-        // Scores time index
-        score(currCoords[0], currCoords[1], toModify, hrWeather,
+        // Adds weather information to relevant PathWeatherInfo
+        toModify.addWeatherData(currCoords[0], currCoords[1],
+            hrWeather.getIcon(), hrWeather.getSummary(), ptScore,
             trueTimeReached);
       }
     }

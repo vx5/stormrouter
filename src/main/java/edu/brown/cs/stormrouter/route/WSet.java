@@ -6,8 +6,8 @@ import edu.brown.cs.stormrouter.weather.TimePoint;
  * @author vx5
  *
  *         Class which houses scoring rubric for TimePoints, static methods to
- *         manipulate that metric, and the static score() method, which scores
- *         TimePoints.
+ *         manipulate that metric, and the static scoreWeather() method, which
+ *         scores TimePoints.
  */
 public final class WSet {
   // Stores fixed weather amount cutoffs
