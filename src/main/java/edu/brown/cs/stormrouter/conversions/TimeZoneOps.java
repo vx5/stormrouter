@@ -20,7 +20,7 @@ public final class TimeZoneOps {
     long localZoneOffset = localZone.getRawOffset();
     long thisZoneOffset = thisZone.getRawOffset();
     // Checks for daylight savings, makes appropriate adjustments if necessary
-    if (localZone.inDaylightTime(new Date(unixTimeThere))) {
+    if (localZone.inDaylightTime(new Date(unixTimeThere * 1000))) {
       localZoneOffset += localZone.getDSTSavings();
     }
     if (thisZone.inDaylightTime(new Date(System.currentTimeMillis()))) {

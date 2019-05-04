@@ -17,32 +17,26 @@ import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
  *         Class which handles core functionality of deciding what time offset
  *         yields the most weather-sound path.
  */
-public class PathRanker {
+public final class PathRanker {
   // Stores default path
-  private Path defaultPath;
+  private static Path defaultPath;
   // Stores path long time zone offset, in seconds
-  private long tzOffset;
+  private static long tzOffset;
   // Stores information of all valid start time indices
-  private Map<String, PathWeatherInfo> diffTimesWeather = new HashMap<String, PathWeatherInfo>();
+  private static Map<String, PathWeatherInfo> diffTimesWeather = new HashMap<String, PathWeatherInfo>();
   // Stores information about what place-time events have had weather pulled
-  private Map<String, Long> checkedWeather = new HashMap<String, Long>();
-  private final double TILE_SIZE_MILES = 20;
-  private final double TILE_SIZE_DEGREES = TILE_SIZE_MILES
+  private static Map<String, Long> checkedWeather = new HashMap<String, Long>();
+  private static final double TILE_SIZE_MILES = 20;
+  private static final double TILE_SIZE_DEGREES = TILE_SIZE_MILES
       * Units.DEGREES_PER_MILE;
   // Stores list of indices in paths to be used for waypoints
-  private List<Integer> weatherIds = new ArrayList<Integer>();
+  private static List<Integer> weatherIds = new ArrayList<Integer>();
   // Stores number of points that should be checked
-  private final int NUM_POINTS = 4;
+  private static final int NUM_POINTS = 4;
   // Stores desired hour offsets to be checked, if possible
-  private final int[] HR_OFFSETS = new int[] {
+  private static final int[] HR_OFFSETS = new int[] {
       -2, -1, 1, 2, 5
   };
-
-  /**
-   * Empty constructor.
-   */
-  public PathRanker() {
-  }
 
   /**
    * Returns map of weather information objects, of type PathWeatherInfo, which
@@ -53,7 +47,7 @@ public class PathRanker {
    * @return Set of PathWeatherInfo, one for each valid paths
    * @throws Exception if there is error in API call
    */
-  public Map<String, Object> bestPath(Path centerPath) throws Exception {
+  public static Map<String, Object> bestPath(Path centerPath) throws Exception {
     // Assign the given path as default
     defaultPath = centerPath;
     tzOffset = centerPath.getOffset();
@@ -82,7 +76,7 @@ public class PathRanker {
     return finalMap;
   }
 
-  private void genNewPaths() {
+  private static void genNewPaths() {
     // Sets the start, end time of the path that is desired
     long unixStart = defaultPath.getStartTime();
     List<Pathpoint> pathPoints = defaultPath.getPathpoints();
@@ -110,7 +104,7 @@ public class PathRanker {
     }
   }
 
-  private void fillIds() {
+  private static void fillIds() {
     // Calculate standard breakdown of paths
     // Clears existing Ids, sets up with start
     ArrayList<Integer> allWeatherIds = new ArrayList<Integer>();
@@ -184,7 +178,7 @@ public class PathRanker {
     }
   }
 
-  private void scorePaths() throws Exception {
+  private static void scorePaths() throws Exception {
     // Stores array over all PathWeatherInfos
     Set<String> chosenHrOffsets = diffTimesWeather.keySet();
     // Iterates through all weather indices

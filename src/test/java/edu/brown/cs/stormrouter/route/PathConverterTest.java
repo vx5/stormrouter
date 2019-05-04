@@ -79,12 +79,49 @@ public class PathConverterTest {
 
   @Test
   public void testConvertPathErrorInvalidDepartureTime() {
-
+    try {
+      // Constructs dummy input path
+      List<Segment> inputPath = new ArrayList<Segment>();
+      inputPath.add(new Segment(new LatLon(41.835265, -71.389404),
+          new LatLon(41.837006, -71.389919), 1, 1, "1", "1", 1, false));
+      // Calculate valid departure time (hour from now)
+      long eastCoastOffset = TimeZoneOps
+          .getCurrentMsAhead(System.currentTimeMillis(), 41.835265, -71.389404);
+      long departureTime = (long) ((System.currentTimeMillis()
+          + eastCoastOffset) / (double) 1000) + Units.hrToS(-3);
+      // Generate path
+      PathConverter.convertPath(inputPath, new RouteWaypoint[0], departureTime);
+      // If no exception thrown, fail test
+      fail();
+    } catch (Exception e) {
+      // Check for correct message
+      String msg = e.getMessage();
+      assertEquals(msg, "Invalid departure time");
+    }
   }
 
   @Test
   public void testConvertPathErrorPathTooLong() {
-
+    try {
+      // Constructs dummy input path
+      // Segment has high duration to prevent successful path calculation
+      List<Segment> inputPath = new ArrayList<Segment>();
+      inputPath.add(new Segment(new LatLon(41.835265, -71.389404),
+          new LatLon(41.837006, -71.389919), 1, 999999999, "1", "1", 1, false));
+      // Calculate valid departure time (hour from now)
+      long eastCoastOffset = TimeZoneOps
+          .getCurrentMsAhead(System.currentTimeMillis(), 41.835265, -71.389404);
+      long departureTime = (long) ((System.currentTimeMillis()
+          + eastCoastOffset) / (double) 1000) + Units.hrToS(1);
+      // Generate path
+      PathConverter.convertPath(inputPath, new RouteWaypoint[0], departureTime);
+      // Fail if error is not thrown
+      fail();
+    } catch (Exception e) {
+      // Check for correct message
+      String msg = e.getMessage();
+      assertEquals(msg, "Path too long");
+    }
   }
 
 }
