@@ -19,6 +19,8 @@ map.addControl(new mapboxgl.NavigationControl({
 let coordinates = {};
 let locationMarkers = {};
 
+/* add a geocoder (search bar tied to Mapbox map) to the div with id 'name'.
+ Give the <input> element of the geocoder name 'name'*/
 function addGeocoder(name) {
   const $target = $('#' + name);
 
@@ -29,25 +31,27 @@ function addGeocoder(name) {
   });
   $target.append(geocoder.onAdd(map));
 
+  // when user selects a location from geocoder dropdown
   geocoder.on('result', result => {
-  	console.log(result);
+    //console.log(result);
 
+    // flip lnglat to latlng and store in coordinates
     const lnglat = result.result.geometry.coordinates;
-  	coordinates[name] = [lnglat[1], lnglat[0]];
+    coordinates[name] = [lnglat[1], lnglat[0]];
 
-    const marker = new mapboxgl.Marker()
+    // add Mapbox Marker to map and store it by name in locationMarkers
+    locationMarkers[name] = new mapboxgl.Marker()
         .setLngLat(lnglat)
         .addTo(map);
-    // markers.push(marker);
-    locationMarkers[name] = marker;
 
-    // zoom to display all markers
+    // calculate bounding box of all location markers
     const bounds = new mapboxgl.LngLatBounds();
-    //locationMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
     for (const [key, value] of Object.entries(locationMarkers)) {
-      if(!value) continue;
+      if (!value) continue;
       bounds.extend(value.getLngLat());
     }
+
+    // add padding to bounding box based on current panel widths and heights
     map.fitBounds(bounds, {
       padding: {
         top: 60,
@@ -57,9 +61,10 @@ function addGeocoder(name) {
       }
     });
   });
-  
+
   const $input = $target.find('input');
 
+  // when user clears input from geocoder
   $target.find('button').click(() => {
     coordinates[name] = null;
     const marker = locationMarkers[name];
@@ -68,6 +73,8 @@ function addGeocoder(name) {
       locationMarkers[name] = null;
     }
   });
+
+  // after user types text into geocoder
   $input.on('keyup', () => {
     coordinates[name] = null;
     const marker = locationMarkers[name];
@@ -76,6 +83,8 @@ function addGeocoder(name) {
       locationMarkers[name] = null;
     }
   });
+
+  // set input name to 'name' and make it required for form data
   $input.attr('name', name);
   $input.prop('required', true);
 }
@@ -83,6 +92,6 @@ function addGeocoder(name) {
 addGeocoder('start');
 addGeocoder('end');
 
-const WEATHER_TYPE = [
-    'PLAIN', 'RAIN', 'SNOW', 'HEAT', 'FOG', 'WIND'
-];
+/*const WEATHER_TYPE = [
+  'PLAIN', 'RAIN', 'SNOW', 'HEAT', 'FOG', 'WIND'
+];*/

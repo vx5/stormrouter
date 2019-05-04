@@ -29,7 +29,7 @@ function collapse(element, buttonElem) {
   buttonElem.className = "fas " + newButton;
 }
 
-function showContent(element, buttonElem){
+function showContent(element, buttonElem) {
   if (element.style.display === 'none')
     collapse(element, buttonElem);
 }

@@ -13,9 +13,9 @@
           <div class="directions">
             <h4 class="section-header">Directions</h4>
             <div>
-              <div id="depart">Best Departure Time: 0 hr</div>
+              <div id="depart">Best Departure Time:</div>
               <input type="range" id="slider" min="0" max="5" value="2"/>
-              <span style='font-size: 14px;'>0 hr</span>
+              <span style='font-size: 14px;'>12:00PM</span>
             </div>
             <ol class="directions-list">
               <!-- <li>
