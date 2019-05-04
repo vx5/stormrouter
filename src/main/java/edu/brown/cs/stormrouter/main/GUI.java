@@ -45,7 +45,6 @@ final class GUI {
     FreeMarkerEngine freeMarker = createEngine();
 
     Spark.get("/stormrouter", new FrontHandler(), freeMarker);
-    Spark.get("/stormrouter/demo", new DemoHandler(), freeMarker);
     Spark.post("/stormrouter/route", new RouteHandler());
     Spark.post("/stormrouter/changeweather", new ChangeWeatherHandler());
   }
@@ -62,17 +61,6 @@ final class GUI {
     public ModelAndView handle(Request request, Response response) {
       Map<String, Object> variables = ImmutableMap.of("title", "StormRouter");
       return new ModelAndView(variables, "front-page.ftl");
-    }
-  }
-
-  /**
-   * Handles requests to the front page of our StormRouter website.
-   */
-  private static class DemoHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(Request request, Response response) {
-      Map<String, Object> variables = ImmutableMap.of("title", "StormRouter");
-      return new ModelAndView(variables, "demo.ftl");
     }
   }
 
