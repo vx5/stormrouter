@@ -52,8 +52,8 @@ function getFormInputs() {
     }
     waypointStops.push({waypoint, duration});
   }
-
-  return {start: startPoint, date: unixTime, destination: endPoint, waypoints: waypointStops};
+  const prefArray = [weatherPref.snow, weatherPref.rain, weatherPref.wind];
+  return {start: startPoint, date: unixTime, destination: endPoint, waypoints: waypointStops, weatherSettings: prefArray};
 }
 
 //Clear the current path.
