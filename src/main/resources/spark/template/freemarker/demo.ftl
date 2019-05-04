@@ -105,7 +105,7 @@
           <input type="range" id="wind" class="slider" min="-30" max="30" value="0"/>
           <span style='font-size: 14px;'>0%</span>
         </div>
-
+        <button id="submit-weather">Submit Changes</button>
       </div>
     </div>
 

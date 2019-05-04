@@ -1,5 +1,6 @@
 let timeStamp = ['-2', '-1', '0', '1', '2', '5'];
 let curPath = null, curSegments = null, curWeather = null;
+let currentTime = null;
 
 $("#slider").change(() => {
 	const sliderVal = $("#slider").val();
@@ -40,3 +41,4 @@ for(let i = 0; i < $wslides.length; i++){
 		weatherPref[cur[0].id] = sliderVal;
 	});
 }
+

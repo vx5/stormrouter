@@ -40,7 +40,6 @@ public class RouteHandler implements Route {
     long date;
     double[] destination;
     RouteWaypoint[] waypoints;
-    int[] weatherSettings;
   }
 
   @Override
