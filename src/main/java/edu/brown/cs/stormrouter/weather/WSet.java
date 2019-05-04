@@ -1,7 +1,5 @@
 package edu.brown.cs.stormrouter.weather;
 
-import edu.brown.cs.stormrouter.weather.TimePoint;
-
 /**
  * @author vx5
  *

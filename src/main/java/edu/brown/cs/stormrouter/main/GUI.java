@@ -21,7 +21,6 @@ import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 
-
 final class GUI {
   private static final Gson GSON = new Gson();
 
@@ -52,6 +51,7 @@ final class GUI {
     Spark.get("/stormrouter/demo", new DemoHandler(), freeMarker);
     Spark.post("/stormrouter/route", new RouteHandler());
     Spark.post("/stormrouter/parse", new ParserHandler());
+    Spark.post("/stormrouter/changeweather", new ChangeWeatherHandler());
   }
 
   static void stopSparkServer() {
@@ -64,8 +64,7 @@ final class GUI {
   private static class FrontHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request request, Response response) {
-      Map<String, Object> variables =
-          ImmutableMap.of("title", "StormRouter");
+      Map<String, Object> variables = ImmutableMap.of("title", "StormRouter");
       return new ModelAndView(variables, "front-page.ftl");
     }
   }
@@ -76,8 +75,7 @@ final class GUI {
   private static class DemoHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request request, Response response) {
-      Map<String, Object> variables =
-          ImmutableMap.of("title", "StormRouter");
+      Map<String, Object> variables = ImmutableMap.of("title", "StormRouter");
       return new ModelAndView(variables, "demo.ftl");
     }
   }
@@ -88,10 +86,8 @@ final class GUI {
 
     @Override
     public String toString() {
-      return "RouteWaypoint{" +
-          "waypoint=" + Arrays.toString(waypoint) +
-          ", duration=" + duration +
-          '}';
+      return "RouteWaypoint{" + "waypoint=" + Arrays.toString(waypoint)
+          + ", duration=" + duration + '}';
     }
   }
 
@@ -109,10 +105,12 @@ final class GUI {
     @Override
     public Object handle(Request request, Response response) {
       QueryParamsMap qm = request.queryMap();
-      /*JsonParser parser = new JsonParser();
-      JsonElement params = parser.parse(qm.value("params"));*/
-      RouteRequest params =
-          GSON.fromJson(qm.value("params"), RouteRequest.class);
+      /*
+       * JsonParser parser = new JsonParser(); JsonElement params =
+       * parser.parse(qm.value("params"));
+       */
+      RouteRequest params = GSON.fromJson(qm.value("params"),
+          RouteRequest.class);
       System.out.println(Arrays.toString(params.start));
       System.out.println(params.date);
       System.out.println(Arrays.toString(params.waypoints));
@@ -120,7 +118,7 @@ final class GUI {
       return "{}";
     }
   }
-  
+
   /**
    * Display an error page when an exception occurs in the server.
    */

@@ -77,4 +77,14 @@ public class PathConverterTest {
     }
   }
 
+  @Test
+  public void testConvertPathErrorInvalidDepartureTime() {
+
+  }
+
+  @Test
+  public void testConvertPathErrorPathTooLong() {
+
+  }
+
 }
