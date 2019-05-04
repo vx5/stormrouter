@@ -14,8 +14,8 @@ import java.util.Date;
  */
 public class PathWeatherPoint {
   // Private instance fields to be accessed from inside JSON
-  private float lat;
-  private float lon;
+  private double lat;
+  private double lon;
   private String icon;
   private String weatherSum;
 
@@ -31,7 +31,7 @@ public class PathWeatherPoint {
    * @param pointTime long Unix time at which point is reached
    */
   @SuppressWarnings("deprecation")
-  public PathWeatherPoint(float newLat, float newLong, String iconType,
+  public PathWeatherPoint(double newLat, double newLong, String iconType,
       String newSum, long pointTime) {
     // Sets requisite instance fields
     lat = newLat;

@@ -7,7 +7,7 @@ import edu.brown.cs.stormrouter.conversions.TimeZoneOps;
 import edu.brown.cs.stormrouter.conversions.Units;
 import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
-import edu.brown.cs.stormrouter.main.RouteHandler.RouteWaypoint;
+import edu.brown.cs.stormrouter.main.RouteWaypoint;
 
 /**
  * @author vx5
@@ -34,7 +34,8 @@ public final class PathConverter {
    * @throws Exception if generated path is out of range
    */
   public static Path convertPath(List<Segment> inputPath,
-      RouteWaypoint[] waypoints, long unixStartTime) throws Exception {
+      edu.brown.cs.stormrouter.main.RouteWaypoint[] waypoints,
+      long unixStartTime) throws Exception {
     // Checks for path existing
     if (inputPath.size() == 0) {
       throw new Exception("No path");

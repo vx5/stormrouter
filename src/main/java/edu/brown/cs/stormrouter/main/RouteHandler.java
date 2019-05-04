@@ -1,7 +1,6 @@
 package edu.brown.cs.stormrouter.main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -22,17 +21,6 @@ import spark.Route;
 
 public class RouteHandler implements Route {
   private static final Gson GSON = new Gson();
-
-  public class RouteWaypoint {
-    public double[] waypoint;
-    public int duration;
-
-    @Override
-    public String toString() {
-      return "RouteWaypoint{" + "waypoint=" + Arrays.toString(waypoint)
-          + ", duration=" + duration + '}';
-    }
-  }
 
   private class RouteRequest {
     double[] start;

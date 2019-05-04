@@ -26,8 +26,8 @@ public class PathRanker {
   private Map<String, PathWeatherInfo> diffTimesWeather = new HashMap<String, PathWeatherInfo>();
   // Stores information about what place-time events have had weather pulled
   private Map<String, Long> checkedWeather = new HashMap<String, Long>();
-  private final float TILE_SIZE_MILES = 20;
-  private final float TILE_SIZE_DEGREES = TILE_SIZE_MILES
+  private final double TILE_SIZE_MILES = 20;
+  private final double TILE_SIZE_DEGREES = TILE_SIZE_MILES
       * Units.DEGREES_PER_MILE;
   // Stores list of indices in paths to be used for waypoints
   private List<Integer> weatherIds = new ArrayList<Integer>();
@@ -122,7 +122,7 @@ public class PathRanker {
     String storeString = "0,0";
     checkedWeather.put(storeString, startPoint.getTime());
     // Obtains coordinates for use in tile calculation in loop
-    float[] startCoords = startPoint.getCoords();
+    double[] startCoords = startPoint.getCoords();
     // Iterates through pathPoints to check for default paths
     for (int i = 1; i < pathPoints.size(); i++) {
       // Obtain the relevant pathPoint
@@ -131,10 +131,10 @@ public class PathRanker {
       // Gets the time block
       long iterUnixTime = iterPoint.getTime();
       // Gets the tile coordinates
-      float[] ptCoords = iterPoint.getCoords();
-      int tileX = Math
+      double[] ptCoords = iterPoint.getCoords();
+      int tileX = (int) Math
           .round((ptCoords[1] - startCoords[1]) / TILE_SIZE_DEGREES);
-      int tileY = Math
+      int tileY = (int) Math
           .round((ptCoords[0] - startCoords[0]) / TILE_SIZE_DEGREES);
       storeString = tileX + "," + tileY;
       // Checks if criteria for new point or met, if so, adds
@@ -192,7 +192,7 @@ public class PathRanker {
       // Gets relevant point in default path
       Pathpoint currPoint = defaultPath.getPathpoints().get(currId);
       long timeReached = currPoint.getTime();
-      float[] currCoords = currPoint.getCoords();
+      double[] currCoords = currPoint.getCoords();
       TimePoint[] hrWeathers = WeatherAPIHandler
           .getWeather(currCoords[0], currCoords[1]).getHourly().getData();
       // Iterates through all paths, and scores the appropriate points
