@@ -101,3 +101,9 @@ div.collapse:hover {
   margin-left: 20px;
   font-size: 14px;
 }
+
+.settings{
+  position: absolute;
+  right: 5px;
+  top: 115px;
+}

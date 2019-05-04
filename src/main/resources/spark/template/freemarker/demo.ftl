@@ -77,5 +77,39 @@
       </div>
     </div>
   </div>
+
+  <button class="settings" id="modalButton">settings</button>
+
+  <div id="myModal" class="modal">
+
+  <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <b>Settings</b>
+        <span class="close">&times;</span>
+      </div>
+
+      <div id="setting">
+        <div id="snow-setting">
+          <span>Snow Preference</span>
+          <input type="range" id="snow" class="slider" min="-30" max="30" value="0"/>
+          <span style='font-size: 14px;'>0%</span>
+        </div>
+        <div id="rain-setting">
+          <span>Rain Preference</span>
+          <input type="range" id="rain" class="slider" min="-30" max="30" value="0"/>
+          <span style='font-size: 14px;'>0%</span>
+        </div>
+        <div id="winfd-setting">
+          <span>Wind Preference</span>
+          <input type="range" id="wind" class="slider" min="-30" max="30" value="0"/>
+          <span style='font-size: 14px;'>0%</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
 </#assign>
 <#include "main.ftl">
