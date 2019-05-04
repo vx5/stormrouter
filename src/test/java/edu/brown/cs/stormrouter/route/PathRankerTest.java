@@ -2,19 +2,20 @@ package edu.brown.cs.stormrouter.route;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import edu.brown.cs.stormrouter.main.RouteHandler;
 import org.junit.Test;
 
 import edu.brown.cs.stormrouter.conversions.TimeZoneOps;
 import edu.brown.cs.stormrouter.conversions.Units;
 import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
+import edu.brown.cs.stormrouter.main.RouteHandler;
 
 public class PathRankerTest {
 
@@ -27,14 +28,13 @@ public class PathRankerTest {
       inputPath.add(new Segment(new LatLon(41.835265, -71.389404),
           new LatLon(41.837006, -71.389919), 1, 1, "1", "1", 1, false));
       // Calculate valid departure time (hour from now)
-      long eastCoastOffset = TimeZoneOps
-          .getCurrentMsAhead(System.currentTimeMillis(), 41.835265, -71.389404);
+      long eastCoastOffset = TimeZoneOps.getCurrentMsAhead(
+          System.currentTimeMillis() / 1000L, 41.835265, -71.389404);
       long departureTime = (long) (((System.currentTimeMillis()
           + eastCoastOffset) + Units.hrToS(0.5)) / 1000);
       // Generate path
       Path p = PathConverter.convertPath(inputPath,
-          new RouteHandler.RouteWaypoint[0],
-          departureTime);
+          new RouteHandler.RouteWaypoint[0], departureTime);
       // Generate best alternate paths' map
       Map<String, Object> m = PathRanker.bestPath(p);
       Set<String> keys = m.keySet();
@@ -62,7 +62,7 @@ public class PathRankerTest {
       assertEquals((String) m.get("best"), bestPathKey);
     } catch (Exception e) {
       // Fail on any error
-      e.printStackTrace();
+      fail();
     }
 
   }

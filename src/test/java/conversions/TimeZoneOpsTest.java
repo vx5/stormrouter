@@ -18,10 +18,11 @@ public class TimeZoneOpsTest {
     double eastCoastLat = 42.090754;
     double eastCoastLong = -71.265124;
     try {
-      long genOffset = TimeZoneOps.getCurrentMsAhead(System.currentTimeMillis(),
-          eastCoastLat, eastCoastLong);
+      long genOffset = TimeZoneOps.getCurrentMsAhead(
+          System.currentTimeMillis() / 1000L, eastCoastLat, eastCoastLong);
       assertEquals(genOffset, getExpectedOffset("America/New_York"));
     } catch (Exception e) {
+      e.printStackTrace();
       fail();
     }
     // Test for different time zone
@@ -30,8 +31,8 @@ public class TimeZoneOpsTest {
     double colomboLat = 6.923536;
     double colomboLong = 79.935510;
     try {
-      long genOffset = TimeZoneOps.getCurrentMsAhead(System.currentTimeMillis(),
-          colomboLat, colomboLong);
+      long genOffset = TimeZoneOps.getCurrentMsAhead(
+          System.currentTimeMillis() / 1000L, colomboLat, colomboLong);
       assertEquals(genOffset, getExpectedOffset("Asia/Colombo"));
     } catch (Exception e) {
       fail();
@@ -39,8 +40,6 @@ public class TimeZoneOpsTest {
   }
 
   private long getExpectedOffset(String timeZone) {
-    // TEST
-    System.out.println(timeZone);
     TimeZone localZone = TimeZone.getTimeZone(timeZone);
     TimeZone thisZone = TimeZone.getDefault();
     // Stores raw offsets to standard time

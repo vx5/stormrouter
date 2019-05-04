@@ -20,10 +20,8 @@ import edu.brown.cs.stormrouter.route.DirectionsWrapper;
  * A helper class for handling requests to the directions API.
  */
 public final class DirectionsAPIHandler {
-  private static final String BASE_URL =
-      "https://api.openrouteservice.org/v2/directions/driving-car";
-  private static final String API_KEY =
-      "5b3ce3597851110001cf6248354b40dadcf845dbbc95c4797348398b";
+  private static final String BASE_URL = "https://api.openrouteservice.org/v2/directions/driving-car";
+  private static final String API_KEY = "5b3ce3597851110001cf6248354b40dadcf845dbbc95c4797348398b";
   private static final Gson GSON = new Gson();
 
   private DirectionsAPIHandler() {
@@ -40,7 +38,7 @@ public final class DirectionsAPIHandler {
    *         each segment, and the full GeoJSON reference for rendering in the
    *         GUI
    * @throws DirectionsException - Throws an exception if there is an error
-   * retrieving or parsing the data.
+   *                             retrieving or parsing the data.
    */
   public static DirectionsWrapper getDirections(LatLon start,
       List<LatLon> waypoints, LatLon end) throws DirectionsException {
@@ -134,15 +132,14 @@ public final class DirectionsAPIHandler {
             }
           }
         } else {
-          throw new DirectionsException("No directions data was found for the"
-              + "specified locations.");
+          throw new DirectionsException(
+              "No directions data was found for the" + "specified locations.");
         }
       } else {
-        throw new DirectionsException("There was an error connecting to the"
-            + "directions service.  Please try again later.");
+        throw new DirectionsException("No path");
       }
     } catch (IOException ioe) {
-      throw new DirectionsException("There was an error connecting to the"
+      throw new DirectionsException("There was an error connecting to the "
           + "directions service.  Please try again later.");
     }
 

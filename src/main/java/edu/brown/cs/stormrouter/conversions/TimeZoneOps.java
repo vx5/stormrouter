@@ -23,10 +23,10 @@ public final class TimeZoneOps {
     long localZoneOffset = localZone.getRawOffset();
     long thisZoneOffset = thisZone.getRawOffset();
     // Checks for daylight savings, makes appropriate adjustments if necessary
-    if (localZone.inDaylightTime(new Date(unixTimeThere))) {
+    if (localZone.inDaylightTime(new Date(unixTimeThere * 1000L))) {
       localZoneOffset += localZone.getDSTSavings();
     }
-    if (thisZone.inDaylightTime(new Date(System.currentTimeMillis() / 1000L))) {
+    if (thisZone.inDaylightTime(new Date(System.currentTimeMillis()))) {
       thisZoneOffset += thisZone.getDSTSavings();
     }
     // Return millisecond difference in start time

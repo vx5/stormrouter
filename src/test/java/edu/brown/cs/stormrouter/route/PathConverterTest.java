@@ -6,13 +6,13 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.brown.cs.stormrouter.main.RouteHandler;
 import org.junit.Test;
 
 import edu.brown.cs.stormrouter.conversions.TimeZoneOps;
 import edu.brown.cs.stormrouter.conversions.Units;
 import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
+import edu.brown.cs.stormrouter.main.RouteHandler;
 import edu.brown.cs.stormrouter.main.RouteHandler.RouteWaypoint;
 
 public class PathConverterTest {
@@ -30,14 +30,16 @@ public class PathConverterTest {
       // TODO: Remove 'new RouteHandler()' when PathConverter changed
       // Constructs dummy stop waypoint
       RouteWaypoint wp = new RouteHandler().new RouteWaypoint();
-      wp.setWaypoint(new double[] {41.837006, -71.389919});
+      wp.setWaypoint(new double[] {
+          41.837006, -71.389919
+      });
       wp.setDuration(10);
       RouteWaypoint[] w = new RouteWaypoint[] {
           wp
       };
       // Calculate valid departure time (hour from now)
-      long eastCoastOffset = TimeZoneOps
-          .getCurrentMsAhead(System.currentTimeMillis(), 41.835265, -71.389404);
+      long eastCoastOffset = TimeZoneOps.getCurrentMsAhead(
+          System.currentTimeMillis() / 1000L, 41.835265, -71.389404);
       long departureTime = (long) ((System.currentTimeMillis()
           + eastCoastOffset) / (double) 1000) + Units.hrToS(1);
       // Generate path
@@ -85,8 +87,8 @@ public class PathConverterTest {
       inputPath.add(new Segment(new LatLon(41.835265, -71.389404),
           new LatLon(41.837006, -71.389919), 1, 1, "1", "1", 1, false));
       // Calculate valid departure time (hour from now)
-      long eastCoastOffset = TimeZoneOps
-          .getCurrentMsAhead(System.currentTimeMillis(), 41.835265, -71.389404);
+      long eastCoastOffset = TimeZoneOps.getCurrentMsAhead(
+          System.currentTimeMillis() / 1000L, 41.835265, -71.389404);
       long departureTime = (long) ((System.currentTimeMillis()
           + eastCoastOffset) / (double) 1000) + Units.hrToS(-3);
       // Generate path
@@ -109,8 +111,8 @@ public class PathConverterTest {
       inputPath.add(new Segment(new LatLon(41.835265, -71.389404),
           new LatLon(41.837006, -71.389919), 1, 999999999, "1", "1", 1, false));
       // Calculate valid departure time (hour from now)
-      long eastCoastOffset = TimeZoneOps
-          .getCurrentMsAhead(System.currentTimeMillis(), 41.835265, -71.389404);
+      long eastCoastOffset = TimeZoneOps.getCurrentMsAhead(
+          System.currentTimeMillis() / 1000L, 41.835265, -71.389404);
       long departureTime = (long) ((System.currentTimeMillis()
           + eastCoastOffset) / (double) 1000) + Units.hrToS(1);
       // Generate path
