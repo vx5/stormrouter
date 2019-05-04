@@ -23,14 +23,15 @@ public final class PathRanker {
   // Stores path long time zone offset, in seconds
   private static long tzOffset;
   // Stores information of all valid start time indices
-  private static Map<String, PathWeatherInfo> diffTimesWeather = new HashMap<String, PathWeatherInfo>();
+  private static Map<String, PathWeatherInfo> diffTimesWeather =
+      new HashMap<>();
   // Stores information about what place-time events have had weather pulled
-  private static Map<String, Long> checkedWeather = new HashMap<String, Long>();
+  private static Map<String, Long> checkedWeather = new HashMap<>();
   private static final double TILE_SIZE_MILES = 20;
   private static final double TILE_SIZE_DEGREES = TILE_SIZE_MILES
       * Units.DEGREES_PER_MILE;
   // Stores list of indices in paths to be used for waypoints
-  private static List<Integer> weatherIds = new ArrayList<Integer>();
+  private static List<Integer> weatherIds = new ArrayList<>();
   // Stores number of points that should be checked
   private static final int NUM_POINTS = 4;
   // Stores desired hour offsets to be checked, if possible
@@ -155,9 +156,7 @@ public final class PathRanker {
       double minDistToNext = 0;
       // Iterates through allWeatherIds based on certain journey durations
       double lastDistChosen = 0;
-      for (int i = 0; i < allWeatherIds.size(); i++) {
-        // Stores actual coordinate
-        int coord = allWeatherIds.get(i);
+      for (int coord : allWeatherIds) {
         // Calculates distance from start for current point
         double distFromStart = pathPoints.get(coord).getDistToReach();
         // Calculates distance moved from last chosen point
