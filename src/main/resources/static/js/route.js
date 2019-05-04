@@ -276,8 +276,6 @@ function displayWeather(weather) {
 $(document).ready(() => {
   $('#itinerary-form').submit(event => {
     event.preventDefault();
-    clearPath();
-    removeWeatherMarkers();
 
     try {
       const postParameters = getFormInputs();
@@ -290,6 +288,8 @@ $(document).ready(() => {
         const message = response.message;
 
         if (message) {
+          clearPath();
+          removeWeatherMarkers();
           alert(message);
           return;
         }
@@ -303,6 +303,8 @@ $(document).ready(() => {
         collapse($collapsable[1], $($arrow[1])[0]);
       });
     } catch (err) {
+      clearPath();
+      removeWeatherMarkers();
       console.log(err);
       alert('There was an error processing your request.');
     }
