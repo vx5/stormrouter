@@ -215,7 +215,6 @@ Path is geoJson.
 function displayPath(path) {
   console.log(path);
 
-  clearPath();
   map.addLayer({
     "id": "route",
     "type": "line",
@@ -277,6 +276,8 @@ function displayWeather(weather) {
 $(document).ready(() => {
   $('#itinerary-form').submit(event => {
     event.preventDefault();
+    clearPath();
+    removeWeatherMarkers();
 
     try {
       const postParameters = getFormInputs();
