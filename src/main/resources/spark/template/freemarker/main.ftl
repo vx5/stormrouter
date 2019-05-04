@@ -15,7 +15,8 @@
 
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/demo.css">
-
+    <link rel="stylesheet" href="/css/modal.css">
+    
     <#-- Mapbox GL JS -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css" rel="stylesheet">
@@ -34,6 +35,8 @@
      <script src="/js/waypoint.js"></script>
      <script src="/js/route.js"></script>
      <script src="/js/time_slider.js"></script>
+     <script src="/js/modal.js"></script>
+     
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start
        dealing with real world issues like old browsers.  -->

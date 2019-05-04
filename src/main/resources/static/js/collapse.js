@@ -41,7 +41,7 @@ const $collapse = $(".collapse");
 const $collapsable = $(".collapsable");
 const $arrow = $(".collapse > i");
 
-$(document).ready(() => {  
+$(document).ready(() => {
   for (let i = 0; i < $collapse.length; i++) {
     const cur = $($collapse[i]);
     cur.click(() => {
