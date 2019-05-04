@@ -10,11 +10,10 @@ import edu.brown.cs.stormrouter.main.RouteHandler.RouteWaypoint;
 
 /**
  * @author vx5
- * 
- *         Class that holds static convertPath() method, which takes list of
- *         Segments from directions package, and a time, and returns a Path that
- *         represents the sum of the given Segments that starts at the given
- *         time.
+ * <p>
+ * Class that holds static convertPath() method, which takes list of Segments
+ * from directions package, and a time, and returns a Path that represents the
+ * sum of the given Segments that starts at the given time.
  */
 public final class PathConverter {
 
@@ -24,7 +23,6 @@ public final class PathConverter {
   /**
    * Returns Path object representing path formed by input List of Segments and
    * input start time.
-   * 
    * @param inputPath     List of Segments representing directions
    * @param waypoints     Array of RouteWaypoints, representing stopovers in
    *                      route

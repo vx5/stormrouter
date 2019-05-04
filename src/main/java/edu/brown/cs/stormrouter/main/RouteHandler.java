@@ -89,35 +89,36 @@ public class RouteHandler implements Route {
       return GSON.toJson(variables);
     } catch (Exception e) {
       // Generates default message to be displayed
-      String toDisplay = "We're sorry! There was an error processing your request";
+      String toDisplay =
+          "We're sorry! There was an error processing your request";
       // Gets message from exception
       String msg = e.getMessage();
       // Checks and handles of two designated, expected errors:
       // a) The exhaustion of API calls
       // b) Inability to judge the given path using weather data
       switch (msg) {
-      case "Out of API calls":
-        toDisplay = "We're unfortunately unable to provide services until "
-            + "tomorrow (EST).";
-        break;
-      case "Path too long":
-        toDisplay = "Part of the journey you've entered lies outside weather "
-            + "coverage — this may have happened because the journey was "
-            + "too long, or the departure time was too far from now. "
-            + "Please try again with a different journey.";
-        break;
-      case "Invalid departure time":
-        toDisplay = "Please select a departure time (in the departure time "
-            + "zone) later than the current time.";
-        break;
-      case "No path":
-        toDisplay = "We unfortunately couldn't connect those points. "
-            + "Please try again with a different journey.";
-        break;
-      default:
-        // Prints stacktrace in case of unexpected error (TODO: remove)
-        e.printStackTrace();
-        break;
+        case "Out of API calls":
+          toDisplay = "We're unfortunately unable to provide services until "
+              + "tomorrow (EST).";
+          break;
+        case "Path too long":
+          toDisplay = "Part of the journey you've entered lies outside weather "
+              + "coverage — this may have happened because the journey was "
+              + "too long, or the departure time was too far from now. "
+              + "Please try again with a different journey.";
+          break;
+        case "Invalid departure time":
+          toDisplay = "Please select a departure time (in the departure time "
+              + "zone) later than the current time.";
+          break;
+        case "No path":
+          toDisplay = "We unfortunately couldn't connect those points. "
+              + "Please try again with a different journey.";
+          break;
+        default:
+          // Prints stacktrace in case of unexpected error (TODO: remove)
+          e.printStackTrace();
+          break;
       }
 
       // Sends Map associated with Exceptions

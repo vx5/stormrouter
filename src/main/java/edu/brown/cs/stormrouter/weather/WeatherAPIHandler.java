@@ -21,7 +21,6 @@ public final class WeatherAPIHandler {
 
   /**
    * Gets weather at a certain latitude for the next 48 hours (at most).
-   * 
    * @param lat latitude
    * @param lon longitude
    * @return the WeatherConditions with HourlyWeather data parsed from DarkSky
