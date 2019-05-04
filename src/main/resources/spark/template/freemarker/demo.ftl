@@ -78,17 +78,17 @@
     </div>
   </div>
 
-  <button class="settings" id="modalButton">settings</button>
+  <button class="settings" id="modalButton"><img src="/img/weather-settings.svg" width="30"></button>
 
   <div id="myModal" class="modal">
 
   <!-- Modal content -->
     <div class="modal-content">
       <div class="modal-header">
-        <b>Settings</b>
+        <b>Settings - Weather Preferences</b>
         <span class="close">&times;</span>
       </div>
-
+      <br>
       <div id="setting">
         <div id="snow-setting">
           <span>Snow Preference</span>
