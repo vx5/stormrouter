@@ -43,7 +43,7 @@ function resetWeather(weather) {
   console.log(timeStamps);
   const $slider = $("#slider");
   const displayTime = departTime.addHours(parseInt(weather.best));
-  $($slider[0].previousElementSibling).text('Best Departure Time: ' + getTime(displayTime));
+  $slider.prev().text('Best Departure Time: ' + getTime(displayTime));
   $slider.prop({
     min: 0,
     max: timeStamps.length - 1,
@@ -57,9 +57,10 @@ let weatherPref = {snow: 0, rain: 0, wind: 0};
 const $wslides = $(".slider");
 for (let i = 0; i < $wslides.length; i++) {
   const cur = $($wslides[i]);
-  cur.change(() => {
+  cur.change(event => {
+  	const $targetSlider = $(event.target);
     const sliderVal = cur.val();
-    $(cur[0].nextElementSibling).text(sliderVal + "%");
+    $targetSlider.next().text(sliderVal + "%");
     weatherPref[cur[0].id] = sliderVal;
   });
 }

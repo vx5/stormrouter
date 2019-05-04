@@ -13,22 +13,6 @@ let pathExists = false;
 
 let skycons = new Skycons({"color": "#00022E"});
 
-/*function forwardGeocode(input) {
-  return new Promise((resolve, reject) => {
-    geocoder.query({
-      query: input,
-      limit: 1,
-    }, (error, result) => {
-      if (error || !result.latlng) {
-        reject(`Could not find location for input '${input}'.`);
-      } else {
-        resolve(result.latlng);
-      }
-    });
-  });
-}*/
-
-
 function getFormInputs() {
   const form = document.forms['itinerary-form'];
   /*const start = form['start'].value;

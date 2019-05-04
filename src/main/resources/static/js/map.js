@@ -19,6 +19,15 @@ map.addControl(new mapboxgl.NavigationControl({
 let coordinates = {};
 let locationMarkers = {};
 
+function clearGeocoderMarker(name){
+  coordinates[name] = null;
+  const marker = locationMarkers[name];
+  if (marker) {
+    marker.remove();
+    locationMarkers[name] = null;
+  }
+}
+
 /* add a geocoder (search bar tied to Mapbox map) to the div with id 'name'.
  Give the <input> element of the geocoder name 'name'*/
 function addGeocoder(name) {
@@ -34,11 +43,11 @@ function addGeocoder(name) {
   // when user selects a location from geocoder dropdown
   geocoder.on('result', result => {
     //console.log(result);
-
+    clearGeocoderMarker(name);
     // flip lnglat to latlng and store in coordinates
     const lnglat = result.result.geometry.coordinates;
     coordinates[name] = [lnglat[1], lnglat[0]];
-
+    console.log("gets located");
     // add Mapbox Marker to map and store it by name in locationMarkers
     locationMarkers[name] = new mapboxgl.Marker()
         .setLngLat(lnglat)
@@ -62,28 +71,13 @@ function addGeocoder(name) {
     });
   });
 
+  //Clear after the input field is cleared.
+  geocoder.on('clear', () => {
+    console.log('cleared');
+    clearGeocoderMarker(name);
+  });
+
   const $input = $target.find('input');
-
-  // when user clears input from geocoder
-  $target.find('button').click(() => {
-    coordinates[name] = null;
-    const marker = locationMarkers[name];
-    if (marker) {
-      marker.remove();
-      locationMarkers[name] = null;
-    }
-  });
-
-  // after user types text into geocoder
-  $input.on('keyup', () => {
-    coordinates[name] = null;
-    const marker = locationMarkers[name];
-    if (marker) {
-      marker.remove();
-      locationMarkers[name] = null;
-    }
-  });
-
   // set input name to 'name' and make it required for form data
   $input.attr('name', name);
   $input.prop('required', true);
@@ -91,7 +85,3 @@ function addGeocoder(name) {
 
 addGeocoder('start');
 addGeocoder('end');
-
-/*const WEATHER_TYPE = [
-  'PLAIN', 'RAIN', 'SNOW', 'HEAT', 'FOG', 'WIND'
-];*/

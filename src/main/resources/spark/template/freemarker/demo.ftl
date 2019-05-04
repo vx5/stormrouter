@@ -18,12 +18,8 @@
               <span style='font-size: 14px;'>12:00PM</span>
             </div>
             <ol class="directions-list">
-              <!-- <li>
-                <div class="img"></div>
-                <div class="instructions">Left</div>
-              </li>-->
+
             </ol> 
-            <!-- <button>Get Suggested Times</button> -->
           </div>
 
         </div>
