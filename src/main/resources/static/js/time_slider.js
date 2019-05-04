@@ -5,29 +5,30 @@ let currentTime = null;
 $("#slider").change(event => {
   const $targetSlider = $(event.target);
   const sliderVal = $targetSlider.val();
-  $targetSlider.next().text(timeStamps[sliderVal] + " hr");
+  const displayTime = departTime.addHours(parseInt(timeStamps[sliderVal]));
+  $targetSlider.next().text(getTime(displayTime));
   if (!curWeather) return;
   displayWeather(curWeather[timeStamps[sliderVal]]);
 });
 
-Date.prototype.addHours = function(h) {    
-  	let res = new Date();
-  	res.setTime(this.getTime() + (h*60*60*1000));
-	return res; 
-}
+Date.prototype.addHours = function (h) {
+  let res = new Date();
+  res.setTime(this.getTime() + (h * 60 * 60 * 1000));
+  return res;
+};
 
-function getTime(date){
-	let hr = date.getHours(), mn = date.getMinutes();
-	let ampm = "AM";
-	if(hr >= 12) {
-		ampm = "PM";
-		hr = (hr > 12) ? hr - 12 : 12;
-	} else {
-		hr = (hr > 0) ? hr : 12;
-	}
-	mn = (mn >= 10) ? mn : ("0"+mn);
-	hr = (hr >= 10) ? hr : ("0"+hr);
-	return hr + ":" + mn + ampm; 
+function getTime(date) {
+  let hr = date.getHours(), mn = date.getMinutes();
+  let ampm = "AM";
+  if (hr >= 12) {
+    ampm = "PM";
+    hr = (hr > 12) ? hr - 12 : 12;
+  } else {
+    hr = (hr > 0) ? hr : 12;
+  }
+  mn = (mn >= 10) ? mn : ("0" + mn);
+  hr = (hr >= 10) ? hr : ("0" + hr);
+  return hr + ":" + mn + " " + ampm;
 }
 
 function resetWeather(weather) {
@@ -42,7 +43,7 @@ function resetWeather(weather) {
   console.log(timeStamps);
   const $slider = $("#slider");
   const displayTime = departTime.addHours(parseInt(weather.best));
-  $($slider[0].previousElementSibling).text('Best Departure Time: ' + displayTime);
+  $($slider[0].previousElementSibling).text('Best Departure Time: ' + getTime(displayTime));
   $slider.prop({
     min: 0,
     max: timeStamps.length - 1,
