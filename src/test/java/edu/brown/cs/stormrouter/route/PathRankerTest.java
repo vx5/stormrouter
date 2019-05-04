@@ -26,7 +26,7 @@ public class PathRankerTest {
       // Segment has high duration to prevent successful path calculation
       List<Segment> inputPath = new ArrayList<Segment>();
       inputPath.add(new Segment(new LatLon(41.835265, -71.389404),
-          new LatLon(41.837006, -71.389919), 1, 1, "1", "1", 1, false));
+          new LatLon(41.837006, -71.389919), 1, 40000, "1", "1", 1, false));
       // Calculate valid departure time (hour from now)
       long eastCoastOffset = TimeZoneOps.getCurrentMsAhead(
           System.currentTimeMillis() / 1000L, 41.835265, -71.389404);
