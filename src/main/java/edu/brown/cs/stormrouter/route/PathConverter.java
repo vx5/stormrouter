@@ -1,6 +1,5 @@
 package edu.brown.cs.stormrouter.route;
 
-import java.util.Arrays;
 import java.util.List;
 
 import edu.brown.cs.stormrouter.conversions.TimeZoneOps;
@@ -11,10 +10,11 @@ import edu.brown.cs.stormrouter.main.RouteHandler.RouteWaypoint;
 
 /**
  * @author vx5
- * <p>
- * Class that holds static convertPath() method, which takes list of Segments
- * from directions package, and a time, and returns a Path that represents the
- * sum of the given Segments that starts at the given time.
+ * 
+ *         Class that holds static convertPath() method, which takes list of
+ *         Segments from directions package, and a time, and returns a Path that
+ *         represents the sum of the given Segments that starts at the given
+ *         time.
  */
 public final class PathConverter {
 
@@ -24,6 +24,7 @@ public final class PathConverter {
   /**
    * Returns Path object representing path formed by input List of Segments and
    * input start time.
+   * 
    * @param inputPath     List of Segments representing directions
    * @param waypoints     Array of RouteWaypoints, representing stopovers in
    *                      route
@@ -32,8 +33,7 @@ public final class PathConverter {
    * @throws Exception if generated path is out of range
    */
   public static Path convertPath(List<Segment> inputPath,
-      RouteWaypoint[] waypoints,
-      long unixStartTime) throws Exception {
+      RouteWaypoint[] waypoints, long unixStartTime) throws Exception {
     // Checks for path existing
     if (inputPath.size() == 0) {
       throw new Exception("No path");
@@ -62,6 +62,8 @@ public final class PathConverter {
     newPoint.setDistToReach(distSoFar);
     // Adds that new point to the tracker
     centerPath.addPathpoint(newPoint);
+    // Stores counter to iterate through waypoints
+    int waypointId = 0;
     // Stores amount by which next point must be delayed, 0 if no delay
     int minDelay = 0;
     // Iterates through all segments left in path
@@ -69,20 +71,13 @@ public final class PathConverter {
       // Selects end point
       LatLon endCoord = seg.getEnd();
       // Checks for intermediary waypoint (will check in order)
-      if (seg.isTerminal() && waypoints.length > 0) {
+      if (seg.isTerminal() && waypointId < waypoints.length) {
         // Obtains first intermediary waypoint
-        RouteWaypoint inter = waypoints[0];
-        // TODO: I would suggest passing in a List of durations or something
+        RouteWaypoint inter = waypoints[waypointId];
         // Updates minute delay
         minDelay = inter.getDuration();
         // Removes first element from array
-        // TODO: why???
-        if (waypoints.length > 1) {
-          waypoints = Arrays.copyOfRange(waypoints, 1, waypoints.length);
-        } else {
-          // In case of only element in array, set to empty array
-          waypoints = new RouteWaypoint[0];
-        }
+        waypointId++;
       }
       // Constructs Waypoint
       newPoint = new Pathpoint((float) endCoord.getLatitude(),
