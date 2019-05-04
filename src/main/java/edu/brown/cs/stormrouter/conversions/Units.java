@@ -10,11 +10,11 @@ package edu.brown.cs.stormrouter.conversions;
 public final class Units {
   // Stores all key unit conversion amounts
   public static final int MS_PER_S = 1000;
-  public static final double S_PER_MS = 1 / (float) MS_PER_S;
+  public static final double S_PER_MS = 1 / (double) MS_PER_S;
   public static final int S_PER_MIN = 60;
-  public static final double MIN_PER_S = 1 / (float) S_PER_MIN;
+  public static final double MIN_PER_S = 1 / (double) S_PER_MIN;
   public static final int MIN_PER_HR = 60;
-  public static final double HR_PER_MIN = 1 / (float) MIN_PER_HR;
+  public static final double HR_PER_MIN = 1 / (double) MIN_PER_HR;
   public static final double MILES_PER_DEGREE = 69;
   public static final double DEGREES_PER_MILE = 1 / MILES_PER_DEGREE;
 
