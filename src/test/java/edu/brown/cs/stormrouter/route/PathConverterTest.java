@@ -6,13 +6,14 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.brown.cs.stormrouter.main.RouteHandler;
 import org.junit.Test;
 
 import edu.brown.cs.stormrouter.conversions.TimeZoneOps;
 import edu.brown.cs.stormrouter.conversions.Units;
 import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
-import edu.brown.cs.stormrouter.main.RouteWaypoint;
+import edu.brown.cs.stormrouter.main.RouteHandler.RouteWaypoint;
 
 public class PathConverterTest {
 
@@ -26,12 +27,11 @@ public class PathConverterTest {
           new LatLon(41.837006, -71.389919), 1, 1, "1", "1", 1, false));
       inputPath.add(new Segment(new LatLon(41.837006, -71.389919),
           new LatLon(41.839068, -71.390458), 1, 1, "1", "1", 1, true));
+      // TODO: Remove 'new RouteHandler()' when PathConverter changed
       // Constructs dummy stop waypoint
-      RouteWaypoint wp = new RouteWaypoint();
-      wp.waypoint = new double[] {
-          41.837006, -71.389919
-      };
-      wp.duration = 10;
+      RouteWaypoint wp = new RouteHandler().new RouteWaypoint();
+      wp.setWaypoint(new double[] {41.837006, -71.389919});
+      wp.setDuration(10);
       RouteWaypoint[] w = new RouteWaypoint[] {
           wp
       };

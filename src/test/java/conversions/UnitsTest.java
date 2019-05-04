@@ -37,10 +37,10 @@ public class UnitsTest {
     // Test for case of zero hour
     long halfHrFromNowUnix = (System.currentTimeMillis() / 1000)
         + Units.hrToS(0.5);
-    assertEquals(Units.UnixToHrsFromNow(halfHrFromNowUnix), 0);
+    assertEquals(Units.unixToHrsFromNow(halfHrFromNowUnix), 0);
     // Test for case of non-zero hour
     long TwoHrFromNowUnix = (System.currentTimeMillis() / 1000)
         + Units.hrToS(2.5);
-    assertEquals(Units.UnixToHrsFromNow(TwoHrFromNowUnix), 2);
+    assertEquals(Units.unixToHrsFromNow(TwoHrFromNowUnix), 2);
   }
 }

@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import edu.brown.cs.stormrouter.main.RouteHandler;
 import org.junit.Test;
 
 import edu.brown.cs.stormrouter.conversions.TimeZoneOps;
 import edu.brown.cs.stormrouter.conversions.Units;
 import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
-import edu.brown.cs.stormrouter.main.RouteWaypoint;
 
 public class PathRankerTest {
 
@@ -32,7 +32,8 @@ public class PathRankerTest {
       long departureTime = (long) (((System.currentTimeMillis()
           + eastCoastOffset) + Units.hrToS(0.5)) / 1000);
       // Generate path
-      Path p = PathConverter.convertPath(inputPath, new RouteWaypoint[0],
+      Path p = PathConverter.convertPath(inputPath,
+          new RouteHandler.RouteWaypoint[0],
           departureTime);
       // Generate best alternate paths' map
       Map<String, Object> m = PathRanker.bestPath(p);

@@ -29,8 +29,20 @@ public class RouteHandler implements Route {
     private int duration;
 
     // TODO: Remove if PathConverter is changed.
+    public double[] getWaypoint() {
+      return waypoint;
+    }
+
+    public void setWaypoint(double[] waypoint) {
+      this.waypoint = waypoint;
+    }
+
     public int getDuration() {
       return duration;
+    }
+
+    public void setDuration(int duration) {
+      this.duration = duration;
     }
   }
 
