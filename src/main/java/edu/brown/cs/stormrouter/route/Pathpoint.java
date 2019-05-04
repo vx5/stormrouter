@@ -8,8 +8,8 @@ package edu.brown.cs.stormrouter.route;
  */
 class Pathpoint {
   // Instance variable to store key attributes of each Waypoint
-  private float wayLat;
-  private float wayLong;
+  private double wayLat;
+  private double wayLong;
   private long timeToReach;
   private double distanceToReach;
 
@@ -29,11 +29,9 @@ class Pathpoint {
    * @return float array containing latitude and longitude (in order)
    * coordinates of this Waypoint
    */
-  float[] getCoords() {
+  double[] getCoords() {
     // Returns float array containing coordinates
-    return new float[]{
-        new Float(wayLat), new Float(wayLong)
-    };
+    return new double[] {wayLat, wayLong};
   }
 
   /**
@@ -53,7 +51,7 @@ class Pathpoint {
    * waypoint from the relevant path's start
    */
   long getTime() {
-    return new Long(timeToReach);
+    return timeToReach;
   }
 
   /**
@@ -70,6 +68,6 @@ class Pathpoint {
    * @return the distance required to reach this point from the path start
    */
   double getDistToReach() {
-    return new Double(distanceToReach);
+    return distanceToReach;
   }
 }

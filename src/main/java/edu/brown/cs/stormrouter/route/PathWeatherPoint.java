@@ -13,8 +13,8 @@ import java.util.Date;
  */
 public class PathWeatherPoint {
   // Private instance fields to be accessed from inside JSON
-  private float lat;
-  private float lon;
+  private double lat;
+  private double lon;
   private String icon;
   private String weatherSum;
 
@@ -28,8 +28,7 @@ public class PathWeatherPoint {
    * @param newSum    Summary of weather information and time at this point
    * @param pointTime long Unix time at which point is reached
    */
-  @SuppressWarnings("deprecation")
-  public PathWeatherPoint(float newLat, float newLong, String iconType,
+  public PathWeatherPoint(double newLat, double newLong, String iconType,
       String newSum, long pointTime) {
     // Sets requisite instance fields
     lat = newLat;
@@ -38,7 +37,7 @@ public class PathWeatherPoint {
     // Determines String representing time window to be displayed
     weatherSum = "Expected arrival at ";
     // Creates Date object for weather arrival time
-    Date arrivalTime = new Date(pointTime * 1000L);
+    Date arrivalTime = new Date(pointTime * 1000);
     // Generates formatter to produce appropriate date
     SimpleDateFormat formatter = new SimpleDateFormat("h:mm a EEE");
     // Adds requisite date times

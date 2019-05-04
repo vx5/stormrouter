@@ -32,7 +32,8 @@ public final class PathConverter {
    * @throws Exception if generated path is out of range
    */
   public static Path convertPath(List<Segment> inputPath,
-      RouteWaypoint[] waypoints, long unixStartTime) throws Exception {
+      RouteWaypoint[] waypoints,
+      long unixStartTime) throws Exception {
     // Checks for path existing
     if (inputPath.size() == 0) {
       throw new Exception("No path");

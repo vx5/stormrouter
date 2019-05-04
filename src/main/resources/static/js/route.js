@@ -37,7 +37,6 @@ function getFormInputs() {
   const endPoint = coordinates['end'];
   const date = form['date'].value;
   const unixTime = +new Date(date) / 1000;
-
   //const waypointPromises = [];
   const waypointStops = [];
 
@@ -52,7 +51,6 @@ function getFormInputs() {
     }
     waypointStops.push({waypoint, duration});
   }
-
   return {start: startPoint, date: unixTime, destination: endPoint, waypoints: waypointStops};
 }
 
@@ -334,3 +332,5 @@ $(document).ready(() => {
     });*/
   });
 });
+
+

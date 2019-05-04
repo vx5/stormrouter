@@ -18,7 +18,6 @@ import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 
-
 final class GUI {
   private static final Gson GSON = new Gson();
 
@@ -48,6 +47,7 @@ final class GUI {
     Spark.get("/stormrouter", new FrontHandler(), freeMarker);
     Spark.get("/stormrouter/demo", new DemoHandler(), freeMarker);
     Spark.post("/stormrouter/route", new RouteHandler());
+    Spark.post("/stormrouter/changeweather", new ChangeWeatherHandler());
   }
 
   static void stopSparkServer() {
@@ -60,8 +60,7 @@ final class GUI {
   private static class FrontHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request request, Response response) {
-      Map<String, Object> variables =
-          ImmutableMap.of("title", "StormRouter");
+      Map<String, Object> variables = ImmutableMap.of("title", "StormRouter");
       return new ModelAndView(variables, "front-page.ftl");
     }
   }
@@ -72,8 +71,7 @@ final class GUI {
   private static class DemoHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request request, Response response) {
-      Map<String, Object> variables =
-          ImmutableMap.of("title", "StormRouter");
+      Map<String, Object> variables = ImmutableMap.of("title", "StormRouter");
       return new ModelAndView(variables, "demo.ftl");
     }
   }

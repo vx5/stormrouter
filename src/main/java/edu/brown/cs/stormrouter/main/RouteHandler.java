@@ -69,9 +69,8 @@ public class RouteHandler implements Route {
 
       // Parse the start time format into UNIX time
       Path startPath = PathConverter.convertPath(directions, waypoints, date);
-      // Creates ranker, generates alternate paths
-      PathRanker ranker = new PathRanker();
-      Map<String, Object> pathWeathers = ranker.bestPath(startPath);
+      // Generates alternate paths
+      Map<String, Object> pathWeathers = PathRanker.bestPath(startPath);
       // Stores all relevant variables in map to be parsed through JSON
       Map<String, Object> variables = ImmutableMap.of("message", "", "path",
           directionsData.getPoints(), "segments", directions, "weather",
