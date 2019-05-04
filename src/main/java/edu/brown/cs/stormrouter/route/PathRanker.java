@@ -13,9 +13,9 @@ import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
 /**
  * @author vx5
- * <p>
- * Class which handles core functionality of deciding what time offset yields
- * the most weather-sound path.
+ *         <p>
+ *         Class which handles core functionality of deciding what time offset
+ *         yields the most weather-sound path.
  */
 public final class PathRanker {
   // Stores default path
@@ -23,8 +23,7 @@ public final class PathRanker {
   // Stores path long time zone offset, in seconds
   private static long tzOffset;
   // Stores information of all valid start time indices
-  private static Map<String, PathWeatherInfo> diffTimesWeather =
-      new HashMap<>();
+  private static Map<String, PathWeatherInfo> diffTimesWeather = new HashMap<>();
   // Stores information about what place-time events have had weather pulled
   private static Map<String, Long> checkedWeather;
   private static final double TILE_SIZE_MILES = 20;
@@ -35,7 +34,7 @@ public final class PathRanker {
   // Stores number of points that should be checked
   private static final int NUM_POINTS = 4;
   // Stores desired hour offsets to be checked, if possible
-  private static final int[] HR_OFFSETS = new int[]{
+  private static final int[] HR_OFFSETS = new int[] {
       -2, -1, 1, 2, 5
   };
 
@@ -46,6 +45,7 @@ public final class PathRanker {
    * Returns map of weather information objects, of type PathWeatherInfo, which
    * include, for all valid paths (including those at alternate times), the
    * weather points, and type of weather they represent.
+   * 
    * @param centerPath Path object to be used as default Path
    * @return Set of PathWeatherInfo, one for each valid paths
    * @throws Exception if there is error in API call
@@ -104,7 +104,7 @@ public final class PathRanker {
       if (System.currentTimeMillis() * Units.S_PER_MS <= pathStartTime
           - tzOffset
           && System.currentTimeMillis() * Units.S_PER_MS
-          + Units.hrToS(48.05) >= pathEndTime - tzOffset) {
+              + Units.hrToS(48.05) >= pathEndTime - tzOffset) {
         diffTimesWeather.put(Integer.toString(hrOffset),
             new PathWeatherInfo(unixStart + unixOffset));
       }
@@ -175,7 +175,9 @@ public final class PathRanker {
           // Moves marker for last point
           lastDistChosen = distFromStart;
           // Calculates distance to the next point
-          minDistToNext = sectionDistance - (distMoved - minDistToNext);
+          minDistToNext = Math.max(
+              sectionDistance - (distMoved - minDistToNext),
+              TILE_SIZE_MILES * Units.METERS_PER_MILE);
         }
       }
     } else {
