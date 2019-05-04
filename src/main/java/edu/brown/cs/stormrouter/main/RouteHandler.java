@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.stormrouter.directions.DirectionsAPIHandler;
+import edu.brown.cs.stormrouter.directions.DirectionsException;
 import edu.brown.cs.stormrouter.directions.LatLon;
 import edu.brown.cs.stormrouter.directions.Segment;
 import edu.brown.cs.stormrouter.route.DirectionsWrapper;
@@ -64,6 +65,11 @@ public class RouteHandler implements Route {
       Map<String, Object> variables = ImmutableMap.of("message", "", "path",
           directionsData.getPoints(), "segments", directions, "weather",
           pathWeathers);
+      return GSON.toJson(variables);
+    } catch (DirectionsException de) {
+      // These custom exception objects already have well-defined messages
+      Map<String, Object> variables = ImmutableMap.of("message",
+          de.getMessage(), "routes", new String[0]);
       return GSON.toJson(variables);
     } catch (Exception e) {
       // Generates default message to be displayed

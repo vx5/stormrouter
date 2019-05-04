@@ -45,6 +45,7 @@ body,
 #side {
   width: 25px;
   border-top-right-radius: 10px;
+  border-bottom: none;
 }
 
 #bottom-bar {
@@ -60,6 +61,7 @@ body,
   justify-content: space-between;
   align-items: center;
   border-top-right-radius: 10px;
+  border-left: none;
 }
 
 .fas {
@@ -100,4 +102,15 @@ div.collapse:hover {
 #depart{
   margin-left: 20px;
   font-size: 14px;
+}
+
+.settings{
+  position: absolute;
+  right: 5px;
+  top: 115px;
+  padding: 5px 10px 5px 10px;
+}
+
+.settings:hover{
+  cursor: pointer;
 }

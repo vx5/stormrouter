@@ -14,10 +14,14 @@ function reverseArrow(position) {
 }
 
 function collapse(element, buttonElem) {
+  const $element = $(element);
+  const id = element.id;
   if (element.style.display === 'none') {
-    element.style.display = "";
+    $element.show(400);
+    $element.css('flex-grow', (id === 'bottom-bar') ? 1 : 2);
   } else {
-    element.style.display = "none";
+    $element.css('flex-grow', 0);
+    $element.hide(400);
   }
 
   const button = buttonElem.classList[1].split('-');
@@ -34,7 +38,7 @@ const $collapse = $(".collapse");
 const $collapsable = $(".collapsable");
 const $arrow = $(".collapse > i");
 
-$(document).ready(() => {  
+$(document).ready(() => {
   for (let i = 0; i < $collapse.length; i++) {
     const cur = $($collapse[i]);
     cur.click(() => {

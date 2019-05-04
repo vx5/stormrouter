@@ -34,11 +34,11 @@ public final class DirectionsAPIHandler {
    * @return - Returns a DirectionsWrapper object containing all of the data for
    *         each segment, and the full GeoJSON reference for rendering in the
    *         GUI
-   * @throws Exception - Throws an exception if there is an error retrieving or
-   *                   parsing the data.
+   * @throws DirectionsException - Throws an exception if there is an error
+   * retrieving or parsing the data.
    */
   public static DirectionsWrapper getDirections(LatLon start,
-      List<LatLon> waypoints, LatLon end) {
+      List<LatLon> waypoints, LatLon end) throws DirectionsException {
     List<Segment> segments = new ArrayList<>();
     List<LatLon> points = new ArrayList<>();
     JsonElement geoJSON = null;
@@ -129,15 +129,16 @@ public final class DirectionsAPIHandler {
             }
           }
         } else {
-          System.out.println("Error building response object");
+          throw new DirectionsException("No directions data was found for the"
+              + "specified locations.");
         }
       } else {
-        // TODO: More custom exception handling
-        System.out.println("Error making request");
+        throw new DirectionsException("There was an error connecting to the"
+            + "directions service.  Please try again later.");
       }
     } catch (IOException ioe) {
-      // TODO: Add custom exception handling
-      System.out.println("Error reading response");
+      throw new DirectionsException("There was an error connecting to the"
+          + "directions service.  Please try again later.");
     }
 
     return new DirectionsWrapper(segments, points, geoJSON);

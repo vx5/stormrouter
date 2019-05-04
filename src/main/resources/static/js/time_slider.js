@@ -1,5 +1,6 @@
 let timeStamp = ['-2', '-1', '0', '1', '2', '5'];
 let curPath = null, curSegments = null, curWeather = null;
+let currentTime = null;
 
 $("#slider").change(() => {
 	const sliderVal = $("#slider").val();
@@ -28,3 +29,16 @@ function resetWeather(weather){
   });
   $($slider[0].nextElementSibling).text(weather.best + " hr");
 }
+
+
+let weatherPref = {snow: 0, rain: 0, wind: 0};
+const $wslides = $(".slider");
+for(let i = 0; i < $wslides.length; i++){
+	const cur = $($wslides[i]);
+	cur.change(() => {
+		const sliderVal = cur.val();
+		$(cur[0].nextElementSibling).text(sliderVal + "%");
+		weatherPref[cur[0].id] = sliderVal;
+	});
+}
+
