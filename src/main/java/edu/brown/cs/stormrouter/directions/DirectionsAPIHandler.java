@@ -20,9 +20,14 @@ import edu.brown.cs.stormrouter.route.DirectionsWrapper;
  * A helper class for handling requests to the directions API.
  */
 public final class DirectionsAPIHandler {
-  private static final String BASE_URL = "https://api.openrouteservice.org/v2/directions/driving-car";
-  private static final String API_KEY = "5b3ce3597851110001cf6248354b40dadcf845dbbc95c4797348398b";
+  private static final String BASE_URL =
+      "https://api.openrouteservice.org/v2/directions/driving-car";
+  private static final String API_KEY =
+      "5b3ce3597851110001cf6248354b40dadcf845dbbc95c4797348398b";
   private static final Gson GSON = new Gson();
+
+  private DirectionsAPIHandler() {
+  }
 
   /**
    * Attempts to retrieve directions between the two specified points.

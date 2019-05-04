@@ -17,7 +17,6 @@ public class Segment {
   /**
    * Constructs a new segment object from all of the data returned by the
    * routing API.
-   * 
    * @param start        - A LatLon representation of the starting point
    * @param end          - A LatLon representation of the ending point
    * @param length       - The length of the segment in meters

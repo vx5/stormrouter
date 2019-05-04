@@ -1,13 +1,11 @@
 package edu.brown.cs.stormrouter.weather;
 
-import edu.brown.cs.stormrouter.weather.TimePoint;
-
 /**
  * @author vx5
- *
- *         Class which houses scoring rubric for TimePoints, static methods to
- *         manipulate that metric, and the static scoreWeather() method, which
- *         scores TimePoints.
+ * <p>
+ * Class which houses scoring rubric for TimePoints, static methods to
+ * manipulate that metric, and the static scoreWeather() method, which scores
+ * TimePoints.
  */
 public final class WSet {
   // Stores fixed weather amount cutoffs
@@ -49,10 +47,12 @@ public final class WSet {
   private static double snowFactor = 1;
   private static double windFactor = 1;
 
+  private WSet() {
+  }
+
   /**
    * Uses the current scoring rubric to assign a weather score to the given
    * TimePoint. Lower scores represent better conditions.
-   * 
    * @param weather TimePoint to be scored
    * @return integer score representing optimality of weather conditions
    */
@@ -118,7 +118,6 @@ public final class WSet {
    * by default, and higher factors will increase the weight given to
    * sub-optimal rain conditions relative to other challenges, while lower
    * factors will decrease the weight.
-   * 
    * @param newRainFactor new rain factor to be used in rubric
    */
   public static void setRainFactor(double newRainFactor) {
@@ -130,7 +129,6 @@ public final class WSet {
    * is set to 1 by default, and higher factors will increase the weight given
    * to sub-optimal sleet/snow conditions relative to other challenges, while
    * lower factors will decrease the weight.
-   * 
    * @param newSnowFactor new sleet / snow factor to be used in rubric
    */
   public static void setSnowFactor(double newSnowFactor) {
@@ -142,7 +140,6 @@ public final class WSet {
    * by default, and higher factors will increase the weight given to
    * sub-optimal wind conditions relative to other challenges, while lower
    * factors will decrease the weight.
-   * 
    * @param newWindFactor new wind factor to be used in rubric
    */
   public static void setWindFactor(double newWindFactor) {

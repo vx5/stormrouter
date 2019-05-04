@@ -1,7 +1,6 @@
 package edu.brown.cs.stormrouter.main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,22 +23,22 @@ import spark.Route;
 public class RouteHandler implements Route {
   private static final Gson GSON = new Gson();
 
+  // TODO: Change to private if PathConverter is changed.
   public class RouteWaypoint {
-    public double[] waypoint;
-    public int duration;
+    private double[] waypoint;
+    private int duration;
 
-    @Override
-    public String toString() {
-      return "RouteWaypoint{" + "waypoint=" + Arrays.toString(waypoint)
-          + ", duration=" + duration + '}';
+    // TODO: Remove if PathConverter is changed.
+    public int getDuration() {
+      return duration;
     }
   }
 
   private class RouteRequest {
-    double[] start;
-    long date;
-    double[] destination;
-    RouteWaypoint[] waypoints;
+    private double[] start;
+    private long date;
+    private double[] destination;
+    private RouteWaypoint[] waypoints;
   }
 
   @Override
@@ -59,8 +58,8 @@ public class RouteHandler implements Route {
       LatLon start = new LatLon(startArray[0], startArray[1]);
       LatLon end = new LatLon(endArray[0], endArray[1]);
       List<LatLon> waypointsList = new ArrayList<>();
-      for (int i = 0; i < waypoints.length; i++) {
-        double[] coords = waypoints[i].waypoint;
+      for (RouteWaypoint routeWaypoint : waypoints) {
+        double[] coords = routeWaypoint.waypoint;
         waypointsList.add(new LatLon(coords[0], coords[1]));
       }
 
@@ -85,29 +84,40 @@ public class RouteHandler implements Route {
       return GSON.toJson(variables);
     } catch (Exception e) {
       // Generates default message to be displayed
-      String toDisplay = "We're sorry! There was an error processing your request";
+      String toDisplay =
+          "We're sorry! There was an error processing your request";
       // Gets message from exception
       String msg = e.getMessage();
       // Checks and handles of two designated, expected errors:
       // a) The exhaustion of API calls
       // b) Inability to judge the given path using weather data
-      if (msg.equals("Out of API calls")) {
-        toDisplay = "We're unfortunately unable to provide services until tomorrow EST";
-      } else if (msg.equals("Path too long")) {
-        toDisplay = "Part of the journey you've entered lies outside weather coverage — "
-            + "this may have happened because the journey was too long, or the departure "
-            + "time was too far from right now. Please try again with a different journey";
-      } else if (msg.equals("Invalid departure time")) {
-        toDisplay = "Please select a departure time later than the current time "
-            + "(at the departure time zone)";
-      } else if (msg.equals("No path")) {
-        toDisplay = "We unfortunately couldn't connect those points. Please try again "
-            + "with a different journey!";
-      } else {
-        // Prints stacktrace in case of unexpected error (TODO: remove)
-        e.printStackTrace();
+      switch (msg) {
+        case "Out of API calls":
+          toDisplay = "We're unfortunately unable to provide services until "
+              + "tomorrow (EST).";
+          break;
+        case "Path too long":
+          toDisplay = "Part of the journey you've entered lies outside weather "
+              + "coverage — this may have happened because the journey was "
+              + "too long, or the departure time was too far from now. "
+              + "Please try again with a different journey.";
+          break;
+        case "Invalid departure time":
+          toDisplay = "Please select a departure time (in the departure time "
+              + "zone) later than the current time.";
+          break;
+        case "No path":
+          toDisplay = "We unfortunately couldn't connect those points. "
+              + "Please try again with a different journey.";
+          break;
+        default:
+          // Prints stacktrace in case of unexpected error (TODO: remove)
+          e.printStackTrace();
+          break;
       }
+
       // Sends Map associated with Exceptions
+      // TODO: Remove unnecessary "routes" array?
       Map<String, Object> variables = ImmutableMap.of("message", toDisplay,
           "routes", new String[0]);
       return GSON.toJson(variables);

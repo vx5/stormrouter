@@ -5,12 +5,11 @@ import java.util.Date;
 
 /**
  * @author vx5
- *
- *         Class that stores all information about a point for which weather was
- *         requested, for a given time at which the point is reached. Its
- *         private instance fields, "lat", "lon", "icon", and "weatherSum" offer
- *         information that can be accessed when the object is passed through
- *         JSON.
+ * <p>
+ * Class that stores all information about a point for which weather was
+ * requested, for a given time at which the point is reached. Its private
+ * instance fields, "lat", "lon", "icon", and "weatherSum" offer information
+ * that can be accessed when the object is passed through JSON.
  */
 public class PathWeatherPoint {
   // Private instance fields to be accessed from inside JSON
@@ -22,7 +21,6 @@ public class PathWeatherPoint {
   /**
    * Constructor that takes in position, information about icon and String to be
    * displayed, and time reached.
-   * 
    * @param newLat    point latitude
    * @param newLong   point longitude
    * @param iconType  String representing type of icon that should be used to

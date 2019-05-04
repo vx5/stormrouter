@@ -11,11 +11,10 @@ import edu.brown.cs.stormrouter.main.RouteHandler.RouteWaypoint;
 
 /**
  * @author vx5
- *
- *         Class that holds static convertPath() method, which takes list of
- *         Segments from directions package, and a time, and returns a Path that
- *         represents the sum of the given Segments that starts at the given
- *         time.
+ * <p>
+ * Class that holds static convertPath() method, which takes list of Segments
+ * from directions package, and a time, and returns a Path that represents the
+ * sum of the given Segments that starts at the given time.
  */
 public final class PathConverter {
 
@@ -25,7 +24,6 @@ public final class PathConverter {
   /**
    * Returns Path object representing path formed by input List of Segments and
    * input start time.
-   * 
    * @param inputPath     List of Segments representing directions
    * @param waypoints     Array of RouteWaypoints, representing stopovers in
    *                      route
@@ -73,9 +71,11 @@ public final class PathConverter {
       if (seg.isTerminal() && waypoints.length > 0) {
         // Obtains first intermediary waypoint
         RouteWaypoint inter = waypoints[0];
+        // TODO: I would suggest passing in a List of durations or something
         // Updates minute delay
-        minDelay = inter.duration;
+        minDelay = inter.getDuration();
         // Removes first element from array
+        // TODO: why???
         if (waypoints.length > 1) {
           waypoints = Arrays.copyOfRange(waypoints, 1, waypoints.length);
         } else {
@@ -95,7 +95,7 @@ public final class PathConverter {
         minDelay = 0;
       }
       // Checks time index for validity
-      if (Units.UnixToHrsFromNow(timeIndex) > 48) {
+      if (Units.unixToHrsFromNow(timeIndex) > 48) {
         throw new Exception("Path too long");
       }
       // Sets time index

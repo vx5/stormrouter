@@ -11,7 +11,6 @@ public class LatLon {
 
   /**
    * Constructs a new LatLon object with the specified latitude and longitude.
-   * 
    * @param latitude  - The latitude as a double
    * @param longitude - The longitude as a double
    */

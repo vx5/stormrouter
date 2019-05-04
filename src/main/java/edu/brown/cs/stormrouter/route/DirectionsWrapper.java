@@ -17,7 +17,7 @@ public class DirectionsWrapper {
   private List<LatLon> points;
 
   /**
-   * Constructs a new DirectionsWrapper from the data
+   * Constructs a new DirectionsWrapper from the data.
    * @param segments - A list of Segment fields retrieved from the GeoJSON
    * @param points - The list of all points making up the route
    * @param geoJSON - The full GeoJSON returned from a directions call

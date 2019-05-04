@@ -13,9 +13,9 @@ import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
 /**
  * @author vx5
- * 
- *         Class which handles core functionality of deciding what time offset
- *         yields the most weather-sound path.
+ * <p>
+ * Class which handles core functionality of deciding what time offset yields
+ * the most weather-sound path.
  */
 public class PathRanker {
   // Stores default path
@@ -23,18 +23,18 @@ public class PathRanker {
   // Stores path long time zone offset, in seconds
   private long tzOffset;
   // Stores information of all valid start time indices
-  private Map<String, PathWeatherInfo> diffTimesWeather = new HashMap<String, PathWeatherInfo>();
+  private Map<String, PathWeatherInfo> diffTimesWeather = new HashMap<>();
   // Stores information about what place-time events have had weather pulled
-  private Map<String, Long> checkedWeather = new HashMap<String, Long>();
-  private final float TILE_SIZE_MILES = 20;
-  private final float TILE_SIZE_DEGREES = TILE_SIZE_MILES
+  private Map<String, Long> checkedWeather = new HashMap<>();
+  private static final float TILE_SIZE_MILES = 20;
+  private static final float TILE_SIZE_DEGREES = TILE_SIZE_MILES
       * Units.DEGREES_PER_MILE;
   // Stores list of indices in paths to be used for waypoints
-  private List<Integer> weatherIds = new ArrayList<Integer>();
+  private List<Integer> weatherIds = new ArrayList<>();
   // Stores number of points that should be checked
-  private final int NUM_POINTS = 4;
+  private static final int NUM_POINTS = 4;
   // Stores desired hour offsets to be checked, if possible
-  private final int[] HR_OFFSETS = new int[] {
+  private static final int[] HR_OFFSETS = new int[]{
       -2, -1, 1, 2, 5
   };
 
@@ -48,7 +48,6 @@ public class PathRanker {
    * Returns map of weather information objects, of type PathWeatherInfo, which
    * include, for all valid paths (including those at alternate times), the
    * weather points, and type of weather they represent.
-   * 
    * @param centerPath Path object to be used as default Path
    * @return Set of PathWeatherInfo, one for each valid paths
    * @throws Exception if there is error in API call
@@ -103,7 +102,7 @@ public class PathRanker {
       if (System.currentTimeMillis() * Units.S_PER_MS <= pathStartTime
           - tzOffset
           && System.currentTimeMillis() * Units.S_PER_MS
-              + Units.hrToS(48.05) >= pathEndTime - tzOffset) {
+          + Units.hrToS(48.05) >= pathEndTime - tzOffset) {
         diffTimesWeather.put(Integer.toString(hrOffset),
             new PathWeatherInfo(unixStart + unixOffset));
       }
@@ -199,7 +198,7 @@ public class PathRanker {
       for (String chosenHrOffset : chosenHrOffsets) {
         // Stores time from now for iteration
         int hrOffset = Integer.parseInt(chosenHrOffset);
-        int hrsFromNowSys = Units.UnixToHrsFromNow(timeReached - tzOffset)
+        int hrsFromNowSys = Units.unixToHrsFromNow(timeReached - tzOffset)
             + hrOffset;
         long trueTimeReached = timeReached + Units.hrToS(hrOffset);
         // Stores relevant TimePoint

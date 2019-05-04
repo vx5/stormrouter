@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  * @author vx5
- *
- *         Class which represents the path between the desired points using a
- *         series of point locations.
+ * <p>
+ * Class which represents the path between the desired points using a series of
+ * point locations.
  */
 public class Path {
   // Stores list of all points in this path
@@ -19,7 +19,6 @@ public class Path {
 
   /**
    * Constructor which only processes the start time in unix terms.
-   * 
    * @param startTime Long representation of Unix time at which given path
    *                  starts, in seconds
    * @param offset    Long representation of Unix time offset between path start
@@ -32,7 +31,6 @@ public class Path {
 
   /**
    * Returns the Unix time at which the path is meant to start.
-   * 
    * @return Long representation of time at which path starts, in unix terms
    */
   long getStartTime() {
@@ -41,7 +39,6 @@ public class Path {
 
   /**
    * Returns Unix offset of path from system time.
-   * 
    * @return Unix offset of path from system time in seconds
    */
   long getOffset() {
@@ -50,7 +47,6 @@ public class Path {
 
   /**
    * Adds a given Pathpoint to the Path, at its current end.
-   * 
    * @param endPoint Pathpoint to be added to end of path
    */
   void addPathpoint(Pathpoint endPoint) {
@@ -59,7 +55,6 @@ public class Path {
 
   /**
    * Returns all Pathpoints stored in this path.
-   * 
    * @return List of all Pathpoints stored in the path
    */
   List<Pathpoint> getPathpoints() {

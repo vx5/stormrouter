@@ -35,13 +35,6 @@ public final class Main {
     if (options.has("gui")) {
       GUI.runSparkServer((int) options.valueOf("port"));
     }
-
-    // TODO: Process commands in a REPL
-    while (true) {
-      if (false) break;
-    }
-
-    GUI.stopSparkServer();
   }
 
 }

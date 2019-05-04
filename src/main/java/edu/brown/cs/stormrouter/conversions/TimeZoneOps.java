@@ -7,6 +7,9 @@ import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
 public final class TimeZoneOps {
 
+  private TimeZoneOps() {
+  }
+
   public static long getCurrentMsAhead(long unixTimeThere, double ptLat,
       double ptLong) throws Exception {
     // META: Checks that entered start time is valid in local time at start

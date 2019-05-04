@@ -2,10 +2,10 @@ package edu.brown.cs.stormrouter.conversions;
 
 /**
  * @author vx5
- *
- *         Class which stores both constants and methods relevant to inter-unit
- *         conversion. Emphasis on time and distance conversion constants, but
- *         includes a few methods for common, more complex conversions.
+ * <p>
+ * Class which stores both constants and methods relevant to inter-unit
+ * conversion. Emphasis on time and distance conversion constants, but includes
+ * a few methods for common, more complex conversions.
  */
 public final class Units {
   // Stores all key unit conversion amounts
@@ -18,9 +18,11 @@ public final class Units {
   public static final float MILES_PER_DEGREE = 69;
   public static final float DEGREES_PER_MILE = 1 / MILES_PER_DEGREE;
 
+  private Units() {
+  }
+
   /**
    * Convert hours to seconds.
-   * 
    * @param hr input number of hours
    * @return number of seconds
    */
@@ -33,11 +35,10 @@ public final class Units {
   /**
    * Converts unix time to number of hours, in whole (truncated to integers),
    * from time method is called.
-   * 
    * @param unix Long unix time
    * @return number of hours from time method is called
    */
-  public static int UnixToHrsFromNow(long unix) {
+  public static int unixToHrsFromNow(long unix) {
     // Calculates number of milliseconds from now
     long sFromNow = (long) (unix - (System.currentTimeMillis() * S_PER_MS));
     // Performs dimensional analysis conversions, truncation

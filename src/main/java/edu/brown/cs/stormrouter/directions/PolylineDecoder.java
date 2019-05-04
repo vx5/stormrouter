@@ -9,10 +9,12 @@ import java.util.List;
  * interface.
  */
 public final class PolylineDecoder {
-  /*
-   *
+
+  private PolylineDecoder() {
+  }
+
+  /**
    * @param encoded - The encoded polyline text to be read from
-   * 
    * @return - A list of latitude/longitude coordinates detailing the path in a
    * form that cab be rendered to the Leaflet map.
    */
