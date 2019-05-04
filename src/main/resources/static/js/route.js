@@ -37,7 +37,6 @@ function getFormInputs() {
   const endPoint = coordinates['end'];
   const date = form['date'].value;
   const unixTime = +new Date(date) / 1000;
-  surrentTime
   //const waypointPromises = [];
   const waypointStops = [];
 
