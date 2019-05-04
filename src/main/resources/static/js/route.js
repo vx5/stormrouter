@@ -56,7 +56,7 @@ function getFormInputs() {
 
 //Clear the current path.
 function clearPath() {
-  if(!pathExists) return;
+  if (!pathExists) return;
   map.removeLayer('route');
   map.removeSource('route');
 }
@@ -138,28 +138,28 @@ function removeWeatherMarkers() {
 }
 
 // Parse from [{lat: , lon: },...] to [[lon,lat],...]
-function parsePolyline(polyline){
-	let res = [];
-	for(let i = 0; i < polyline.length; i++){
-		res.push([polyline[i].longitude, polyline[i].latitude]);
-	}
-	return res; 
+function parsePolyline(polyline) {
+  let res = [];
+  for (let i = 0; i < polyline.length; i++) {
+    res.push([polyline[i].longitude, polyline[i].latitude]);
+  }
+  return res;
 }
 
 // Display directions
-function displayDirections(directions){
-	const $directs = $("ol.directions-list");
-	$directs.empty();
-	for(let i = 0; i < directions.length; i++){
-		const length = directions[i].length;
-		const instruction = directions[i].instructions;
-		const type = directions[i].type;
-		let iconName = iconForDirectionType(type);
-		$directs.append(
-			'<li>'
-        + '<img class="direction-icon" src="/img/' + iconName + '" width="24">'
-        + '<div class="instructions">' + instruction + ' for ' + formatLength(length) + '</div></li>');
-	}
+function displayDirections(directions) {
+  const $directs = $("ol.directions-list");
+  $directs.empty();
+  for (let i = 0; i < directions.length; i++) {
+    const length = directions[i].length;
+    const instruction = directions[i].instructions;
+    const type = directions[i].type;
+    let iconName = iconForDirectionType(type);
+    $directs.append(
+        '<li>'
+        + `<img class="direction-icon" alt="${iconName} icon" src="/img/${iconName}" width="24">`
+        + `<div class="instructions">${instruction} for ${formatLength(length)}</div></li>`);
+  }
 }
 
 function iconForDirectionType(type) {
@@ -213,7 +213,6 @@ Path is geoJson.
  */
 function displayPath(path) {
   console.log(path);
-  // return;
 
   clearPath();
   map.addLayer({
@@ -222,13 +221,13 @@ function displayPath(path) {
     "source": {
       "type": "geojson",
       "data": {
-		"type": "Feature",
-		"properties": {},
-		"geometry": {
-		  "type": "LineString",
-		  "coordinates": path
-		}
-	  }
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "LineString",
+          "coordinates": path
+        }
+      }
     },
     "layout": {
       "line-join": "round",
@@ -239,7 +238,7 @@ function displayPath(path) {
       "line-width": 8
     }
   });
-  
+
   pathExists = true;
 }
 
@@ -252,25 +251,25 @@ function displayBestWeather(weather) {
   const bestWeather = weather[weather.best];
   resetWeather(weather);
   removeWeatherMarkers();
-  if(weather == null){
-  	console.log("No best weather. NULL");
-  	return; 
+  if (!bestWeather) {
+    console.log("No best weather. NULL");
+    return;
   }
   const weatherInfo = bestWeather.weatherData;
-  for(let i = 0; i < weatherInfo.length; i++){
-  	addWeatherMarker(weatherInfo[i]);
+  for (let i = 0; i < weatherInfo.length; i++) {
+    addWeatherMarker(weatherInfo[i]);
   }
 }
 
-function displayWeather(weather){
-  if(weather == null){
-  	console.log("No weather at this time.");
-  	return; 
+function displayWeather(weather) {
+  if (!weather) {
+    console.log("No weather at this time.");
+    return;
   }
   removeWeatherMarkers();
   const weatherInfo = weather.weatherData;
-  for(let i = 0; i < weatherInfo.length; i++){
-  	addWeatherMarker(weatherInfo[i]);
+  for (let i = 0; i < weatherInfo.length; i++) {
+    addWeatherMarker(weatherInfo[i]);
   }
 }
 
@@ -289,7 +288,6 @@ $(document).ready(() => {
         const message = response.message;
 
         if (message) {
-          // console.log(message);
           alert(message);
           return;
         }
@@ -306,30 +304,6 @@ $(document).ready(() => {
       console.log(err);
       alert('There was an error processing your request.');
     }
-
-    /*getFormInputs().then(postParameters => {
-      console.log(postParameters);
-      $.post('/stormrouter/route', {params: JSON.stringify(postParameters)}, responseJSON => {
-        const response = JSON.parse(responseJSON);
-        console.log(response);
-
-        const message = response.message;
-
-        if (message) {
-          console.log(message);
-          return;
-        }
-        const path = response.path;
-        const segments = response.segments;
-        const weather = response.weather;
-        displayPath(parsePolyline(path));
-        displayDirections(segments);
-        displayWeather(weather);
-      });
-    }).catch(reason => {
-      console.log(reason);
-      alert('There was an error processing your request.');
-    });*/
   });
 });
 
