@@ -12,7 +12,7 @@
           <!-- Directions list -->
           <div class="directions">
             <h4 class="section-header">Directions</h4>
-            <div class="slider">
+            <div>
               <div id="depart">Best Departure Time: 0 hr</div>
               <input type="range" id="slider" min="0" max="5" value="2"/>
               <span style='font-size: 14px;'>0 hr</span>

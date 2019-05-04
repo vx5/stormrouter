@@ -24,7 +24,9 @@ window.onclick = function(event) {
 }
 
 $("#submit-weather").click(() => {
+	console.log(weatherPref);
 	$.post('/stormrouter/changeweather', weatherPref, responseJSON => {
 		return;
 	});
+	modal.style.display = "none";
 })
