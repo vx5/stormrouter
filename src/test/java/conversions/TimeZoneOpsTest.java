@@ -39,6 +39,8 @@ public class TimeZoneOpsTest {
   }
 
   private long getExpectedOffset(String timeZone) {
+    // TEST
+    System.out.println(timeZone);
     TimeZone localZone = TimeZone.getTimeZone(timeZone);
     TimeZone thisZone = TimeZone.getDefault();
     // Stores raw offsets to standard time
