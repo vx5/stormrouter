@@ -49,13 +49,6 @@ h1, h2, h3, h4, h5, h6 {
   flex: 1;
 }
 
-/*#map {
-  flex: 2;
-
-  border: 3px inset #ddd;
-  background-color: #B3D4FC;
-}*/
-
 .itinerary {
   flex-grow: 1;
 
@@ -63,9 +56,6 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   justify-content: flex-start;
   align-content: center;
-
-  border: 1px solid #FFFF00;
-  border-right: none;
 
   overflow-y: auto;
 }
@@ -156,8 +146,7 @@ input[type="text"] {
   justify-content: flex-start;
   align-content: center;
 
-  border: 1px solid #FFFF00;
-  border-bottom: none;
+  border-top: 1px solid #FFFF00;
 }
 
 .directions button {

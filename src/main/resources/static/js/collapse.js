@@ -17,13 +17,10 @@ function collapse(element, buttonElem) {
   const $element = $(element);
   const id = element.id;
   if (element.style.display === 'none') {
-    //element.style.display = "";
     $element.show(400);
-    element.style.flexGrow = (id === 'bottom-bar') ? '1' : '2';
+    $element.css('flex-grow', (id === 'bottom-bar') ? 1 : 2);
   } else {
-    //element.style.display = "none";
-    //$element.css('flex-grow', '');
-    element.style.flexGrow = '0';
+    $element.css('flex-grow', 0);
     $element.hide(400);
   }
 

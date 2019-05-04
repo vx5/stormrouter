@@ -45,6 +45,7 @@ body,
 #side {
   width: 25px;
   border-top-right-radius: 10px;
+  border-bottom: none;
 }
 
 #bottom-bar {
@@ -60,6 +61,7 @@ body,
   justify-content: space-between;
   align-items: center;
   border-top-right-radius: 10px;
+  border-left: none;
 }
 
 .fas {
