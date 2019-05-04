@@ -42,12 +42,10 @@ function addGeocoder(name) {
 
   // when user selects a location from geocoder dropdown
   geocoder.on('result', result => {
-    //console.log(result);
     clearGeocoderMarker(name);
     // flip lnglat to latlng and store in coordinates
     const lnglat = result.result.geometry.coordinates;
     coordinates[name] = [lnglat[1], lnglat[0]];
-    console.log("gets located");
     // add Mapbox Marker to map and store it by name in locationMarkers
     locationMarkers[name] = new mapboxgl.Marker()
         .setLngLat(lnglat)
@@ -73,7 +71,6 @@ function addGeocoder(name) {
 
   //Clear after the input field is cleared.
   geocoder.on('clear', () => {
-    console.log('cleared');
     clearGeocoderMarker(name);
   });
 

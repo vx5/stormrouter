@@ -197,7 +197,10 @@ function formatLength(metersLength) {
 Path is geoJson.
  */
 function displayPath(path) {
-  console.log(path);
+  // if there is a path layer
+  if (map.getLayer('route')) {
+    clearPath();
+  }
 
   map.addLayer({
     "id": "route",
@@ -267,8 +270,6 @@ $(document).ready(() => {
       console.log(postParameters);
       $.post('/stormrouter/route', {params: JSON.stringify(postParameters)}, responseJSON => {
         const response = JSON.parse(responseJSON);
-        console.log(response);
-
         const message = response.message;
 
         if (message) {

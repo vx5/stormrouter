@@ -2,7 +2,9 @@ let timeStamps = ['-2', '-1', '0', '1', '2', '5'];
 let curPath = null, curSegments = null, curWeather = null, departTime = null;
 let currentTime = null;
 
-$("#slider").change(event => {
+$("#slider").on('input', event => {
+  if (!departTime) return;
+
   const $targetSlider = $(event.target);
   const sliderVal = $targetSlider.val();
   const displayTime = departTime.addHours(parseInt(timeStamps[sliderVal]));
@@ -49,19 +51,18 @@ function resetWeather(weather) {
     max: timeStamps.length - 1,
     value: timeStamps.indexOf(weather.best)
   });
-  $($("#slider")[0].nextElementSibling).text(getTime(displayTime));
+  $slider.next().text(getTime(displayTime));
 }
 
 
 let weatherPref = {snow: 0, rain: 0, wind: 0};
 const $wslides = $(".slider");
-for (let i = 0; i < $wslides.length; i++) {
-  const cur = $($wslides[i]);
-  cur.change(event => {
-  	const $targetSlider = $(event.target);
-    const sliderVal = cur.val();
-    $targetSlider.next().text(sliderVal + "%");
-    weatherPref[cur[0].id] = sliderVal;
-  });
-}
+
+$wslides.on('input', event => {
+  const $targetSlider = $(event.target);
+  const sliderId = $targetSlider.attr('id');
+  const sliderVal = $targetSlider.val();
+  $targetSlider.next().text(sliderVal + "%");
+  weatherPref[sliderId] = sliderVal;
+});
 
