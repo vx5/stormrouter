@@ -13,9 +13,9 @@ import edu.brown.cs.stormrouter.weather.WeatherAPIHandler;
 
 /**
  * @author vx5
- * <p>
- * Class which handles core functionality of deciding what time offset yields
- * the most weather-sound path.
+ *         <p>
+ *         Class which handles core functionality of deciding what time offset
+ *         yields the most weather-sound path.
  */
 public final class PathRanker {
   // Stores default path
@@ -23,15 +23,14 @@ public final class PathRanker {
   // Stores path long time zone offset, in seconds
   private static long tzOffset;
   // Stores information of all valid start time indices
-  private static Map<String, PathWeatherInfo> diffTimesWeather =
-      new HashMap<>();
+  private static Map<String, PathWeatherInfo> diffTimesWeather = new HashMap<>();
   // Stores information about what place-time events have had weather pulled
-  private static Map<String, Long> checkedWeather = new HashMap<>();
+  private static Map<String, Long> checkedWeather;
   private static final double TILE_SIZE_MILES = 20;
   private static final double TILE_SIZE_DEGREES = TILE_SIZE_MILES
       * Units.DEGREES_PER_MILE;
   // Stores list of indices in paths to be used for waypoints
-  private static List<Integer> weatherIds = new ArrayList<>();
+  private static List<Integer> weatherIds;
   // Stores number of points that should be checked
   private static final int NUM_POINTS = 4;
   // Stores desired hour offsets to be checked, if possible
@@ -43,11 +42,16 @@ public final class PathRanker {
    * Returns map of weather information objects, of type PathWeatherInfo, which
    * include, for all valid paths (including those at alternate times), the
    * weather points, and type of weather they represent.
+   * 
    * @param centerPath Path object to be used as default Path
    * @return Set of PathWeatherInfo, one for each valid paths
    * @throws Exception if there is error in API call
    */
   public static Map<String, Object> bestPath(Path centerPath) throws Exception {
+    // Resets storage variables
+    diffTimesWeather = new HashMap<>();
+    checkedWeather = new HashMap<>();
+    weatherIds = new ArrayList<>();
     // Assign the given path as default
     defaultPath = centerPath;
     tzOffset = centerPath.getOffset();
@@ -97,7 +101,7 @@ public final class PathRanker {
       if (System.currentTimeMillis() * Units.S_PER_MS <= pathStartTime
           - tzOffset
           && System.currentTimeMillis() * Units.S_PER_MS
-          + Units.hrToS(48.05) >= pathEndTime - tzOffset) {
+              + Units.hrToS(48.05) >= pathEndTime - tzOffset) {
         diffTimesWeather.put(Integer.toString(hrOffset),
             new PathWeatherInfo(unixStart + unixOffset));
       }
