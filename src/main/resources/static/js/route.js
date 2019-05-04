@@ -5,7 +5,7 @@ Parse the input to dict:
 	end: end point
 	points: array of waypoints
 */
-let geocoder = new L.mapbox.geocoder('mapbox.places');
+//let geocoder = new L.mapbox.geocoder('mapbox.places');
 //let weatherOnMap = [];
 let markers = [];
 let weatherId = 0;
@@ -36,6 +36,7 @@ function getFormInputs() {
   const startPoint = coordinates['start'];
   const endPoint = coordinates['end'];
   const date = form['date'].value;
+  departTime = new Date(date);
   const unixTime = +new Date(date) / 1000;
   //const waypointPromises = [];
   const waypointStops = [];
