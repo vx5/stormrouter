@@ -19,6 +19,10 @@ public final class Units {
   public static final double DEGREES_PER_MILE = 1 / MILES_PER_DEGREE;
   public static final double METERS_PER_MILE = 1609.34;
   public static final double MILES_PER_METER = 1 / METERS_PER_MILE;
+  public static final double MPH_TO_METERS_PER_S = 0.44704;
+  public static final double METERS_PER_S_TO_MPH = 1 / MPH_TO_METERS_PER_S;
+  public static final double IN_TO_MM = 25.4;
+  public static final double MM_TO_IN = 1 / IN_TO_MM;
 
   private Units() {
   }

@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.brown.cs.stormrouter.conversions.Units;
+
 public class WSetTest {
   // Stores basis TimePoint to be adapted
   private TimePoint weather;
@@ -19,7 +21,7 @@ public class WSetTest {
     weather.setPrecipType("");
     weather.setSummary("summary");
     weather.setTemperature(0);
-    weather.setVisibility(1);
+    weather.setVisibility(10);
     weather.setWindGust(0);
     weather.setWindSpeed(0);
     // Sets all factors to standard
@@ -42,7 +44,7 @@ public class WSetTest {
   @Test
   public void testSetRainFactor() {
     // Adjust weather to include rain
-    weather.setPrecipIntensity(0.5);
+    weather.setPrecipIntensity(1 * Units.IN_TO_MM);
     weather.setPrecipType("rain");
     // Check for initial score
     assertEquals(WSet.scoreWeather(weather), 40);
@@ -55,20 +57,20 @@ public class WSetTest {
   @Test
   public void testSetSnowFactor() {
     // Adjust weather to include snow
-    weather.setPrecipIntensity(0.5);
+    weather.setPrecipIntensity(1 * Units.IN_TO_MM);
     weather.setPrecipType("snow");
     // Check for initial score
-    assertEquals(WSet.scoreWeather(weather), 65);
+    assertEquals(WSet.scoreWeather(weather), 75);
     // Adjust rain factor
     WSet.setSnowFactor(2);
     // Check for new score
-    assertEquals(WSet.scoreWeather(weather), 130);
+    assertEquals(WSet.scoreWeather(weather), 150);
   }
 
   @Test
   public void testSetWindFactor() {
     // Adjust weather to include wind
-    weather.setWindGust(100);
+    weather.setWindGust(100 * Units.MPH_TO_METERS_PER_S);
     // Check for initial score
     assertEquals(WSet.scoreWeather(weather), 100);
     // Adjust rain factor
