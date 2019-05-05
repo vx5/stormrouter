@@ -15,7 +15,7 @@
             <div>
               <div id="depart">Best Departure Time:</div>
               <input type="range" id="slider" min="0" max="5" value="2"/>
-              <span style='font-size: 14px;'>12:00PM</span>
+              <span style="font-size: 14px;">12:00PM</span>
             </div>
             <ol class="directions-list">
 
@@ -87,19 +87,19 @@
       <br>
       <div id="setting">
         <div id="snow-setting">
-          <span>Snow Preference</span>
+          <label for="snow">Snow Preference</label>
           <input type="range" id="snow" class="slider" min="-30" max="30" value="0"/>
-          <span style='font-size: 14px;'>0%</span>
+          <span style="font-size: 14px;">0%</span>
         </div>
         <div id="rain-setting">
-          <span>Rain Preference</span>
+          <label for="rain">Rain Preference</label>
           <input type="range" id="rain" class="slider" min="-30" max="30" value="0"/>
-          <span style='font-size: 14px;'>0%</span>
+          <span style="font-size: 14px;">0%</span>
         </div>
-        <div id="winfd-setting">
-          <span>Wind Preference</span>
+        <div id="wind-setting">
+          <label for="wind">Wind Preference</label>
           <input type="range" id="wind" class="slider" min="-30" max="30" value="0"/>
-          <span style='font-size: 14px;'>0%</span>
+          <span style="font-size: 14px;">0%</span>
         </div>
         <button id="submit-weather">Submit Changes</button>
       </div>

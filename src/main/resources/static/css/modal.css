@@ -13,11 +13,13 @@
 
 /* Modal Content/Box */
 .modal-content {
-  background-color: rgb(0,0,0);
+  background-color: rgb(40, 40, 40);
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+  box-shadow: 3px 3px 5px #333333;
+  border-radius: 10px;
 }
 
 /* The Close Button */
@@ -40,6 +42,6 @@
 .modal-header{
   color: yellow;
   font-size: 20px;
-  font-style: bold;
+  font-weight: bold;
   position: relative;
 }
