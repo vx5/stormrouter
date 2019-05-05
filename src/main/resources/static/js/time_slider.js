@@ -21,16 +21,16 @@ Date.prototype.addHours = function (h) {
 
 function getTime(date) {
   let hr = date.getHours(), mn = date.getMinutes();
-  let ampm = "AM";
+  let ampm = 'AM';
   if (hr >= 12) {
-    ampm = "PM";
+    ampm = 'PM';
     hr = (hr > 12) ? hr - 12 : 12;
   } else {
     hr = (hr > 0) ? hr : 12;
   }
-  mn = (mn >= 10) ? mn : ("0" + mn);
-  hr = (hr >= 10) ? hr : ("0" + hr);
-  return hr + ":" + mn + " " + ampm;
+  mn = (mn >= 10) ? mn : ('0' + mn);
+  hr = (hr >= 10) ? hr : ('0' + hr);
+  return hr + ':' + mn + ' ' + ampm;
 }
 
 function resetWeather(weather) {

@@ -19,7 +19,7 @@ map.addControl(new mapboxgl.NavigationControl({
 let coordinates = {};
 let locationMarkers = {};
 
-function clearGeocoderMarker(name){
+function clearGeocoderMarker(name) {
   coordinates[name] = null;
   const marker = locationMarkers[name];
   if (marker) {
@@ -46,6 +46,7 @@ function addGeocoder(name) {
     // flip lnglat to latlng and store in coordinates
     const lnglat = result.result.geometry.coordinates;
     coordinates[name] = [lnglat[1], lnglat[0]];
+
     // add Mapbox Marker to map and store it by name in locationMarkers
     locationMarkers[name] = new mapboxgl.Marker()
         .setLngLat(lnglat)
@@ -53,9 +54,9 @@ function addGeocoder(name) {
 
     // calculate bounding box of all location markers
     const bounds = new mapboxgl.LngLatBounds();
-    for (const [key, value] of Object.entries(locationMarkers)) {
-      if (!value) continue;
-      bounds.extend(value.getLngLat());
+    for (const marker of Object.values(locationMarkers)) {
+      if (!marker) continue;
+      bounds.extend(marker.getLngLat());
     }
 
     // add padding to bounding box based on current panel widths and heights
@@ -65,7 +66,8 @@ function addGeocoder(name) {
         bottom: $('#bottom-bar').height() + 30,
         left: $('#side-bar').width() + 30,
         right: 30
-      }
+      },
+      maxZoom: 16
     });
   });
 
@@ -74,8 +76,8 @@ function addGeocoder(name) {
     clearGeocoderMarker(name);
   });
 
+  // set geocoder <input> name to 'name' and make it required for form data
   const $input = $target.find('input');
-  // set input name to 'name' and make it required for form data
   $input.attr('name', name);
   $input.prop('required', true);
 }

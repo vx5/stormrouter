@@ -1,58 +1,19 @@
-/*
-Parse the input to dict: 
-	start: starting point
-	date: date of starting point
-	end: end point
-	points: array of waypoints
-*/
-//let geocoder = new L.mapbox.geocoder('mapbox.places');
-//let weatherOnMap = [];
-let markers = [];
+let weatherMarkers = [];
 let weatherId = 0;
-let pathExists = false;
 
 let skycons = new Skycons({"color": "#00022E"});
 
-function getFormInputs() {
-  const form = document.forms['itinerary-form'];
-  /*const start = form['start'].value;
-  const end = form['end'].value;*/
-  const startPoint = coordinates['start'];
-  const endPoint = coordinates['end'];
-  const date = form['date'].value;
-  departTime = new Date(date);
-  const unixTime = +new Date(date) / 1000;
-  //const waypointPromises = [];
-  const waypointStops = [];
-
-  const inputs = $(form).serializeArray();
-  for (let i = 2; i < inputs.length - 1;) { // begin at first waypoint input and end before destination input
-    const waypointName = inputs[i++].name;
-    const waypoint = coordinates[waypointName];
-    const duration = inputs[i++].value;
-
-    if (!waypoint) {
-      throw 'ERROR: no coordinate for ' + waypointName;
-    }
-    waypointStops.push({waypoint, duration});
-  }
-  return {start: startPoint, date: unixTime, destination: endPoint, waypoints: waypointStops};
-}
-
-//Clear the current path.
-function clearPath() {
-  if (!pathExists) return;
-  map.removeLayer('route');
-  map.removeSource('route');
-}
-
-//Clear a layer by ID.
+// Clear a layer by ID.
 function clearLayer(id) {
+  if (!map.getLayer(id)) return;
   map.removeLayer(id);
   map.removeSource(id);
 }
 
-//Add weather markers.
+// Clear the current path.
+const clearPath = () => clearLayer('route');
+
+// Add weather weatherMarkers.
 function addWeatherMarker(weatherData) {
   const iconString = weatherData.icon;
   const lat = weatherData.lat;
@@ -70,7 +31,7 @@ function addWeatherMarker(weatherData) {
   const marker = new mapboxgl.Marker(markerCanvas)
       .setLngLat([lon, lat])
       .addTo(map);
-  markers.push(marker);
+  weatherMarkers.push(marker);
 
   const popup = new mapboxgl.Popup({
     closeButton: false,
@@ -86,6 +47,18 @@ function addWeatherMarker(weatherData) {
   marker.getElement().addEventListener('mouseout', () => {
     marker.togglePopup();
   });
+}
+
+// Remove all weather weatherMarkers.
+function clearWeatherMarkers() {
+  weatherMarkers.forEach(marker => marker.remove());
+  weatherMarkers = [];
+  weatherId = 0;
+}
+
+function clearRoute() {
+  clearPath();
+  clearWeatherMarkers();
 }
 
 function getSkyconForString(iconString) {
@@ -115,36 +88,25 @@ function getSkyconForString(iconString) {
   }
 }
 
-//Remove all weather markers.
-function removeWeatherMarkers() {
-  markers.forEach(marker => marker.remove());
-  markers = [];
-  weatherId = 0;
-}
-
 // Parse from [{lat: , lon: },...] to [[lon,lat],...]
 function parsePolyline(polyline) {
-  let res = [];
-  for (let i = 0; i < polyline.length; i++) {
-    res.push([polyline[i].longitude, polyline[i].latitude]);
-  }
-  return res;
+  return polyline.map(coord => [coord.longitude, coord.latitude]);
 }
 
 // Display directions
 function displayDirections(directions) {
-  const $directs = $("ol.directions-list");
+  const $directs = $('ol.directions-list');
   $directs.empty();
-  for (let i = 0; i < directions.length; i++) {
-    const length = directions[i].length;
-    const instruction = directions[i].instructions;
-    const type = directions[i].type;
+  directions.forEach(direction => {
+    const length = direction.length;
+    const instruction = direction.instructions;
+    const type = direction.type;
     let iconName = iconForDirectionType(type);
     $directs.append(
         '<li>'
         + `<img class="direction-icon" alt="${iconName} icon" src="/img/${iconName}" width="24">`
         + `<div class="instructions">${instruction} for ${formatLength(length)}</div></li>`);
-  }
+  });
 }
 
 function iconForDirectionType(type) {
@@ -186,22 +148,16 @@ function iconForDirectionType(type) {
 function formatLength(metersLength) {
   let feetLength = metersLength * 3.28084;
   if (feetLength < 1000) {
-    return Math.ceil(feetLength / 10) * 10 + " feet";
+    return Math.ceil(feetLength / 10) * 10 + ' feet';
   } else {
     let milesLength = feetLength / 5280;
-    return milesLength.toFixed(1) + " miles";
+    return milesLength.toFixed(1) + ' miles';
   }
 }
 
-/*
-Path is geoJson.
- */
+// Displays a GeoJSON path on the map.
 function displayPath(path) {
-  // if there is a path layer
-  if (map.getLayer('route')) {
-    clearPath();
-  }
-
+  clearPath();
   map.addLayer({
     "id": "route",
     "type": "line",
@@ -225,8 +181,6 @@ function displayPath(path) {
       "line-width": 8
     }
   });
-
-  pathExists = true;
 }
 
 function displayBestWeather(weather) {
@@ -234,30 +188,56 @@ function displayBestWeather(weather) {
     console.log('no weather found');
     return;
   }
-  console.log(weather);
   const bestWeather = weather[weather.best];
   resetWeather(weather);
-  removeWeatherMarkers();
+  clearWeatherMarkers();
   if (!bestWeather) {
-    console.log("No best weather. NULL");
+    console.log('no best weather found');
     return;
   }
   const weatherInfo = bestWeather.weatherData;
-  for (let i = 0; i < weatherInfo.length; i++) {
-    addWeatherMarker(weatherInfo[i]);
-  }
+  weatherInfo.forEach(addWeatherMarker);
 }
 
 function displayWeather(weather) {
   if (!weather) {
-    console.log("No weather at this time.");
+    console.log('no weather found at this time');
     return;
   }
-  removeWeatherMarkers();
+  clearWeatherMarkers();
   const weatherInfo = weather.weatherData;
-  for (let i = 0; i < weatherInfo.length; i++) {
-    addWeatherMarker(weatherInfo[i]);
+  weatherInfo.forEach(addWeatherMarker);
+}
+
+
+/*
+Parse the form input get request object:
+	start: starting point
+	date: date of starting point (unix time)
+	destination: end point
+	waypoints: array of waypoint coordinates and durations
+*/
+function getFormInputs() {
+  const form = document.forms['itinerary-form'];
+  const startPoint = coordinates['start'];
+  const endPoint = coordinates['end'];
+  const date = form['date'].value;
+  departTime = new Date(date);
+  const unixTime = +new Date(date) / 1000;
+  const waypointStops = [];
+
+  const inputs = $(form).serializeArray();
+  for (let i = 2; i < inputs.length - 1;) { // begin at first waypoint input and end before destination input
+    const waypointName = inputs[i++].name;
+    const waypoint = coordinates[waypointName];
+    const duration = inputs[i++].value;
+
+    if (!waypoint) {
+      throw 'ERROR: no coordinate for ' + waypointName;
+    }
+    waypointStops.push({waypoint, duration});
   }
+  return {start: startPoint, date: unixTime, destination: endPoint, waypoints: waypointStops};
 }
 
 $(document).ready(() => {
@@ -267,14 +247,12 @@ $(document).ready(() => {
     try {
       const postParameters = getFormInputs();
 
-      console.log(postParameters);
       $.post('/stormrouter/route', {params: JSON.stringify(postParameters)}, responseJSON => {
         const response = JSON.parse(responseJSON);
         const message = response.message;
 
         if (message) {
-          clearPath();
-          removeWeatherMarkers();
+          clearRoute();
           alert(message);
           return;
         }
@@ -288,8 +266,7 @@ $(document).ready(() => {
         collapse($collapsable[1], $($arrow[1])[0]);
       });
     } catch (err) {
-      clearPath();
-      removeWeatherMarkers();
+      clearRoute();
       console.log(err);
       alert('There was an error processing your request.');
     }
