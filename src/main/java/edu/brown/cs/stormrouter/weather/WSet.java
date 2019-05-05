@@ -14,7 +14,7 @@ public final class WSet {
   // Please see the README for information on what sources cutoffs
   // were derived and pulled from
   // Inches per Hour
-  private static final double PRECIP_INTENSITY_CUTOFF = 0.01 * Units.IN_TO_MM;
+  private static final double PRECIP_INTENSITY_CUTOFF = 0.0001 * Units.IN_TO_MM;
   private static final double RAIN_INTEN_LOW_CUTOFF = 0.1 * Units.IN_TO_MM;
   private static final double RAIN_INTEN_MID_CUTOFF = 0.3 * Units.IN_TO_MM;
   private static final double SNOW_INTEN_LOW_CUTOFF = 0.05 * Units.IN_TO_MM;

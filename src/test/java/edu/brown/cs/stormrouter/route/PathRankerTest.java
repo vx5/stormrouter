@@ -39,14 +39,17 @@ public class PathRankerTest {
       Map<String, Object> m = PathRanker.bestPath(p);
       Set<String> keys = m.keySet();
       // Check for correct number of objects
-      assertEquals(keys.size(), 5);
+      assertEquals(keys.size(), 7);
       // Check that invalid offsets not contained
       assertFalse(keys.contains("-1"));
       assertFalse(keys.contains("-2"));
+      assertFalse(keys.contains("-5"));
+      assertFalse(keys.contains("-8"));
+      assertFalse(keys.contains("-12"));
       // META: Check that best path was, in fact, returned
       // Generate array of valid offsets
       String[] offsets = new String[] {
-          "0", "1", "2", "5"
+          "0", "1", "2", "5", "8", "12"
       };
       // Looks for best path key
       String bestPathKey = "";

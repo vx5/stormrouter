@@ -35,7 +35,7 @@ public final class PathRanker {
   private static final int NUM_POINTS = 4;
   // Stores desired hour offsets to be checked, if possible
   private static final int[] HR_OFFSETS = new int[] {
-      -2, -1, 1, 2, 5
+      -12, -8, -5, -2, -1, 1, 2, 5, 8, 12
   };
 
   private PathRanker() {
