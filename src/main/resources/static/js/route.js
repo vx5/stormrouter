@@ -237,6 +237,9 @@ function getFormInputs() {
     }
     waypointStops.push({waypoint, duration});
   }
+  if(!startPoint) throw 'ERROR: no coordinate for start location';
+  if(!endPoint) throw 'ERROR: no coordinate for end location';
+  
   return {start: startPoint, date: unixTime, destination: endPoint, waypoints: waypointStops};
 }
 
