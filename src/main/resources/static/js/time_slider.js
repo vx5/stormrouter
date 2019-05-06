@@ -1,4 +1,5 @@
 let timeStamps = ['-2', '-1', '0', '1', '2', '5'];
+const DEFAULT = ['-2', '-1', '0', '1', '2', '5'];
 let curPath = null, curSegments = null, curWeather = null, departTime = null;
 let currentTime = null;
 

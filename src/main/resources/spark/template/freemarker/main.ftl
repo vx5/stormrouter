@@ -36,7 +36,8 @@
      <script src="/js/route.js"></script>
      <script src="/js/time_slider.js"></script>
      <script src="/js/modal.js"></script>
-     
+     <script src="/js/clear.js"></script>
+
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start
        dealing with real world issues like old browsers.  -->

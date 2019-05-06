@@ -66,6 +66,7 @@
               <label for="destination">Destination</label>
               <div id="end" class="geocoder"></div>
             </div>
+            <button type="button" id="clear">Clear</button>
             <button type="submit" id="route">Submit</button>
           </div>
 
