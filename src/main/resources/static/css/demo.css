@@ -115,3 +115,12 @@ div.collapse:hover {
 .settings:hover{
   cursor: pointer;
 }
+
+#setting{
+  display: flex;
+  justify-content: space-between;
+}
+
+.sensitivity{
+  width: 20%;
+}

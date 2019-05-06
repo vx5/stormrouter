@@ -86,22 +86,21 @@
       </div>
       <br>
       <div id="setting">
-        <div id="snow-setting">
-          <label for="snow">Snow Sensitivity</label>
+        <div id="snow-setting" class="sensitivity">
+          <label for="snow">Snow Sensitivity: </label><span style="font-size: 14px;"> 0%</span>
           <input type="range" id="snow" class="slider" min="-30" max="30" value="0"/>
-          <span style="font-size: 14px;">0%</span>
         </div>
-        <div id="rain-setting">
-          <label for="rain">Rain Sensitivity</label>
+        <div id="rain-setting" class="sensitivity">
+          <label for="rain">Rain Sensitivity: </label><span style="font-size: 14px;"> 0%</span>
           <input type="range" id="rain" class="slider" min="-30" max="30" value="0"/>
-          <span style="font-size: 14px;">0%</span>
+          
         </div>
-        <div id="wind-setting">
-          <label for="wind">Wind Sensitivity</label>
+        <div id="wind-setting" class="sensitivity">
+          <label for="wind">Wind Sensitivity: </label><span style="font-size: 14px;"> 0%</span>
           <input type="range" id="wind" class="slider" min="-30" max="30" value="0"/>
-          <span style="font-size: 14px;">0%</span>
+          
         </div>
-        <button id="submit-weather">Submit Changes</button>
+        <button id="submit-weather" class="sensitivity">Submit Changes</button>
       </div>
     </div>
 

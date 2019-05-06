@@ -62,7 +62,7 @@ $wslides.on('input', event => {
   const $targetSlider = $(event.target);
   const sliderId = $targetSlider.attr('id');
   const sliderVal = $targetSlider.val();
-  $targetSlider.next().text(sliderVal + "%");
+  $targetSlider.prev().text(sliderVal + "%");
   weatherPref[sliderId] = sliderVal;
 });
 
