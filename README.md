@@ -1,6 +1,16 @@
-# CS 0320 Term Project
+# Stormrouter
 
-## Team Members
+## Introduction and Description
+
+## Key details
+
+#### Collaboration
+
+#### Key challenges
+
+#### How to build and run
+
+#### Acknowledgments
 
 #### Jake Polatty
 
