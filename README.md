@@ -1,6 +1,10 @@
-# Stormrouter
+# StormRouter
 
-## Introduction and Description
+## Introduction and description
+
+StormRouter is an application designed to help travelers plan a road trip around inclement weather, to help keep their trip safe and stress free. The app allows users to input the details of a road trip (including the destination and any stops along the way) and receive a customized weather report for conditions along their route. This information is displayed visually on a map to provide an immediate overview of the areas where dangerous road conditions may arise, and the app suggests alternate departure times or routes that may have safer conditions.
+
+![Example image](https://github.com/vx5/stormrouter/stormrouter_example_screenshot.jpg?raw=true)
 
 ## Key details
 
@@ -11,6 +15,8 @@
 #### How to build and run
 
 #### Acknowledgments
+
+I obtained permission from the course professor to share the project publicly
 
 #### Jake Polatty
 
@@ -58,7 +64,7 @@
 
 ### Project Idea 1: StormRouter
 
-StormRouter is an application designed to help travelers plan a road trip around inclement weather to help keep their trip safe and stress free.  The app will allow a user to input the details of a road trip (including the destination and any stops along the way) and receive a customized weather report for conditions along their route.  This information would be displayed visually on a map to provide an immediate overview of the areas where dangerous road conditions may arise, and the app could also suggest alternate departure times or routes that could give safer conditions.
+
 
 *Requirements:*
 
