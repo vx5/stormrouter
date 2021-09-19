@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import edu.brown.cs.stormrouter.conversions.Units;
+import primary.core.cs.stormrouter.conversions.Units;
 
 public class UnitsTest {
 

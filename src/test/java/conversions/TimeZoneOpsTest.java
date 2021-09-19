@@ -8,7 +8,7 @@ import java.util.TimeZone;
 
 import org.junit.Test;
 
-import edu.brown.cs.stormrouter.conversions.TimeZoneOps;
+import primary.core.cs.stormrouter.conversions.TimeZoneOps;
 
 public class TimeZoneOpsTest {
 
