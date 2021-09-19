@@ -6,9 +6,13 @@ StormRouter is an application designed to help travelers plan a road trip around
 
 ![Example image](https://github.com/vx5/stormrouter/blob/master/stormrouter_example_screenshot.jpg?raw=true)
 
+**Note:** While you can build and run the application (see below), it cannot return directions, due to external API dependencies which are no longer supported in the form needed. To renew and relaunch the product, code changes would be needed so that the app could leverage different APIs (e.g., National Weather Service API instead of Dark Sky API).
+
 ## Key details
 
 #### Collaboration
+
+I worked on this project in collaboration with Jacob Polatty, Jason Crowley, and Champ Chairattana-Apirom. The code I worked on primarily can be found in 
 
 #### Key challenges
 
@@ -16,7 +20,7 @@ StormRouter is an application designed to help travelers plan a road trip around
 
 #### Acknowledgments
 
-I obtained permission from the course professor to share the project publicly
+I obtained written permission from the course instructor to share the project publicly. Please let me know if there are any issues or questions!
 
 #### Jake Polatty
 

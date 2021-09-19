@@ -5,6 +5,12 @@ import java.util.TimeZone;
 
 import primary.core.cs.stormrouter.weather.WeatherAPIHandler;
 
+/**
+ * @author vx5
+ * 	       <p>
+ *         Class for handling time and timezone conversions between points
+ *         in different timezones.
+ */
 public final class TimeZoneOps {
 
   private TimeZoneOps() {
