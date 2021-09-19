@@ -12,7 +12,7 @@ import com.google.gson.JsonParser;
  * Handles retrieving weather from the DarkSky API.
  */
 public final class WeatherAPIHandler {
-  private static final String API_KEY = "REDACTED";
+  private static final String API_KEY = "DEFUNCT";
   private static final Gson GSON = new Gson();
 
   private WeatherAPIHandler() {

@@ -23,7 +23,7 @@ public final class DirectionsAPIHandler {
   private static final String BASE_URL =
       "https://api.openrouteservice.org/v2/directions/driving-car";
   private static final String API_KEY =
-      "REDACTED";
+      "DEFUNCT";
   private static final Gson GSON = new Gson();
 
   private DirectionsAPIHandler() {
