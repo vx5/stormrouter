@@ -23,10 +23,11 @@ For the functionality that I (vx5) was responsible for, mentioned above, the gre
 #### How to build and run
 
 From the project's root directory, enter the following terminal commands:
-'''
+
+```
 mvn package
 ./run --gui
-'''
+```
 
 Then, in a browser window, access the address "0.0.0.0:4567/stormrouter", at which users can interact with the GUI.
 
