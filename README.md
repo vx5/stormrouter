@@ -4,7 +4,7 @@
 
 StormRouter is an application designed to help travelers plan a road trip around inclement weather, to help keep their trip safe and stress free. The app allows users to input the details of a road trip (including the destination and any stops along the way) and receive a customized weather report for conditions along their route. This information is displayed visually on a map to provide an immediate overview of the areas where dangerous road conditions may arise, and the app suggests alternate departure times or routes that may have safer conditions.
 
-![Example screenshot](https://github.com/vx5/stormrouter/blob/master/stormrouter_example_screenshot.jpg?raw=true)
+![Example screenshot](https://github.com/vx5/stormrouter/blob/master/images/stormrouter_example_screenshot.jpg?raw=true)
 
 **Note:** While you can build and run the application (see below), it cannot return directions, due to external API dependencies which are no longer supported in the form needed. To renew and relaunch the product, code changes would be needed so that the app could leverage different APIs (e.g., National Weather Service API instead of Dark Sky API).
 
